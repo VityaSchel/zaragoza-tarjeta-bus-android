@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
         } catch (e: TagLostException) {
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
         } catch (e: AvanzaCardInvalidException) {
-            runOnUiThread { errorMessage = "Invalid card" }
+            runOnUiThread { errorMessage = "Unsupported or invalid card" }
             Log.e(LOG_TAG, "Card is invalid: ${e.message}")
         } catch (e: Exception) {
             runOnUiThread { errorMessage = "Error reading card" }
@@ -151,15 +151,15 @@ fun MainScreen(
                         textAlign = TextAlign.Center
                     )
                 }
-            } else if (card != null) {
-                CardDetails(card)
-            } else {
+            } else if (card == null) {
                 Box(contentAlignment = Alignment.Center) {
                     Text(
                         text = "Scan your card to see the details",
                         textAlign = TextAlign.Center
                     )
                 }
+            } else {
+                CardDetails(card)
             }
         }
     }
@@ -167,8 +167,10 @@ fun MainScreen(
 
 @Composable
 fun CardDetails(card: AvanzaCard) {
+    val balanceEur = "%.2f".format(card.balance / 1000.0)
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text = "Card ID: ${card.id}")
+        Text(text = "Balance: €${balanceEur}")
     }
 }
 

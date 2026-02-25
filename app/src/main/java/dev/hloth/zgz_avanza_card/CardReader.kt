@@ -5,7 +5,7 @@ import android.nfc.tech.MifareClassic
 private val KEY_A = hexToBytes("04000C0F0903")
 private val KEY_B = hexToBytes("0B02070A0409")
 
-data class AvanzaCard(val id: String) {
+data class AvanzaCard(val id: String, val balance: Long) {
     companion object {
         fun read(mifare: MifareClassic): AvanzaCard {
             mifare.connect()
@@ -54,7 +54,14 @@ data class AvanzaCard(val id: String) {
             val block2 = blocks[2] ?: throw AvanzaCardInvalidException("Missing block 2")
             val id = ZgzAvanza.decodeId(block2)
 
-            return AvanzaCard(id)
+            val block8 = blocks[8] ?: throw AvanzaCardInvalidException("Missing block 8")
+            val block9 = blocks[9] ?: throw AvanzaCardInvalidException("Missing block 9")
+            if (!block8.contentEquals(block9)) {
+                throw AvanzaCardInvalidException("Balance blocks 8 and 9 do not match")
+            }
+            val balance = ZgzAvanza.decodeBalance(block8)
+
+            return AvanzaCard(id, balance)
         }
     }
 }
