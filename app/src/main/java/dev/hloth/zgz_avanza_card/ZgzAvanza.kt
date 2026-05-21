@@ -48,5 +48,16 @@ class ZgzAvanza {
 
             return balance
         }
+
+        fun decodeTransaction(block: ByteArray) {
+
+        }
     }
 }
+
+data class ZgzAvanzaTransaction(
+    val header: String,
+    val cardTypeConst: String,
+    val unknownVar1: String,
+    val lineNumber:
+    ) {}

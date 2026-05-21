@@ -189,3 +189,11 @@ fun MainScreenLoadingPreview() {
         MainScreen(loading = true)
     }
 }
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MainScreenCardDetailsPreview() {
+    ZGZAvanzaCardTheme {
+        MainScreen(card = AvanzaCard(id = "BE123456", balance = 1234))
+    }
+}
