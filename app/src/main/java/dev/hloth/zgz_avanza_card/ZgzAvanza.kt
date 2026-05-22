@@ -59,5 +59,5 @@ data class ZgzAvanzaTransaction(
     val header: String,
     val cardTypeConst: String,
     val unknownVar1: String,
-    val lineNumber:
+    val lineNumber: Int,
     ) {}
