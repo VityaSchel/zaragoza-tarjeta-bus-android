@@ -1,0 +1,7 @@
+Primera versión.
+
+- Saldo de la tarjeta
+- Historial de viajes
+- Historial de recargas
+- Visualización de errores por NFC desactivada
+- Visualización de errores de lectura de la tarjeta
