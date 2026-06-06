@@ -1,4 +1,6 @@
-# Zaragoza Avanza Bus Transit Pass Android App
+# Zaragoza Tarjeta Bus
+
+Zaragoza public transport card Android app.
 
 > [!IMPORTANT]
 > ⚠️ **Aviso legal:** Este repositorio es un proyecto de investigación de seguridad independiente.  \

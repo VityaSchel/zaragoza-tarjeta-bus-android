@@ -1,4 +1,4 @@
-package dev.hloth.zgz_avanza_card
+package dev.hloth.zaragoza_tarjeta_bus
 
 import android.content.Intent
 import android.os.Build

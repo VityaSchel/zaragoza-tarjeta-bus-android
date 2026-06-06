@@ -1,4 +1,4 @@
-package dev.hloth.zgz_avanza_card
+package dev.hloth.zaragoza_tarjeta_bus
 
 import android.nfc.tech.MifareClassic
 import java.time.LocalDateTime

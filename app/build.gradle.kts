@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.hloth.zgz_avanza_card"
+    namespace = "dev.hloth.zaragoza_tarjeta_bus"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.hloth.zgz_avanza_card"
+        applicationId = "dev.hloth.zaragoza_tarjeta_bus"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

@@ -1,4 +1,4 @@
-package dev.hloth.zgz_avanza_card
+package dev.hloth.zaragoza_tarjeta_bus
 
 import android.nfc.NfcAdapter
 import android.nfc.Tag
@@ -61,7 +61,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.hloth.zgz_avanza_card.ui.theme.ZGZAvanzaCardTheme
+import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZGZAvanzaCardTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

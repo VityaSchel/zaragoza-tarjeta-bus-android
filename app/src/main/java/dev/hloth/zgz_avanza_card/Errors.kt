@@ -1,3 +1,3 @@
-package dev.hloth.zgz_avanza_card
+package dev.hloth.zaragoza_tarjeta_bus
 
 class AvanzaCardInvalidException(message: String) : Exception(message)

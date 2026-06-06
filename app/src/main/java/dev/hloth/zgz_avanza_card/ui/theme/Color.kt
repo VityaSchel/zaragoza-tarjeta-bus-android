@@ -1,4 +1,4 @@
-package dev.hloth.zgz_avanza_card.ui.theme
+package dev.hloth.zaragoza_tarjeta_bus.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
