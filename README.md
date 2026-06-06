@@ -1,6 +1,10 @@
 # Zaragoza Tarjeta Bus
 
-Zaragoza public transport card Android app.
+Free Android app that reads your Avanza Zaragoza Tarjeta Bus and displays remaining balance in euros, recent trips and top-ups.
+
+![Banner](./contrib/banner.png)
+
+**Download the app from [Google Play](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) or [Forgejo Releases](https://git.hloth.dev/hloth/zgz-avanza-card-android/releases).**
 
 > [!IMPORTANT]
 > ⚠️ **Aviso legal:** Este repositorio es un proyecto de investigación de seguridad independiente.  \
@@ -8,10 +12,7 @@ Zaragoza public transport card Android app.
 > No se proporcionará asistencia para ningún uso ilícito. \
 > Consulta [LEGAL.md](./LEGAL.md) para el descargo de responsabilidad completo.
 
-
-
-See also:
-- [zgz-avanza](https://git.hloth.dev/hloth/zgz-avanza)
+Powered by reverse engineering in [zgz-avanza](https://git.hloth.dev/hloth/zgz-avanza) project.
 
 ## License
 
