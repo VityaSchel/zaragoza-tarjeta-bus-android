@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Zaragoza Tarjeta Bus"
+rootProject.name = "Tarjeta Bus"
 include(":app")
