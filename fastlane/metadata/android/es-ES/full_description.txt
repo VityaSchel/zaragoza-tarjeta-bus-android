@@ -1,0 +1,1 @@
+Aplicación gratuita para Android que lee tu Tarjeta Bus de Avanza Zaragoza y muestra el saldo restante en euros, los viajes recientes y las recargas.

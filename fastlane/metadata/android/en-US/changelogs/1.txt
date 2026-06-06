@@ -1,0 +1,7 @@
+First release
+
+- Card balance
+- Trips history
+- Top up history
+- NFC disabled error view
+- Card reading error view
