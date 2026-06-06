@@ -25,8 +25,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -59,6 +62,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.hloth.zgz_avanza_card.ui.theme.ZGZAvanzaCardTheme
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : ComponentActivity() {
     private lateinit var nfcAdapter: NfcAdapter
@@ -261,73 +266,145 @@ private fun ScanPrompt(modifier: Modifier = Modifier) {
 
 @Composable
 fun CardDetails(card: AvanzaCard, modifier: Modifier = Modifier) {
-    val balanceEur = "%.2f".format(card.balance / 1000.0)
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(28.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            ),
-        ) {
-            Column(modifier = Modifier.padding(28.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Avanza card",
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                    ContactlessIcon(
-                        modifier = Modifier.size(28.dp),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
+        item { BalanceCard(card) }
+        item { CardIdRow(card.id) }
 
-                Spacer(Modifier.height(40.dp))
-
+        if (card.transactions.isNotEmpty()) {
+            item {
                 Text(
-                    text = "Balance",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
-                )
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = "€$balanceEur",
-                    style = MaterialTheme.typography.displayMedium,
-                    fontWeight = FontWeight.Bold,
+                    text = "Recent activity",
+                    modifier = Modifier.padding(top = 12.dp, start = 4.dp, bottom = 4.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
+            items(card.transactions) { transaction ->
+                TransactionRow(transaction)
+            }
         }
+    }
+}
 
-        Spacer(Modifier.height(16.dp))
+@Composable
+private fun BalanceCard(card: AvanzaCard) {
+    val unlimited = card.type == CardType.PERSONAL_UNLIMITED
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(28.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
+    ) {
+        Column(modifier = Modifier.padding(28.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = card.type.label,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+                ContactlessIcon(
+                    modifier = Modifier.size(28.dp),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
 
-        Row(
+            Spacer(Modifier.height(40.dp))
+
+            Text(
+                text = if (unlimited) "Status" else "Balance",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = if (unlimited) "Unlimited" else "€${"%.2f".format(card.balance / 1000.0)}",
+                style = MaterialTheme.typography.displayMedium,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CardIdRow(id: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "Card ID",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = id,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
+}
+
+private val TRANSACTION_DATE_FORMAT = DateTimeFormatter.ofPattern("d MMM yyyy")
+private val TRANSACTION_TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm")
+
+@Composable
+private fun TransactionRow(transaction: AvanzaTransaction) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(18.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+                .size(44.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "Card ID",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                text = when (transaction.kind) {
+                    TransactionKind.TOP_UP -> "+"
+                    TransactionKind.RIDE -> transaction.line?.toString() ?: "·"
+                },
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
+        }
+        Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = card.id,
-                style = MaterialTheme.typography.bodyMedium,
+                text = when (transaction.kind) {
+                    TransactionKind.TOP_UP -> "Top-up"
+                    TransactionKind.RIDE ->
+                        if (transaction.line != null) "Bus ride · Line ${transaction.line}" else "Bus ride"
+                },
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = "${transaction.dateTime.format(TRANSACTION_DATE_FORMAT)} · " +
+                        transaction.dateTime.format(TRANSACTION_TIME_FORMAT),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -375,10 +452,38 @@ fun MainScreenLoadingPreview() {
     }
 }
 
+private val previewCard = AvanzaCard(
+    id = "BE123456",
+    type = CardType.TOP_UP,
+    balance = 1234,
+    transactions = listOf(
+        AvanzaTransaction(TransactionKind.RIDE, LocalDateTime.of(2026, 2, 14, 18, 45), line = 35, direction = 2),
+        AvanzaTransaction(TransactionKind.TOP_UP, LocalDateTime.of(2026, 2, 12, 9, 10)),
+        AvanzaTransaction(TransactionKind.RIDE, LocalDateTime.of(2026, 2, 11, 8, 32), line = 22, direction = 1),
+    ),
+)
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenCardDetailsPreview() {
     ZGZAvanzaCardTheme {
-        MainScreen(card = AvanzaCard(id = "BE123456", balance = 1234))
+        MainScreen(card = previewCard)
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MainScreenPersonalCardPreview() {
+    ZGZAvanzaCardTheme {
+        MainScreen(
+            card = AvanzaCard(
+                id = "BP987654",
+                type = CardType.PERSONAL_UNLIMITED,
+                balance = 0,
+                transactions = listOf(
+                    AvanzaTransaction(TransactionKind.RIDE, LocalDateTime.of(2026, 2, 14, 8, 5), line = 31, direction = 1),
+                ),
+            ),
+        )
     }
 }

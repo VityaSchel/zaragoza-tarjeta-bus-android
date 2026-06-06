@@ -6,7 +6,7 @@
 > No se proporcionará asistencia para ningún uso ilícito. \
 > Consulta [LEGAL.md](./LEGAL.md) para el descargo de responsabilidad completo.
 
-WIP
+
 
 See also:
 - [zgz-avanza](https://git.hloth.dev/hloth/zgz-avanza)

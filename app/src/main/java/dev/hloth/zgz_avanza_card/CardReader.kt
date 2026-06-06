@@ -1,11 +1,31 @@
 package dev.hloth.zgz_avanza_card
 
 import android.nfc.tech.MifareClassic
+import java.time.LocalDateTime
 
 private val KEY_A = hexToBytes("04000C0F0903")
 private val KEY_B = hexToBytes("0B02070A0409")
 
-data class AvanzaCard(val id: String, val balance: Long) {
+enum class CardType(val label: String) {
+    TOP_UP("Top-up card"),
+    PERSONAL_UNLIMITED("Personal pass"),
+}
+
+enum class TransactionKind { RIDE, TOP_UP }
+
+data class AvanzaTransaction(
+    val kind: TransactionKind,
+    val dateTime: LocalDateTime,
+    val line: Int? = null,
+    val direction: Int? = null,
+)
+
+data class AvanzaCard(
+    val id: String,
+    val type: CardType,
+    val balance: Long,
+    val transactions: List<AvanzaTransaction> = emptyList(),
+) {
     companion object {
         fun read(mifare: MifareClassic): AvanzaCard {
             mifare.connect()
@@ -47,9 +67,7 @@ data class AvanzaCard(val id: String, val balance: Long) {
             mifare.close()
 
             val block1 = blocks[1] ?: throw AvanzaCardInvalidException("Missing block 1")
-            if (!block1.contentEquals(hexToBytes("02699F000000000000000000000000F4"))) {
-                throw AvanzaCardInvalidException("Unexpected value in block 1")
-            }
+            val type = ZgzAvanza.decodeCardType(block1)
 
             val block2 = blocks[2] ?: throw AvanzaCardInvalidException("Missing block 2")
             val id = ZgzAvanza.decodeId(block2)
@@ -61,7 +79,13 @@ data class AvanzaCard(val id: String, val balance: Long) {
             }
             val balance = ZgzAvanza.decodeBalance(block8)
 
-            return AvanzaCard(id, balance)
+            val transactions = listOf(5, 28, 29, 30, 32, 33)
+                .mapNotNull { blocks[it] }
+                .mapNotNull { ZgzAvanza.decodeTransaction(it) }
+                .distinct()
+                .sortedByDescending { it.dateTime }
+
+            return AvanzaCard(id, type, balance, transactions)
         }
     }
 }
