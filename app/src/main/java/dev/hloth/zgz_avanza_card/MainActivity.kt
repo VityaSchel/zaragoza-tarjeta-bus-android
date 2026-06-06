@@ -66,7 +66,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class MainActivity : ComponentActivity() {
-    private lateinit var nfcAdapter: NfcAdapter
+    private var nfcAdapter: NfcAdapter? = null
+    private var nfcState by mutableStateOf(NfcState.READY)
     private var loading by mutableStateOf(false)
     private var avanzaCard by mutableStateOf<AvanzaCard?>(null)
     private var errorMessage by mutableStateOf<String?>(null)
@@ -79,8 +80,9 @@ class MainActivity : ComponentActivity() {
             ZGZAvanzaCardTheme {
                 MainScreen(
                     card = avanzaCard,
-                    loading,
-                    errorMessage,
+                    loading = loading,
+                    nfcState = nfcState,
+                    errorMessage = errorMessage,
                     onErrorShown = { errorMessage = null })
             }
         }
@@ -88,17 +90,25 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        nfcAdapter.enableReaderMode(
-            this,
-            { tag -> onTagDetected(tag) },
-            NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
-            null
-        )
+        val adapter = nfcAdapter
+        when {
+            adapter == null -> nfcState = NfcState.UNAVAILABLE
+            !adapter.isEnabled -> nfcState = NfcState.DISABLED
+            else -> {
+                nfcState = NfcState.READY
+                adapter.enableReaderMode(
+                    this,
+                    { tag -> onTagDetected(tag) },
+                    NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
+                    null
+                )
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        nfcAdapter.disableReaderMode(this)
+        nfcAdapter?.disableReaderMode(this)
     }
 
     fun onTagDetected(tag: Tag) {
@@ -132,10 +142,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class NfcState { READY, DISABLED, UNAVAILABLE }
+
 @Composable
 fun MainScreen(
     card: AvanzaCard? = null,
     loading: Boolean = false,
+    nfcState: NfcState = NfcState.READY,
     errorMessage: String? = null,
     onErrorShown: () -> Unit = {}
 ) {
@@ -167,8 +180,17 @@ fun MainScreen(
         ) {
             when {
                 loading -> LoadingState()
-                card == null -> ScanPrompt()
-                else -> CardDetails(card)
+                card != null && card.type != CardType.TOP_UP -> UnsupportedCardScreen(card.type)
+                card != null -> CardDetails(card)
+                nfcState == NfcState.UNAVAILABLE -> InfoScreen(
+                    title = "NFC not available",
+                    subtitle = "This device doesn't have NFC, which is required to read your card.",
+                )
+                nfcState == NfcState.DISABLED -> InfoScreen(
+                    title = "Turn on NFC",
+                    subtitle = "Enable NFC in your device settings, then hold your Avanza card to the back of your phone.",
+                )
+                else -> ScanPrompt()
             }
         }
     }
@@ -265,6 +287,59 @@ private fun ScanPrompt(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun UnsupportedCardScreen(type: CardType, modifier: Modifier = Modifier) {
+    InfoScreen(
+        title = "Card not supported yet",
+        subtitle = "This looks like a ${type.label.lowercase()}. The app currently reads only " +
+                "top-up (pay-per-ride) cards.",
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun InfoScreen(title: String, subtitle: String, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(128.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
+            contentAlignment = Alignment.Center,
+        ) {
+            ContactlessIcon(
+                modifier = Modifier.size(56.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+
+        Spacer(Modifier.height(32.dp))
+
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
+        )
+
+        Spacer(Modifier.height(12.dp))
+
+        Text(
+            text = subtitle,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
 fun CardDetails(card: AvanzaCard, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -293,7 +368,6 @@ fun CardDetails(card: AvanzaCard, modifier: Modifier = Modifier) {
 
 @Composable
 private fun BalanceCard(card: AvanzaCard) {
-    val unlimited = card.type == CardType.PERSONAL_UNLIMITED
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
@@ -321,13 +395,13 @@ private fun BalanceCard(card: AvanzaCard) {
             Spacer(Modifier.height(40.dp))
 
             Text(
-                text = if (unlimited) "Status" else "Balance",
+                text = "Balance",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = if (unlimited) "Unlimited" else "€${"%.2f".format(card.balance / 1000.0)}",
+                text = "€${"%.2f".format(card.balance / 1000.0)}",
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Bold,
             )
@@ -473,17 +547,18 @@ fun MainScreenCardDetailsPreview() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun MainScreenPersonalCardPreview() {
+fun MainScreenUnsupportedCardPreview() {
     ZGZAvanzaCardTheme {
         MainScreen(
-            card = AvanzaCard(
-                id = "BP987654",
-                type = CardType.PERSONAL_UNLIMITED,
-                balance = 0,
-                transactions = listOf(
-                    AvanzaTransaction(TransactionKind.RIDE, LocalDateTime.of(2026, 2, 14, 8, 5), line = 31, direction = 1),
-                ),
-            ),
+            card = AvanzaCard(id = "BP987654", type = CardType.PERSONAL_UNLIMITED, balance = 0),
         )
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MainScreenNfcDisabledPreview() {
+    ZGZAvanzaCardTheme {
+        MainScreen(nfcState = NfcState.DISABLED)
     }
 }
