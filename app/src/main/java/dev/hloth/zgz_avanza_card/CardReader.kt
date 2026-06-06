@@ -6,9 +6,9 @@ import java.time.LocalDateTime
 private val KEY_A = hexToBytes("04000C0F0903")
 private val KEY_B = hexToBytes("0B02070A0409")
 
-enum class CardType(val label: String) {
-    TOP_UP("Top-up card"),
-    PERSONAL_UNLIMITED("Personal pass"),
+enum class CardType {
+    TOP_UP,
+    PERSONAL_UNLIMITED,
 }
 
 enum class TransactionKind { RIDE, TOP_UP }

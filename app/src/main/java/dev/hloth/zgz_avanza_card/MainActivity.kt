@@ -57,13 +57,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZGZAvanzaCardTheme
+import java.text.NumberFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Currency
 
 class MainActivity : ComponentActivity() {
     private var nfcAdapter: NfcAdapter? = null
@@ -124,10 +127,12 @@ class MainActivity : ComponentActivity() {
         } catch (e: TagLostException) {
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
         } catch (e: AvanzaCardInvalidException) {
-            runOnUiThread { errorMessage = "Unsupported or invalid card" }
+            val message = getString(R.string.error_invalid_card)
+            runOnUiThread { errorMessage = message }
             Log.e(LOG_TAG, "Card is invalid: ${e.message}")
         } catch (e: Exception) {
-            runOnUiThread { errorMessage = "Error reading card" }
+            val message = getString(R.string.error_reading_card)
+            runOnUiThread { errorMessage = message }
             Log.e(LOG_TAG, "Error while reading MifareClassic: ${e.message}", e)
         } finally {
             runOnUiThread {
@@ -183,12 +188,12 @@ fun MainScreen(
                 card != null && card.type != CardType.TOP_UP -> UnsupportedCardScreen(card.type)
                 card != null -> CardDetails(card)
                 nfcState == NfcState.UNAVAILABLE -> InfoScreen(
-                    title = "NFC not available",
-                    subtitle = "This device doesn't have NFC, which is required to read your card.",
+                    title = stringResource(R.string.nfc_unavailable_title),
+                    subtitle = stringResource(R.string.nfc_unavailable_subtitle),
                 )
                 nfcState == NfcState.DISABLED -> InfoScreen(
-                    title = "Turn on NFC",
-                    subtitle = "Enable NFC in your device settings, then hold your Avanza card to the back of your phone.",
+                    title = stringResource(R.string.nfc_disabled_title),
+                    subtitle = stringResource(R.string.nfc_disabled_subtitle),
                 )
                 else -> ScanPrompt()
             }
@@ -210,7 +215,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
         )
         Text(
-            text = "Reading your card…",
+            text = stringResource(R.string.loading_reading),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
@@ -268,7 +273,7 @@ private fun ScanPrompt(modifier: Modifier = Modifier) {
         Spacer(Modifier.height(40.dp))
 
         Text(
-            text = "Scan your card",
+            text = stringResource(R.string.scan_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -278,7 +283,7 @@ private fun ScanPrompt(modifier: Modifier = Modifier) {
         Spacer(Modifier.height(12.dp))
 
         Text(
-            text = "Hold your Avanza card against the back of your phone to see its balance",
+            text = stringResource(R.string.scan_subtitle),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
@@ -289,12 +294,19 @@ private fun ScanPrompt(modifier: Modifier = Modifier) {
 @Composable
 private fun UnsupportedCardScreen(type: CardType, modifier: Modifier = Modifier) {
     InfoScreen(
-        title = "Card not supported yet",
-        subtitle = "This looks like a ${type.label.lowercase()}. The app currently reads only " +
-                "top-up (pay-per-ride) cards.",
+        title = stringResource(R.string.unsupported_card_title),
+        subtitle = stringResource(R.string.unsupported_card_subtitle, type.label()),
         modifier = modifier,
     )
 }
+
+@Composable
+private fun CardType.label(): String = stringResource(
+    when (this) {
+        CardType.TOP_UP -> R.string.card_type_top_up
+        CardType.PERSONAL_UNLIMITED -> R.string.card_type_personal
+    }
+)
 
 @Composable
 private fun InfoScreen(title: String, subtitle: String, modifier: Modifier = Modifier) {
@@ -352,7 +364,7 @@ fun CardDetails(card: AvanzaCard, modifier: Modifier = Modifier) {
         if (card.transactions.isNotEmpty()) {
             item {
                 Text(
-                    text = "Recent activity",
+                    text = stringResource(R.string.recent_activity_label),
                     modifier = Modifier.padding(top = 12.dp, start = 4.dp, bottom = 4.dp),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
@@ -383,7 +395,7 @@ private fun BalanceCard(card: AvanzaCard) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = card.type.label,
+                    text = card.type.label(),
                     style = MaterialTheme.typography.labelLarge,
                 )
                 ContactlessIcon(
@@ -395,13 +407,13 @@ private fun BalanceCard(card: AvanzaCard) {
             Spacer(Modifier.height(40.dp))
 
             Text(
-                text = "Balance",
+                text = stringResource(R.string.balance_label),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "€${"%.2f".format(card.balance / 1000.0)}",
+                text = formatBalance(card.balance),
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Bold,
             )
@@ -419,7 +431,7 @@ private fun CardIdRow(id: String) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "Card ID",
+            text = stringResource(R.string.card_id_label),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -434,6 +446,12 @@ private fun CardIdRow(id: String) {
 
 private val TRANSACTION_DATE_FORMAT = DateTimeFormatter.ofPattern("d MMM yyyy")
 private val TRANSACTION_TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm")
+
+/** Formats a balance held in thousandths of an euro using the device's locale (e.g. "€1.23" / "1,23 €"). */
+private fun formatBalance(thousandths: Long): String =
+    NumberFormat.getCurrencyInstance().apply {
+        currency = Currency.getInstance("EUR")
+    }.format(thousandths / 1000.0)
 
 @Composable
 private fun TransactionRow(transaction: AvanzaTransaction) {
@@ -466,9 +484,13 @@ private fun TransactionRow(transaction: AvanzaTransaction) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = when (transaction.kind) {
-                    TransactionKind.TOP_UP -> "Top-up"
+                    TransactionKind.TOP_UP -> stringResource(R.string.transaction_top_up)
                     TransactionKind.RIDE ->
-                        if (transaction.line != null) "Bus ride · Line ${transaction.line}" else "Bus ride"
+                        if (transaction.line != null) {
+                            stringResource(R.string.transaction_bus_ride_line, transaction.line)
+                        } else {
+                            stringResource(R.string.transaction_bus_ride)
+                        }
                 },
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
