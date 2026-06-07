@@ -43,6 +43,12 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            // Don't embed the git commit hash in the APK (AGP "Version Control
+            // Info"), so the build is reproducible regardless of which
+            // commit/tag it is built from. Required for F-Droid reproducible builds.
+            vcsInfo {
+                include = false
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
