@@ -2,8 +2,8 @@ package dev.hloth.zaragoza_tarjeta_bus
 
 import java.time.LocalDate
 
-// Reference, notes, JS implementation: https://git.hloth.dev/hloth/zgz-avanza
-class ZgzAvanza {
+// Reference, notes, JS implementation: https://git.hloth.dev/hloth/zgz-transport
+class ZgzTransport {
     companion object {
         fun decodeId(block: ByteArray): String {
             val cardIdPrefixAscii = block.copyOfRange(0, 2)
@@ -13,7 +13,7 @@ class ZgzAvanza {
             val cardIdChecksumB = cardIdPrefixAscii.fold(0) { acc, b -> acc xor b.toInt() } xor
                     cardIdNumber.fold(0) { acc, b -> acc xor b.toInt() }
             if (cardIdChecksumA.toInt() != cardIdChecksumB) {
-                throw AvanzaCardInvalidException("Card ID checksum mismatch: expected $cardIdChecksumB, got $cardIdChecksumA")
+                throw TransportCardInvalidException("Card ID checksum mismatch: expected $cardIdChecksumB, got $cardIdChecksumA")
             }
             while (cardIdNumber.last().toInt() == 0 && cardIdNumber.size > 3) {
                 cardIdNumber = cardIdNumber.copyOfRange(0, cardIdNumber.size - 1)
@@ -24,7 +24,7 @@ class ZgzAvanza {
 
         fun decodeBalance(block: ByteArray): Long {
             if (block.size != 16) {
-                throw AvanzaCardInvalidException("Invalid balance block length: expected 16 bytes, got ${block.size}")
+                throw TransportCardInvalidException("Invalid balance block length: expected 16 bytes, got ${block.size}")
             }
 
             val le = block.copyOfRange(0, 4)
@@ -32,7 +32,7 @@ class ZgzAvanza {
 
             for (i in 0 until 4) {
                 if (le[i] != block[8 + i]) {
-                    throw AvanzaCardInvalidException("Invalid balance block: bytes 0-3 and 8-11 do not match")
+                    throw TransportCardInvalidException("Invalid balance block: bytes 0-3 and 8-11 do not match")
                 }
             }
 
@@ -44,7 +44,7 @@ class ZgzAvanza {
             for (i in 0 until 4) {
                 val expectedComplement = (le[i].toInt() xor 0xFF).toByte()
                 if (aComplement[i] != expectedComplement) {
-                    throw AvanzaCardInvalidException("Invalid balance block: bytes 4-7 are not the complement of bytes 0-3")
+                    throw TransportCardInvalidException("Invalid balance block: bytes 4-7 are not the complement of bytes 0-3")
                 }
             }
 
@@ -53,18 +53,18 @@ class ZgzAvanza {
 
         fun decodeCardType(block: ByteArray): CardType {
             if (block.size != 16) {
-                throw AvanzaCardInvalidException("Invalid card type block length: expected 16 bytes, got ${block.size}")
+                throw TransportCardInvalidException("Invalid card type block length: expected 16 bytes, got ${block.size}")
             }
 
             val checksum = block.copyOfRange(0, 15).fold(0) { acc, b -> acc xor (b.toInt() and 0xFF) }
             if (checksum != (block[15].toInt() and 0xFF)) {
-                throw AvanzaCardInvalidException("Card type checksum mismatch")
+                throw TransportCardInvalidException("Card type checksum mismatch")
             }
 
             return when (val type = bytesToHex(block.copyOfRange(0, 3))) {
                 "02699F" -> CardType.TOP_UP
                 "0A9775" -> CardType.PERSONAL_UNLIMITED
-                else -> throw AvanzaCardInvalidException("Unknown card type: $type")
+                else -> throw TransportCardInvalidException("Unknown card type: $type")
             }
         }
 
@@ -74,12 +74,12 @@ class ZgzAvanza {
             val month = (value ushr 5) and 0x0F
             val day = value and 0x1F
             if (month !in 1..12 || day !in 1..31) {
-                throw AvanzaCardInvalidException("Invalid packed date: $year-$month-$day")
+                throw TransportCardInvalidException("Invalid packed date: $year-$month-$day")
             }
             return LocalDate.of(year, month, day)
         }
 
-        fun decodeTransaction(block: ByteArray): AvanzaTransaction? {
+        fun decodeTransaction(block: ByteArray): TransportTransaction? {
             if (block.size != 16 || block.all { it.toInt() == 0 }) {
                 return null
             }
@@ -94,7 +94,7 @@ class ZgzAvanza {
 
             val date = try {
                 decodeDate(block[10], block[11])
-            } catch (e: AvanzaCardInvalidException) {
+            } catch (e: TransportCardInvalidException) {
                 return null
             }
             val hour = block[12].toInt() and 0xFF
@@ -106,20 +106,20 @@ class ZgzAvanza {
             val dateTime = date.atTime(hour, minute, second)
 
             return when (kind) {
-                TransactionKind.RIDE -> AvanzaTransaction(
+                TransactionKind.RIDE -> TransportTransaction(
                     kind = kind,
                     dateTime = dateTime,
                     line = block[7].toInt() and 0xFF,
                     direction = block[8].toInt() and 0xFF,
                 )
 
-                TransactionKind.TOP_UP -> AvanzaTransaction(kind = kind, dateTime = dateTime)
+                TransactionKind.TOP_UP -> TransportTransaction(kind = kind, dateTime = dateTime)
             }
         }
     }
 }
 
-data class ZgzAvanzaTransaction(
+data class ZgzTransportTransaction(
     val header: String,
     val cardTypeConst: String,
     val unknownVar1: String,

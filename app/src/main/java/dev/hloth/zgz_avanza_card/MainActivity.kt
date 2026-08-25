@@ -62,7 +62,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZGZAvanzaCardTheme
+import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZGZTransportCardTheme
 import java.text.NumberFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -72,7 +72,7 @@ class MainActivity : ComponentActivity() {
     private var nfcAdapter: NfcAdapter? = null
     private var nfcState by mutableStateOf(NfcState.READY)
     private var loading by mutableStateOf(false)
-    private var avanzaCard by mutableStateOf<AvanzaCard?>(null)
+    private var TransportCard by mutableStateOf<TransportCard?>(null)
     private var errorMessage by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,9 +80,9 @@ class MainActivity : ComponentActivity() {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         enableEdgeToEdge()
         setContent {
-            ZGZAvanzaCardTheme {
+            ZGZTransportCardTheme {
                 MainScreen(
-                    card = avanzaCard,
+                    card = TransportCard,
                     loading = loading,
                     nfcState = nfcState,
                     errorMessage = errorMessage,
@@ -117,16 +117,16 @@ class MainActivity : ComponentActivity() {
     fun onTagDetected(tag: Tag) {
         val mifare = MifareClassic.get(tag) ?: return
         runOnUiThread {
-            avanzaCard = null
+            TransportCard = null
             loading = true
         }
 
         try {
-            val card = AvanzaCard.read(mifare)
-            runOnUiThread { avanzaCard = card }
+            val card = TransportCard.read(mifare)
+            runOnUiThread { TransportCard = card }
         } catch (e: TagLostException) {
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
-        } catch (e: AvanzaCardInvalidException) {
+        } catch (e: TransportCardInvalidException) {
             val message = getString(R.string.error_invalid_card)
             runOnUiThread { errorMessage = message }
             Log.e(LOG_TAG, "Card is invalid: ${e.message}")
@@ -151,7 +151,7 @@ enum class NfcState { READY, DISABLED, UNAVAILABLE }
 
 @Composable
 fun MainScreen(
-    card: AvanzaCard? = null,
+    card: TransportCard? = null,
     loading: Boolean = false,
     nfcState: NfcState = NfcState.READY,
     errorMessage: String? = null,
@@ -352,7 +352,7 @@ private fun InfoScreen(title: String, subtitle: String, modifier: Modifier = Mod
 }
 
 @Composable
-fun CardDetails(card: AvanzaCard, modifier: Modifier = Modifier) {
+fun CardDetails(card: TransportCard, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(24.dp),
@@ -379,7 +379,7 @@ fun CardDetails(card: AvanzaCard, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun BalanceCard(card: AvanzaCard) {
+private fun BalanceCard(card: TransportCard) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
@@ -454,7 +454,7 @@ private fun formatBalance(thousandths: Long): String =
     }.format(thousandths / 1000.0)
 
 @Composable
-private fun TransactionRow(transaction: AvanzaTransaction) {
+private fun TransactionRow(transaction: TransportTransaction) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -535,7 +535,7 @@ fun ContactlessIcon(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenIdlePreview() {
-    ZGZAvanzaCardTheme {
+    ZGZTransportCardTheme {
         MainScreen()
     }
 }
@@ -543,26 +543,26 @@ fun MainScreenIdlePreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenLoadingPreview() {
-    ZGZAvanzaCardTheme {
+    ZGZTransportCardTheme {
         MainScreen(loading = true)
     }
 }
 
-private val previewCard = AvanzaCard(
+private val previewCard = TransportCard(
     id = "BE123456",
     type = CardType.TOP_UP,
     balance = 1234,
     transactions = listOf(
-        AvanzaTransaction(TransactionKind.RIDE, LocalDateTime.of(2026, 2, 14, 18, 45), line = 35, direction = 2),
-        AvanzaTransaction(TransactionKind.TOP_UP, LocalDateTime.of(2026, 2, 12, 9, 10)),
-        AvanzaTransaction(TransactionKind.RIDE, LocalDateTime.of(2026, 2, 11, 8, 32), line = 22, direction = 1),
+        TransportTransaction(TransactionKind.RIDE, LocalDateTime.of(2026, 2, 14, 18, 45), line = 35, direction = 2),
+        TransportTransaction(TransactionKind.TOP_UP, LocalDateTime.of(2026, 2, 12, 9, 10)),
+        TransportTransaction(TransactionKind.RIDE, LocalDateTime.of(2026, 2, 11, 8, 32), line = 22, direction = 1),
     ),
 )
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenCardDetailsPreview() {
-    ZGZAvanzaCardTheme {
+    ZGZTransportCardTheme {
         MainScreen(card = previewCard)
     }
 }
@@ -570,9 +570,9 @@ fun MainScreenCardDetailsPreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenUnsupportedCardPreview() {
-    ZGZAvanzaCardTheme {
+    ZGZTransportCardTheme {
         MainScreen(
-            card = AvanzaCard(id = "BP987654", type = CardType.PERSONAL_UNLIMITED, balance = 0),
+            card = TransportCard(id = "BP987654", type = CardType.PERSONAL_UNLIMITED, balance = 0),
         )
     }
 }
@@ -580,7 +580,7 @@ fun MainScreenUnsupportedCardPreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenNfcDisabledPreview() {
-    ZGZAvanzaCardTheme {
+    ZGZTransportCardTheme {
         MainScreen(nfcState = NfcState.DISABLED)
     }
 }

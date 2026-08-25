@@ -2,12 +2,12 @@
     <string name="loading_reading">Leyendo tu tarjeta...</string>
 
     <string name="scan_title">Escanea tu tarjeta</string>
-    <string name="scan_subtitle">Acerca tu tarjeta Avanza a la parte trasera del teléfono para ver el saldo</string>
+    <string name="scan_subtitle">Acerca tu tarjeta Avanza o Lazo a la parte trasera del teléfono para ver el saldo</string>
 
     <string name="nfc_unavailable_title">NFC no disponible</string>
     <string name="nfc_unavailable_subtitle">Este dispositivo no tiene NFC, necesario para leer tu tarjeta.</string>
     <string name="nfc_disabled_title">Activa el NFC</string>
-    <string name="nfc_disabled_subtitle">Activa el NFC en los ajustes del dispositivo y acerca tu tarjeta Avanza a la parte trasera del teléfono.</string>
+    <string name="nfc_disabled_subtitle">Activa el NFC en los ajustes del dispositivo y acerca tu tarjeta Avanza o Lazo a la parte trasera del teléfono.</string>
 
     <string name="unsupported_card_title">Tarjeta no compatible</string>
     <string name="unsupported_card_subtitle">Tipo de tarjeta detectado: %1$s.\nLa aplicación solo admite tarjetas de recarga (pago por viaje).</string>

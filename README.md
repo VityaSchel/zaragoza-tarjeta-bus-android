@@ -1,10 +1,10 @@
 # Zaragoza Tarjeta Bus
 
-Free Android app that reads your Avanza Zaragoza Tarjeta Bus and displays remaining balance in euros, recent trips and top-ups.
+Free Android app that reads your Zaragoza transport card and displays remaining balance in euros, recent trips and top-ups.
 
 ![Banner](./contrib/banner.png)
 
-**Download the app from [Google Play](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) or [Forgejo Releases](https://git.hloth.dev/hloth/zgz-avanza-card-android/releases).**
+**Download the app from [Google Play](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) or [Forgejo Releases](https://git.hloth.dev/hloth/zgz-transport-card-android/releases).**
 
 > [!IMPORTANT]
 > ⚠️ **Aviso legal:** Este repositorio es un proyecto de investigación de seguridad independiente.  \
@@ -12,7 +12,7 @@ Free Android app that reads your Avanza Zaragoza Tarjeta Bus and displays remain
 > No se proporcionará asistencia para ningún uso ilícito. \
 > Consulta [LEGAL.md](./LEGAL.md) para el descargo de responsabilidad completo.
 
-Powered by reverse engineering in [zgz-avanza](https://git.hloth.dev/hloth/zgz-avanza) project.
+Based on reverse-engineered cards spec in [hloth/zgz-transport](https://git.hloth.dev/hloth/zgz-transport).
 
 ## License
 

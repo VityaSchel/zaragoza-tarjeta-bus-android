@@ -4,12 +4,12 @@
     <string name="loading_reading">Reading your card…</string>
 
     <string name="scan_title">Scan your card</string>
-    <string name="scan_subtitle">Hold your Avanza card against the back of your phone to see its balance</string>
+    <string name="scan_subtitle">Hold your Avanza or Lazo card against the back of your phone to see its balance</string>
 
     <string name="nfc_unavailable_title">NFC not available</string>
     <string name="nfc_unavailable_subtitle">This device doesn\'t have NFC, which is required to read your card.</string>
     <string name="nfc_disabled_title">Turn on NFC</string>
-    <string name="nfc_disabled_subtitle">Enable NFC in your device settings, then hold your Avanza card to the back of your phone.</string>
+    <string name="nfc_disabled_subtitle">Enable NFC in your device settings, then hold your Avanza or Lazo card to the back of your phone.</string>
 
     <string name="unsupported_card_title">Card not supported yet</string>
     <string name="unsupported_card_subtitle">Detected card type: %1$s.\nThe app currently reads only top-up (pay-per-ride) cards.</string>

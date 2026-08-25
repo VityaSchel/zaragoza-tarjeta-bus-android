@@ -1,1 +1,1 @@
-Free Android app that reads your Avanza Zaragoza Tarjeta Bus and displays remaining balance in euros, recent trips and top-ups.
+Free Android app that reads your Zaragoza transport card and displays remaining balance in euros, recent trips and top-ups.

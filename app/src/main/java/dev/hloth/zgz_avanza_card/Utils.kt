@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Parcelable
 
-const val LOG_TAG = "ZGZAvanzaCard"
+const val LOG_TAG = "ZGZTransportCard"
 
 @Suppress("DEPRECATION")
 fun <T : Parcelable> Intent.getParcelableExtraCompat(key: String, clazz: Class<T>): T? {
