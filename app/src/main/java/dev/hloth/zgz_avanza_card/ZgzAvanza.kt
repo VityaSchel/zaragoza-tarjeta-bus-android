@@ -3,6 +3,8 @@ package dev.hloth.zaragoza_tarjeta_bus
 import java.time.LocalDate
 
 // Reference, notes, JS implementation: https://git.hloth.dev/hloth/zgz-transport
+// TODO: migrate to a separate Java/Kotlin library
+
 class ZgzTransport {
     companion object {
         fun decodeId(block: ByteArray): String {

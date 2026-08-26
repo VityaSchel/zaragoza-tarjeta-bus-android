@@ -62,7 +62,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZGZTransportCardTheme
+import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZaragozaTarjetaBusTheme
 import java.text.NumberFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         enableEdgeToEdge()
         setContent {
-            ZGZTransportCardTheme {
+            ZaragozaTarjetaBusTheme {
                 MainScreen(
                     card = TransportCard,
                     loading = loading,
@@ -535,7 +535,7 @@ fun ContactlessIcon(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenIdlePreview() {
-    ZGZTransportCardTheme {
+    ZaragozaTarjetaBusTheme {
         MainScreen()
     }
 }
@@ -543,7 +543,7 @@ fun MainScreenIdlePreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenLoadingPreview() {
-    ZGZTransportCardTheme {
+    ZaragozaTarjetaBusTheme {
         MainScreen(loading = true)
     }
 }
@@ -562,7 +562,7 @@ private val previewCard = TransportCard(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenCardDetailsPreview() {
-    ZGZTransportCardTheme {
+    ZaragozaTarjetaBusTheme {
         MainScreen(card = previewCard)
     }
 }
@@ -570,7 +570,7 @@ fun MainScreenCardDetailsPreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenUnsupportedCardPreview() {
-    ZGZTransportCardTheme {
+    ZaragozaTarjetaBusTheme {
         MainScreen(
             card = TransportCard(id = "BP987654", type = CardType.PERSONAL_UNLIMITED, balance = 0),
         )
@@ -580,7 +580,7 @@ fun MainScreenUnsupportedCardPreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreenNfcDisabledPreview() {
-    ZGZTransportCardTheme {
+    ZaragozaTarjetaBusTheme {
         MainScreen(nfcState = NfcState.DISABLED)
     }
 }
