@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,16 +18,13 @@ import dev.hloth.zaragoza_tarjeta_bus.card.readTransportCard
 import dev.hloth.zaragoza_tarjeta_bus.ui.MainScreen
 import dev.hloth.zaragoza_tarjeta_bus.ui.NfcState
 import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZaragozaTarjetaBusTheme
-import dev.hloth.zgztransport.Card
 
 private const val LOG_TAG = "ZaragozaTarjetaBus"
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: CardViewModel by viewModels()
     private var nfcAdapter: NfcAdapter? = null
     private var nfcState by mutableStateOf(NfcState.READY)
-    private var loading by mutableStateOf(false)
-    private var card by mutableStateOf<Card?>(null)
-    private var errorMessage by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +33,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             ZaragozaTarjetaBusTheme {
                 MainScreen(
-                    card = card,
-                    loading = loading,
+                    card = viewModel.card,
+                    loading = viewModel.loading,
                     nfcState = nfcState,
-                    errorMessage = errorMessage,
-                    onErrorShown = { errorMessage = null },
+                    errorMessage = viewModel.errorMessage,
+                    onErrorShown = { viewModel.errorMessage = null },
                 )
             }
         }
@@ -70,26 +68,21 @@ class MainActivity : ComponentActivity() {
 
     private fun onTagDetected(tag: Tag) {
         val mifare = MifareClassic.get(tag) ?: return
-        runOnUiThread {
-            card = null
-            loading = true
-        }
+        viewModel.card = null
+        viewModel.loading = true
 
         try {
-            val read = readTransportCard(MifareClassicBlocks.connect(mifare))
-            runOnUiThread { card = read }
+            viewModel.card = readTransportCard(MifareClassicBlocks.connect(mifare))
         } catch (e: TagLostException) {
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
         } catch (e: IllegalArgumentException) {
-            val message = getString(R.string.error_invalid_card)
-            runOnUiThread { errorMessage = message }
+            viewModel.errorMessage = getString(R.string.error_invalid_card)
             Log.e(LOG_TAG, "Card is invalid: ${e.message}")
         } catch (e: Exception) {
-            val message = getString(R.string.error_reading_card)
-            runOnUiThread { errorMessage = message }
+            viewModel.errorMessage = getString(R.string.error_reading_card)
             Log.e(LOG_TAG, "Error while reading MifareClassic: ${e.message}", e)
         } finally {
-            runOnUiThread { loading = false }
+            viewModel.loading = false
             try {
                 mifare.close()
             } catch (e: Exception) {
