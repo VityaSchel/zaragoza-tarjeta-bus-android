@@ -20,10 +20,10 @@
 
     <string name="card_type_top_up">Top-up card</string>
     <string name="card_type_personal">Personal pass</string>
+    <string name="card_type_lazo">Lazo top-up card</string>
 
     <string name="transaction_top_up">Top-up</string>
-    <string name="transaction_bus_ride">Bus ride</string>
-    <string name="transaction_bus_ride_line">Bus ride · Line %1$d</string>
+    <string name="transaction_bus_ride_line">Bus ride · Line %1$s</string>
 
     <string name="error_invalid_card">Unsupported or invalid card</string>
     <string name="error_reading_card">Error reading card</string>
