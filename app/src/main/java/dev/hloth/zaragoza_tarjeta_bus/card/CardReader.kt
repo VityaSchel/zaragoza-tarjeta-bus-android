@@ -1,6 +1,5 @@
-package dev.hloth.zaragoza_tarjeta_bus
+package dev.hloth.zaragoza_tarjeta_bus.card
 
-import android.nfc.tech.MifareClassic
 import dev.hloth.zgztransport.Card
 import dev.hloth.zgztransport.CardFormatException
 import dev.hloth.zgztransport.CardType
@@ -20,15 +19,10 @@ private val HEADER_BLOCKS = listOf(UID_BLOCK, CARD_TYPE_BLOCK, CARD_ID_BLOCK)
 private val HEADER_SECTOR_KEYS =
     CardType.values().mapNotNull { it.keys(0).orElse(null) }.distinct()
 
-fun MifareClassic.readTransportCard(): Card {
-    connect()
-    if (type != MifareClassic.TYPE_CLASSIC) {
-        throw CardFormatException("expected a MIFARE Classic card, got type $type")
-    }
-
-    val header = readBlocks(HEADER_BLOCKS) { HEADER_SECTOR_KEYS }
+fun readTransportCard(blocks: BlockSource): Card {
+    val header = blocks.readAll(HEADER_BLOCKS) { HEADER_SECTOR_KEYS }
     val cardType = CardType.decode(header.getValue(CARD_TYPE_BLOCK))
-    val payload = readBlocks(cardType.blocksToRead()) { sector ->
+    val payload = blocks.readAll(cardType.blocksToRead()) { sector ->
         listOfNotNull(cardType.keys(sector).orElse(null))
     }
 
@@ -52,23 +46,16 @@ private fun CardType.blocksToRead(): List<Int> = buildList {
     }
 }
 
-private fun MifareClassic.readBlocks(
+private fun BlockSource.readAll(
     blocks: List<Int>,
     keysFor: (sector: Int) -> List<SectorKeys>,
 ): Map<Int, ByteArray> = buildMap {
-    for ((sector, sectorBlocks) in blocks.groupBy { blockToSector(it) }) {
-        if (keysFor(sector).none { authenticateSector(sector, it) }) {
+    for ((sector, sectorBlocks) in blocks.sorted().groupBy { sectorOf(it) }) {
+        if (keysFor(sector).none { authenticate(sector, it) }) {
             throw CardFormatException("cannot authenticate sector $sector")
         }
         for (block in sectorBlocks) {
-            put(block, readBlock(block))
+            put(block, read(block))
         }
     }
-}
-
-private fun MifareClassic.authenticateSector(sector: Int, keys: SectorKeys): Boolean {
-    val keyA = keys.a().orElse(null)
-    if (keyA != null && authenticateSectorWithKeyA(sector, keyA.bytes())) return true
-    val keyB = keys.b().orElse(null)
-    return keyB != null && authenticateSectorWithKeyB(sector, keyB.bytes())
 }

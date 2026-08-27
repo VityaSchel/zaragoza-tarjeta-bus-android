@@ -12,6 +12,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import dev.hloth.zaragoza_tarjeta_bus.card.MifareClassicBlocks
+import dev.hloth.zaragoza_tarjeta_bus.card.readTransportCard
 import dev.hloth.zaragoza_tarjeta_bus.ui.MainScreen
 import dev.hloth.zaragoza_tarjeta_bus.ui.NfcState
 import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZaragozaTarjetaBusTheme
@@ -74,7 +76,7 @@ class MainActivity : ComponentActivity() {
         }
 
         try {
-            val read = mifare.readTransportCard()
+            val read = readTransportCard(MifareClassicBlocks.connect(mifare))
             runOnUiThread { card = read }
         } catch (e: TagLostException) {
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
