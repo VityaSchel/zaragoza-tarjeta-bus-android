@@ -1,0 +1,4 @@
+- Las líneas de autobús y tranvía se muestran como las nombra el operador (L1, Ci1, N1)
+- Ahora se admiten las tarjetas Lazo
+- La tarjeta se lee más rápido al omitir los sectores innecesarios
+- La tarjeta permanece en pantalla al girar el teléfono

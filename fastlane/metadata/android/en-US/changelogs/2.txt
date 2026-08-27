@@ -1,0 +1,4 @@
+- Bus and tram routes are named the way the operator prints them (L1, Ci1, N1)
+- Lazo cards are now supported
+- Improved card reading time by skipping unnecessary sectors
+- The card stays on screen when the phone is rotated
