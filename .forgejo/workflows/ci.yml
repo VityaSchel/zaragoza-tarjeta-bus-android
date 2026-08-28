@@ -120,6 +120,11 @@ jobs:
       - name: Build
         run: cd "$WORKSPACE" && ./gradlew assembleDebug assembleRelease
 
+      - name: Report the release checksum
+        run: |
+          cd "$WORKSPACE"
+          sha256sum app/build/outputs/apk/release/app-release-unsigned.apk
+
       - name: Test
         run: cd "$WORKSPACE" && ./gradlew testDebugUnitTest
 
