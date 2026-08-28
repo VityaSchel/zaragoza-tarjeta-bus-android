@@ -17,6 +17,7 @@
     <string name="balance_label">Balance</string>
     <string name="card_id_label">Card ID</string>
     <string name="recent_activity_label">Recent activity</string>
+    <string name="card_partially_read">Some parts of this card could not be read</string>
 
     <string name="card_type_top_up">Top-up card</string>
     <string name="card_type_personal">Personal pass</string>
@@ -24,6 +25,13 @@
 
     <string name="transaction_top_up">Top-up</string>
     <string name="transaction_bus_ride_line">Bus ride · Line %1$s</string>
+    <string name="transaction_tram_ride_line">Tram ride · %1$s</string>
+    <string name="transaction_cercanias_ride">Cercanías ride</string>
+    <string name="transaction_journey_line">Journey · Line %1$s</string>
+    <string name="transaction_tram_stop">Stop %1$s</string>
+    <string name="transaction_transfer">Free transfer</string>
+    <string name="transaction_check_out">Check-out</string>
+    <string name="transaction_free">Free</string>
 
     <string name="error_invalid_card">Unsupported or invalid card</string>
     <string name="error_reading_card">Error reading card</string>

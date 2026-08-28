@@ -37,10 +37,13 @@ private fun previewTransaction(
     amount: Int,
     at: CardDateTime,
     sequence: Int,
+    stop: Stop = Stop.Urban(500),
+    consecutivePayments: Int = 1,
 ) = Transaction.builder()
     .cardType(CardType.AVANZA_TOP_UP)
     .amount(amount)
-    .stop(Stop.Urban(500))
+    .consecutivePayments(consecutivePayments)
+    .stop(stop)
     .route(Route(route))
     .kind(kind)
     .createdAt(at)
@@ -76,8 +79,13 @@ private fun MainScreenCardDetailsPreview() {
                         CardDateTime.of(2026, 2, 12, 9, 10, 0), 1,
                     ),
                     previewTransaction(
-                        TransactionKind.Journey(Direction.TWO), 35, 880,
+                        TransactionKind.Journey(Direction.TWO), 210, 880,
                         CardDateTime.of(2026, 2, 14, 18, 45, 0), 2,
+                        stop = Stop.Tram(1300),
+                    ),
+                    previewTransaction(
+                        TransactionKind.Journey(Direction.ONE), 31, 0,
+                        CardDateTime.of(2026, 2, 14, 19, 12, 0), 3,
                     ),
                 ),
             ),

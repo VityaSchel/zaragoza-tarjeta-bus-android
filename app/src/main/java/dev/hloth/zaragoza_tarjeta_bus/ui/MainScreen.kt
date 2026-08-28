@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.hloth.zaragoza_tarjeta_bus.R
 import dev.hloth.zaragoza_tarjeta_bus.card.TransportCard
-import dev.hloth.zgztransport.CardType
 
 enum class NfcState { READY, DISABLED, UNAVAILABLE }
 
@@ -28,6 +27,7 @@ fun MainScreen(
     onErrorShown: () -> Unit = {},
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val screen = remember(card) { card?.screen() }
 
     LaunchedEffect(errorMessage) {
         if (errorMessage != null) {
@@ -55,14 +55,14 @@ fun MainScreen(
         ) {
             when {
                 loading -> LoadingScreen()
-                card != null && card.cardType != CardType.AVANZA_TOP_UP -> InfoScreen(
+                screen is CardScreen.Details -> CardDetails(screen)
+                screen is CardScreen.Unsupported -> InfoScreen(
                     title = stringResource(R.string.unsupported_card_title),
                     subtitle = stringResource(
                         R.string.unsupported_card_subtitle,
-                        card.cardType.label(),
+                        screen.cardType.text(),
                     ),
                 )
-                card != null -> CardDetails(card)
                 nfcState == NfcState.UNAVAILABLE -> InfoScreen(
                     title = stringResource(R.string.nfc_unavailable_title),
                     subtitle = stringResource(R.string.nfc_unavailable_subtitle),

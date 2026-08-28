@@ -20,7 +20,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,24 +27,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.hloth.zaragoza_tarjeta_bus.R
-import dev.hloth.zaragoza_tarjeta_bus.card.TransportCard
-import dev.hloth.zgztransport.Transaction
-import dev.hloth.zgztransport.TransactionKind
 import androidx.compose.material3.Card as MaterialCard
 
 @Composable
-internal fun CardDetails(card: TransportCard, modifier: Modifier = Modifier) {
-    val newestFirst = remember(card) { card.transactions.reversed() }
-
+internal fun CardDetails(details: CardScreen.Details, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        item { BalanceCard(card) }
-        card.id?.let { id -> item { CardIdRow(id.toString()) } }
+        item { BalanceCard(details) }
+        details.cardId?.let { id -> item { CardIdRow(id) } }
+        details.notice?.let { notice -> item { NoticeRow(notice) } }
 
-        if (newestFirst.isNotEmpty()) {
+        if (details.activity.isNotEmpty()) {
             item {
                 Text(
                     text = stringResource(R.string.recent_activity_label),
@@ -55,13 +50,13 @@ internal fun CardDetails(card: TransportCard, modifier: Modifier = Modifier) {
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             }
-            items(newestFirst) { transaction -> TransactionRow(transaction) }
+            items(details.activity) { row -> ActivityItem(row) }
         }
     }
 }
 
 @Composable
-private fun BalanceCard(card: TransportCard) {
+private fun BalanceCard(details: CardScreen.Details) {
     MaterialCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
@@ -77,7 +72,7 @@ private fun BalanceCard(card: TransportCard) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = card.cardType.label(),
+                    text = details.cardType.text(),
                     style = MaterialTheme.typography.labelLarge,
                 )
                 ContactlessIcon(
@@ -95,7 +90,7 @@ private fun BalanceCard(card: TransportCard) {
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = card.balance.formatted(),
+                text = details.balance,
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Bold,
             )
@@ -127,10 +122,19 @@ private fun CardIdRow(id: String) {
 }
 
 @Composable
-private fun TransactionRow(transaction: Transaction) {
-    val topUp = transaction.kind is TransactionKind.TopUp
-    val route = transaction.route.toString()
+private fun NoticeRow(notice: Label) {
+    Text(
+        text = notice.text(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+}
 
+@Composable
+private fun ActivityItem(row: ActivityRow) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -148,7 +152,7 @@ private fun TransactionRow(transaction: Transaction) {
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = if (topUp) "+" else route,
+                text = row.badge,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -156,20 +160,40 @@ private fun TransactionRow(transaction: Transaction) {
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = if (topUp) {
-                    stringResource(R.string.transaction_top_up)
-                } else {
-                    stringResource(R.string.transaction_bus_ride_line, route)
-                },
+                text = row.title.text(),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
-                text = transaction.createdAt.formatted(),
+                text = row.time,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            row.place?.let { place ->
+                Text(
+                    text = place.text(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        Column(horizontalAlignment = Alignment.End) {
+            row.amount?.let { amount ->
+                Text(
+                    text = amount,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+            row.fare?.let { fare ->
+                Text(
+                    text = fare.text(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
     }
 }

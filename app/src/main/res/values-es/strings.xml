@@ -15,6 +15,7 @@
     <string name="balance_label">Saldo</string>
     <string name="card_id_label">ID de tarjeta</string>
     <string name="recent_activity_label">Actividad reciente</string>
+    <string name="card_partially_read">No se han podido leer algunas partes de la tarjeta</string>
 
     <string name="card_type_top_up">Tarjeta de recarga</string>
     <string name="card_type_personal">Pase personal</string>
@@ -22,6 +23,13 @@
 
     <string name="transaction_top_up">Recarga</string>
     <string name="transaction_bus_ride_line">Viaje en autobús · Línea %1$s</string>
+    <string name="transaction_tram_ride_line">Viaje en tranvía · %1$s</string>
+    <string name="transaction_cercanias_ride">Viaje en Cercanías</string>
+    <string name="transaction_journey_line">Viaje · Línea %1$s</string>
+    <string name="transaction_tram_stop">Parada %1$s</string>
+    <string name="transaction_transfer">Transbordo gratuito</string>
+    <string name="transaction_check_out">Salida</string>
+    <string name="transaction_free">Gratis</string>
 
     <string name="error_invalid_card">Tarjeta no compatible o no válida</string>
     <string name="error_reading_card">Error al leer la tarjeta</string>
