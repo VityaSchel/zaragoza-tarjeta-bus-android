@@ -1,4 +1,5 @@
 - Los abonos personales muestran su validez, los días restantes y el historial de viajes en lugar de «no compatible»
+- Se ha añadido compatibilidad con las tarjetas Lazo
 - Los viajes en autobús, tranvía y Cercanías se distinguen entre sí, cada uno con la línea como la nombra el operador (L1, Ci1, N1)
 - Cada viaje muestra su importe, y los transbordos gratuitos se marcan como gratuitos
 - Los viajes en tranvía muestran el número de parada

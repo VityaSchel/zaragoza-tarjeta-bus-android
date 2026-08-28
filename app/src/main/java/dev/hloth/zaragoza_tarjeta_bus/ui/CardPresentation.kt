@@ -49,7 +49,7 @@ sealed interface CardScreen {
 }
 
 fun TransportCard.screen(today: LocalDate = LocalDate.now()): CardScreen = when (cardType) {
-    CardType.AVANZA_TOP_UP -> details(
+    CardType.AVANZA_TOP_UP, CardType.LAZO_TOP_UP -> details(
         headline = Headline(Label(R.string.balance_label), balance.formatted()),
         passes = emptyList(),
     )
@@ -58,8 +58,6 @@ fun TransportCard.screen(today: LocalDate = LocalDate.now()): CardScreen = when 
         headline = validUntil(),
         passes = products.sortedByDescending { it.subscription().endsAt() }.map { it.row(today) },
     )
-
-    CardType.LAZO_TOP_UP -> CardScreen.Unsupported(cardType.label())
 }
 
 private fun TransportCard.details(headline: Headline?, passes: List<PassRow>) =

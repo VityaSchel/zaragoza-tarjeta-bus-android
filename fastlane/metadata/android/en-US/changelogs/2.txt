@@ -1,7 +1,8 @@
 - Personal passes show their validity, days left and trip history instead of "not supported"
+- Added support for Lazo cards
 - Bus, tram and Cercanías trips are told apart, each named with the route as the operator prints it (L1, Ci1, N1)
 - Every trip shows what it cost, and free transfers are marked as free
 - Tram trips show the stop number
 - A damaged card still shows everything that could be read from it
 - Improved card reading time by skipping unnecessary sectors
-- The card stays on screen when the phone is rotated
+- The card now stays on screen when the phone is rotated

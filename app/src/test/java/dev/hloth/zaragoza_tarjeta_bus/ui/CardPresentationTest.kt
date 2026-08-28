@@ -197,10 +197,12 @@ class CardPresentationTest {
     }
 
     @Test
-    fun keepsLazoCardsOnTheUnsupportedScreen() {
-        val screen = card(cardType = CardType.LAZO_TOP_UP).screen(TODAY)
+    fun showsALazoCardLikeAnyOtherBalanceCard() {
+        val screen = details(card(cardType = CardType.LAZO_TOP_UP))
 
-        assertEquals(CardScreen.Unsupported(Label(R.string.card_type_lazo)), screen)
+        assertEquals(Label(R.string.card_type_lazo), screen.cardType)
+        assertEquals(Label(R.string.balance_label), screen.headline!!.label)
+        assertEquals(emptyList<PassRow>(), screen.passes)
     }
 
     @Test

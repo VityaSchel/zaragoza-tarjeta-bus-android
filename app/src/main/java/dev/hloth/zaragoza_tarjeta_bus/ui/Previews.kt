@@ -140,7 +140,7 @@ private fun MainScreenPersonalPassPreview() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-private fun MainScreenUnsupportedCardPreview() {
+private fun MainScreenLazoCardPreview() {
     ZaragozaTarjetaBusTheme {
         MainScreen(card = previewCard(CardType.LAZO_TOP_UP, "CT123456", 600))
     }
