@@ -14,14 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import dev.hloth.zaragoza_tarjeta_bus.R
-import dev.hloth.zgztransport.Card
+import dev.hloth.zaragoza_tarjeta_bus.card.TransportCard
 import dev.hloth.zgztransport.CardType
 
 enum class NfcState { READY, DISABLED, UNAVAILABLE }
 
 @Composable
 fun MainScreen(
-    card: Card? = null,
+    card: TransportCard? = null,
     loading: Boolean = false,
     nfcState: NfcState = NfcState.READY,
     errorMessage: String? = null,

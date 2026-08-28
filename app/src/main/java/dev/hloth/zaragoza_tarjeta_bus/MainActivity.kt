@@ -72,7 +72,11 @@ class MainActivity : ComponentActivity() {
         viewModel.loading = true
 
         try {
-            viewModel.card = readTransportCard(MifareClassicBlocks.connect(mifare))
+            val read = readTransportCard(MifareClassicBlocks.connect(mifare))
+            if (read.warnings.isNotEmpty()) {
+                Log.w(LOG_TAG, "Card read with parts skipped: ${read.warnings.joinToString()}")
+            }
+            viewModel.card = read
         } catch (e: TagLostException) {
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
         } catch (e: IllegalArgumentException) {

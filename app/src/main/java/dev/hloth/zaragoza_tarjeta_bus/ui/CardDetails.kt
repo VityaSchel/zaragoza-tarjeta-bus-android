@@ -28,13 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.hloth.zaragoza_tarjeta_bus.R
-import dev.hloth.zgztransport.Card
+import dev.hloth.zaragoza_tarjeta_bus.card.TransportCard
 import dev.hloth.zgztransport.Transaction
 import dev.hloth.zgztransport.TransactionKind
 import androidx.compose.material3.Card as MaterialCard
 
 @Composable
-internal fun CardDetails(card: Card, modifier: Modifier = Modifier) {
+internal fun CardDetails(card: TransportCard, modifier: Modifier = Modifier) {
     val newestFirst = remember(card) { card.transactions.reversed() }
 
     LazyColumn(
@@ -43,7 +43,7 @@ internal fun CardDetails(card: Card, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item { BalanceCard(card) }
-        item { CardIdRow(card.id.toString()) }
+        card.id?.let { id -> item { CardIdRow(id.toString()) } }
 
         if (newestFirst.isNotEmpty()) {
             item {
@@ -61,7 +61,7 @@ internal fun CardDetails(card: Card, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun BalanceCard(card: Card) {
+private fun BalanceCard(card: TransportCard) {
     MaterialCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZaragozaTarjetaBusTheme
 import dev.hloth.zgztransport.Balance
-import dev.hloth.zgztransport.Card
+import dev.hloth.zaragoza_tarjeta_bus.card.TransportCard
 import dev.hloth.zgztransport.CardDateTime
 import dev.hloth.zgztransport.CardId
 import dev.hloth.zgztransport.CardType
@@ -14,23 +14,21 @@ import dev.hloth.zgztransport.Stop
 import dev.hloth.zgztransport.Transaction
 import dev.hloth.zgztransport.TransactionKind
 import dev.hloth.zgztransport.Uid
-import java.util.Optional
-
-private val PREVIEW_UID = Uid.of(byteArrayOf(0x1D, 0x68, 0xC3.toByte(), 0xA9.toByte()))
 
 private fun previewCard(
     cardType: CardType,
     id: String,
     balance: Long,
     transactions: List<Transaction> = emptyList(),
-) = Card(
-    PREVIEW_UID,
-    cardType,
-    CardId.parse(id),
-    Balance(balance),
-    transactions,
-    Optional.empty(),
-    emptyList(),
+) = TransportCard(
+    cardType = cardType,
+    balance = Balance(balance),
+    uid = Uid.of(byteArrayOf(0x1D, 0x68, 0xC3.toByte(), 0xA9.toByte())),
+    id = CardId.parse(id),
+    transactions = transactions,
+    journeySummary = null,
+    products = emptyList(),
+    warnings = emptyList(),
 )
 
 private fun previewTransaction(
