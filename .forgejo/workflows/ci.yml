@@ -36,7 +36,7 @@ jobs:
       JDK_SHA256: ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94
       CMDLINE_TOOLS_ARCHIVE: commandlinetools-linux-13114758_latest.zip
       CMDLINE_TOOLS_SHA256: 7ec965280a073311c339e571cd5de778b9975026cfcbe79f2b1cdcb1e15317ee
-      GRADLE_WRAPPER_SHA256: 76805e32c009c0cf0dd5d206bddc9fb22ea42e84db904b764f3047de095493f3
+      GRADLE_WRAPPER_SHA256: 423cb469ccc0ecc31f0e4e1c309976198ccb734cdcbb7029d4bda0f18f57e8d9
     steps:
       - name: Verify CI environment
         run: |
@@ -98,7 +98,7 @@ jobs:
 
           sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           yes | "$sdkmanager" --licenses >/dev/null
-          "$sdkmanager" --install "platforms;android-36" "build-tools;36.0.0" >/dev/null
+          "$sdkmanager" --install "platforms;android-37.1" "build-tools;37.0.0" >/dev/null
           echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
 
       - name: Verify the Gradle wrapper

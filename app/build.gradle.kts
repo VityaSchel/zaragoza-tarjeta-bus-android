@@ -14,7 +14,7 @@ plugins {
 android {
     namespace = "dev.hloth.zaragoza_tarjeta_bus"
     compileSdk {
-        version = release(36) {
+        version = release(37) {
             minorApiLevel = 1
         }
     }
