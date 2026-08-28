@@ -24,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.hloth.zaragoza_tarjeta_bus.R
@@ -73,6 +75,7 @@ private fun HeaderCard(details: CardScreen.Details) {
             ) {
                 Text(
                     text = details.cardType.text(),
+                    modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.labelLarge,
                 )
                 ContactlessIcon(
@@ -105,12 +108,14 @@ private fun DetailRow(label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .semantics(mergeDescendants = true) {}
             .padding(horizontal = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = label,
+            modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -139,6 +144,7 @@ private fun PassItem(pass: PassRow) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .semantics(mergeDescendants = true) {}
             .clip(RoundedCornerShape(18.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -181,6 +187,7 @@ private fun ActivityItem(row: ActivityRow) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .semantics(mergeDescendants = true) {}
             .clip(RoundedCornerShape(18.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -190,6 +197,7 @@ private fun ActivityItem(row: ActivityRow) {
         Box(
             modifier = Modifier
                 .size(44.dp)
+                .clearAndSetSemantics {}
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primaryContainer),
             contentAlignment = Alignment.Center,
