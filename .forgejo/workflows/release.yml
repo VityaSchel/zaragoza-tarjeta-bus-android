@@ -1,10 +1,17 @@
-name: Reproducibility
+name: Release
 
 on:
+  release:
+    types: [published]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: tag to build; leave empty to build the current ref
+        type: string
+        required: false
 
 concurrency:
-  group: tarjeta-bus-reproducibility-${{ forgejo.ref }}
+  group: tarjeta-bus-release-${{ forgejo.event.inputs.tag || forgejo.event.release.tag_name || forgejo.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -25,6 +32,7 @@ jobs:
           -u ACTIONS_CACHE_URL -u ACTIONS_RUNTIME_URL -u ACTIONS_RESULTS_URL
           bash --noprofile --norc -e -o pipefail {0}
     env:
+      RELEASE_TAG: ${{ forgejo.event.inputs.tag || forgejo.event.release.tag_name }}
       WORKSPACE: /opt/tarjeta-bus-build
       JAVA_HOME: /opt/jdk
       ANDROID_HOME: /opt/android-sdk
@@ -45,13 +53,21 @@ jobs:
           mkdir -p "$WORKSPACE"
           cd "$WORKSPACE"
 
+          if [ -n "$RELEASE_TAG" ]; then
+            ref="refs/tags/$RELEASE_TAG"
+            want=""
+          else
+            ref="$FORGEJO_REF"
+            want="$FORGEJO_SHA"
+          fi
+
           git init -q .
           git remote add origin "$FORGEJO_SERVER_URL/$FORGEJO_REPOSITORY.git"
-          git fetch -q --depth 1 origin "$FORGEJO_REF"
+          git fetch -q --depth 1 origin "$ref"
           git checkout -q FETCH_HEAD
-          [ -z "$FORGEJO_SHA" ] || [ "$(git rev-parse HEAD)" = "$FORGEJO_SHA" ] \
-            || { echo "FATAL: ref moved since the run was queued (want $FORGEJO_SHA, got $(git rev-parse HEAD))"; exit 1; }
-          echo "building $FORGEJO_REF at $(git rev-parse HEAD) on ${{ matrix.provider }}"
+          [ -z "$want" ] || [ "$(git rev-parse HEAD)" = "$want" ] \
+            || { echo "FATAL: ref moved since the run was queued (want $want, got $(git rev-parse HEAD))"; exit 1; }
+          echo "building ${ref} at $(git rev-parse HEAD) on ${{ matrix.provider }}"
 
       - name: Set up the pinned toolchain
         run: cd "$WORKSPACE" && ./ci/setup-android.sh
@@ -60,7 +76,7 @@ jobs:
         run: |
           cd "$WORKSPACE"
           [ ! -f keystore.properties ] || { echo "FATAL: a keystore would make this build uncomparable"; exit 1; }
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease testDebugUnitTest lintRelease
           mkdir -p out
           cp app/build/outputs/apk/release/app-release-unsigned.apk out/
           sha256sum out/app-release-unsigned.apk
@@ -70,13 +86,13 @@ jobs:
         with:
           name: tarjeta-bus-unsigned-${{ matrix.provider }}
           path: /opt/tarjeta-bus-build/out/
-          retention-days: 1
+          retention-days: 7
 
-  compare:
+  verify:
     needs: [build]
     if: '!cancelled() && needs.build.result != ''failure'''
-    runs-on: ["check", "hetzner"]
-    timeout-minutes: 10
+    runs-on: ["release-x86", "hetzner"]
+    timeout-minutes: 15
     defaults:
       run:
         shell: >-
@@ -87,7 +103,8 @@ jobs:
           -u ACTIONS_CACHE_URL -u ACTIONS_RUNTIME_URL -u ACTIONS_RESULTS_URL
           bash --noprofile --norc -e -o pipefail {0}
     env:
-      PROVIDERS: 2
+      RELEASE_TAG: ${{ forgejo.event.inputs.tag || forgejo.event.release.tag_name }}
+      BUILDERS: 2
     steps:
       - name: Download the builds
         uses: https://code.forgejo.org/forgejo/download-artifact@d8d0a99033603453ad2255e58720b460a0555e1e # v4
@@ -97,10 +114,45 @@ jobs:
       - name: Compare
         run: |
           apks=(dl/tarjeta-bus-unsigned-*/app-release-unsigned.apk)
-          [ "${#apks[@]}" -eq "$PROVIDERS" ] \
-            || { echo "FATAL: expected $PROVIDERS builds, got ${#apks[@]}"; exit 1; }
+          [ "${#apks[@]}" -eq "$BUILDERS" ] \
+            || { echo "FATAL: expected $BUILDERS builds, got ${#apks[@]}"; exit 1; }
           sha256sum "${apks[@]}"
           distinct=$(sha256sum "${apks[@]}" | awk '{print $1}' | sort -u | wc -l)
           [ "$distinct" -eq 1 ] \
-            || { echo "FATAL: the providers did not produce the same APK"; exit 1; }
-          echo "reproducible across $PROVIDERS providers"
+            || { echo "FATAL: the builders did not produce the same APK"; exit 1; }
+          mkdir -p verified
+          cp "${apks[0]}" "verified/zaragoza-tarjeta-bus-${RELEASE_TAG:-$FORGEJO_SHA}-unsigned.apk"
+          cd verified
+          for f in *.apk; do sha256sum "$f" | tee "$f.sha256"; done
+          echo "reproducible across $BUILDERS builders"
+
+      - name: Attach to the release
+        if: forgejo.event_name == 'release'
+        env:
+          RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          : "${RELEASE_TAG:?}" "${RELEASE_API_TOKEN:?}"
+          command -v jq >/dev/null 2>&1 || {
+            export DEBIAN_FRONTEND=noninteractive
+            apt-get update -y
+            apt-get install -y --no-install-recommends jq
+          }
+          cd verified
+          api="$FORGEJO_API_URL/repos/$FORGEJO_REPOSITORY"
+          auth="Authorization: token $RELEASE_API_TOKEN"
+
+          id=$(curl -fsS -H "$auth" "$api/releases/tags/$RELEASE_TAG" | jq -er '.id') || {
+            echo "FATAL: no release exists for tag $RELEASE_TAG" >&2
+            exit 1
+          }
+
+          for name in *.apk *.apk.sha256; do
+            curl -fsS -H "$auth" "$api/releases/$id/assets" \
+              | jq -r --arg n "$name" '.[] | select(.name == $n) | .id' \
+              | while read -r old; do
+                  echo "replacing $name (attachment $old)"
+                  curl -fsS -X DELETE -H "$auth" "$api/releases/$id/assets/$old"
+                done
+            curl -fsS -H "$auth" -F "attachment=@$name" "$api/releases/$id/assets?name=$name" >/dev/null
+            echo "attached $name"
+          done
