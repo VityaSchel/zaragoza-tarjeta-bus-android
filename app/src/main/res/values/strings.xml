@@ -39,6 +39,7 @@
     <string name="transaction_check_out">Check-out</string>
     <string name="transaction_free">Free</string>
 
+    <string name="error_card_moved">Hold the card still until reading finishes</string>
     <string name="error_invalid_card">Unsupported or invalid card</string>
     <string name="error_reading_card">Error reading card</string>
 </resources>

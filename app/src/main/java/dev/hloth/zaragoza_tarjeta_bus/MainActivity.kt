@@ -78,6 +78,7 @@ class MainActivity : ComponentActivity() {
             }
             viewModel.card = read
         } catch (e: TagLostException) {
+            viewModel.errorMessage = getString(R.string.error_card_moved)
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
         } catch (e: IllegalArgumentException) {
             viewModel.errorMessage = getString(R.string.error_invalid_card)

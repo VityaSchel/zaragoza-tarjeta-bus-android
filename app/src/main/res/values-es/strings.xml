@@ -37,6 +37,7 @@
     <string name="transaction_check_out">Salida</string>
     <string name="transaction_free">Gratis</string>
 
+    <string name="error_card_moved">Mantén la tarjeta quieta hasta que termine la lectura</string>
     <string name="error_invalid_card">Tarjeta no compatible o no válida</string>
     <string name="error_reading_card">Error al leer la tarjeta</string>
 </resources>
