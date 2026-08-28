@@ -10,11 +10,17 @@
     <string name="nfc_disabled_subtitle">Activa el NFC en los ajustes del dispositivo y acerca tu tarjeta Avanza o Lazo a la parte trasera del teléfono.</string>
 
     <string name="unsupported_card_title">Tarjeta no compatible</string>
-    <string name="unsupported_card_subtitle">Tipo de tarjeta detectado: %1$s.\nLa aplicación solo admite tarjetas de recarga (pago por viaje).</string>
+    <string name="unsupported_card_subtitle">Tipo de tarjeta detectado: %1$s.\nLa compatibilidad con esta tarjeta aún no está lista.</string>
 
     <string name="balance_label">Saldo</string>
     <string name="card_id_label">ID de tarjeta</string>
     <string name="recent_activity_label">Actividad reciente</string>
+    <string name="passes_label">Abonos</string>
+    <string name="summary_last_paid">Último viaje pagado</string>
+    <string name="pass_valid_until">Válido hasta</string>
+    <string name="pass_days">Abono de %1$s días</string>
+    <string name="pass_days_left">Quedan %1$s días</string>
+    <string name="pass_expired">Caducado</string>
     <string name="card_partially_read">No se han podido leer algunas partes de la tarjeta</string>
 
     <string name="card_type_top_up">Tarjeta de recarga</string>

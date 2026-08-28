@@ -36,27 +36,27 @@ internal fun CardDetails(details: CardScreen.Details, modifier: Modifier = Modif
         contentPadding = PaddingValues(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        item { BalanceCard(details) }
-        details.cardId?.let { id -> item { CardIdRow(id) } }
+        item { HeaderCard(details) }
+        details.cardId?.let { id -> item { DetailRow(stringResource(R.string.card_id_label), id) } }
+        details.lastPaid?.let { at ->
+            item { DetailRow(stringResource(R.string.summary_last_paid), at) }
+        }
         details.notice?.let { notice -> item { NoticeRow(notice) } }
 
+        if (details.passes.isNotEmpty()) {
+            item { SectionHeader(stringResource(R.string.passes_label)) }
+            items(details.passes) { pass -> PassItem(pass) }
+        }
+
         if (details.activity.isNotEmpty()) {
-            item {
-                Text(
-                    text = stringResource(R.string.recent_activity_label),
-                    modifier = Modifier.padding(top = 12.dp, start = 4.dp, bottom = 4.dp),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-            }
+            item { SectionHeader(stringResource(R.string.recent_activity_label)) }
             items(details.activity) { row -> ActivityItem(row) }
         }
     }
 }
 
 @Composable
-private fun BalanceCard(details: CardScreen.Details) {
+private fun HeaderCard(details: CardScreen.Details) {
     MaterialCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
@@ -81,25 +81,27 @@ private fun BalanceCard(details: CardScreen.Details) {
                 )
             }
 
-            Spacer(Modifier.height(40.dp))
+            details.headline?.let { headline ->
+                Spacer(Modifier.height(40.dp))
 
-            Text(
-                text = stringResource(R.string.balance_label),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text = details.balance,
-                style = MaterialTheme.typography.displayMedium,
-                fontWeight = FontWeight.Bold,
-            )
+                Text(
+                    text = headline.label.text(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = headline.value,
+                    style = MaterialTheme.typography.displayMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun CardIdRow(id: String) {
+private fun DetailRow(label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,16 +110,57 @@ private fun CardIdRow(id: String) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = stringResource(R.string.card_id_label),
+            text = label,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
-            text = id,
+            text = value,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurface,
         )
+    }
+}
+
+@Composable
+private fun SectionHeader(title: String) {
+    Text(
+        text = title,
+        modifier = Modifier.padding(top = 12.dp, start = 4.dp, bottom = 4.dp),
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurface,
+    )
+}
+
+@Composable
+private fun PassItem(pass: PassRow) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(18.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+    ) {
+        Text(
+            text = pass.kind.text(),
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Text(
+            text = pass.window,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        pass.remaining?.let { remaining ->
+            Text(
+                text = remaining.text(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 

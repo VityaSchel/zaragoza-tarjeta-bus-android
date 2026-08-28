@@ -12,11 +12,17 @@
     <string name="nfc_disabled_subtitle">Enable NFC in your device settings, then hold your Avanza or Lazo card to the back of your phone.</string>
 
     <string name="unsupported_card_title">Card not supported yet</string>
-    <string name="unsupported_card_subtitle">Detected card type: %1$s.\nThe app currently reads only top-up (pay-per-ride) cards.</string>
+    <string name="unsupported_card_subtitle">Detected card type: %1$s.\nSupport for this card is not ready yet.</string>
 
     <string name="balance_label">Balance</string>
     <string name="card_id_label">Card ID</string>
     <string name="recent_activity_label">Recent activity</string>
+    <string name="passes_label">Passes</string>
+    <string name="summary_last_paid">Last paid ride</string>
+    <string name="pass_valid_until">Valid until</string>
+    <string name="pass_days">%1$s-day pass</string>
+    <string name="pass_days_left">%1$s days left</string>
+    <string name="pass_expired">Expired</string>
     <string name="card_partially_read">Some parts of this card could not be read</string>
 
     <string name="card_type_top_up">Top-up card</string>

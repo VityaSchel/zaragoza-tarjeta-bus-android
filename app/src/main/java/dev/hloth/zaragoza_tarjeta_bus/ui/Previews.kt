@@ -8,26 +8,39 @@ import dev.hloth.zaragoza_tarjeta_bus.card.TransportCard
 import dev.hloth.zgztransport.CardDateTime
 import dev.hloth.zgztransport.CardId
 import dev.hloth.zgztransport.CardType
+import dev.hloth.zgztransport.CardDate
 import dev.hloth.zgztransport.Direction
+import dev.hloth.zgztransport.JourneySummary
+import dev.hloth.zgztransport.Product
+import dev.hloth.zgztransport.Subscription
+import dev.hloth.zgztransport.SubscriptionMetadata
 import dev.hloth.zgztransport.Route
 import dev.hloth.zgztransport.Stop
 import dev.hloth.zgztransport.Transaction
 import dev.hloth.zgztransport.TransactionKind
 import dev.hloth.zgztransport.Uid
 
+private fun previewPass(sector: Int, validityDays: Int, ends: CardDate) = Product(
+    sector,
+    SubscriptionMetadata(6, 1, CardDate(2025, 12, 3), 0, validityDays, 0),
+    Subscription(CardDate(2025, 12, 3), ends, 0, 0, java.util.Optional.empty()),
+)
+
 private fun previewCard(
     cardType: CardType,
     id: String,
     balance: Long,
     transactions: List<Transaction> = emptyList(),
+    journeySummary: JourneySummary? = null,
+    products: List<Product> = emptyList(),
 ) = TransportCard(
     cardType = cardType,
     balance = Balance(balance),
     uid = Uid.of(byteArrayOf(0x1D, 0x68, 0xC3.toByte(), 0xA9.toByte())),
     id = CardId.parse(id),
     transactions = transactions,
-    journeySummary = null,
-    products = emptyList(),
+    journeySummary = journeySummary,
+    products = products,
     warnings = emptyList(),
 )
 
@@ -88,6 +101,38 @@ private fun MainScreenCardDetailsPreview() {
                         CardDateTime.of(2026, 2, 14, 19, 12, 0), 3,
                     ),
                 ),
+                journeySummary = JourneySummary(
+                    java.util.Optional.empty(),
+                    JourneySummary.LastPaid(CardDate(2026, 2, 14), 18, 45),
+                    1,
+                    CardType.AVANZA_TOP_UP,
+                    false,
+                    Route(210),
+                    Direction.TWO,
+                    0x63,
+                ),
+            ),
+        )
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun MainScreenPersonalPassPreview() {
+    ZaragozaTarjetaBusTheme {
+        MainScreen(
+            card = previewCard(
+                CardType.AVANZA_PERSONAL_UNLIMITED, "BP987654", 0,
+                transactions = listOf(
+                    previewTransaction(
+                        TransactionKind.Journey(Direction.ONE), 22, 0,
+                        CardDateTime.of(2026, 2, 14, 18, 45, 0), 0,
+                    ),
+                ),
+                products = listOf(
+                    previewPass(3, 2, CardDate(2025, 12, 5)),
+                    previewPass(4, 365, CardDate(2026, 12, 3)),
+                ),
             ),
         )
     }
@@ -97,7 +142,7 @@ private fun MainScreenCardDetailsPreview() {
 @Composable
 private fun MainScreenUnsupportedCardPreview() {
     ZaragozaTarjetaBusTheme {
-        MainScreen(card = previewCard(CardType.AVANZA_PERSONAL_UNLIMITED, "BP987654", 0))
+        MainScreen(card = previewCard(CardType.LAZO_TOP_UP, "CT123456", 600))
     }
 }
 
