@@ -70,7 +70,10 @@ jobs:
           echo "building ${ref} at $(git rev-parse HEAD) on ${{ matrix.provider }}"
 
       - name: Set up the pinned toolchain
-        run: cd "$WORKSPACE" && ./ci/setup-android.sh
+        run: |
+          cd "$WORKSPACE"
+          ./ci/setup-android.sh
+          ./ci/setup-node.sh
 
       - name: Build the unsigned release
         run: |
@@ -104,8 +107,30 @@ jobs:
           bash --noprofile --norc -e -o pipefail {0}
     env:
       RELEASE_TAG: ${{ forgejo.event.inputs.tag || forgejo.event.release.tag_name }}
+      CHECKOUT: /opt/tarjeta-bus-verify
       BUILDERS: 2
     steps:
+      - name: Check out the scripts
+        run: |
+          : "${CHECKOUT:?}"
+          rm -rf "$CHECKOUT"
+          mkdir -p "$CHECKOUT"
+          cd "$CHECKOUT"
+
+          if [ -n "$RELEASE_TAG" ]; then
+            ref="refs/tags/$RELEASE_TAG"
+          else
+            ref="$FORGEJO_REF"
+          fi
+
+          git init -q .
+          git remote add origin "$FORGEJO_SERVER_URL/$FORGEJO_REPOSITORY.git"
+          git fetch -q --depth 1 origin "$ref"
+          git checkout -q FETCH_HEAD
+
+      - name: Set up node for the artifact actions
+        run: cd "$CHECKOUT" && ./ci/setup-node.sh
+
       - name: Download the builds
         uses: https://code.forgejo.org/forgejo/download-artifact@d8d0a99033603453ad2255e58720b460a0555e1e # v4
         with:
