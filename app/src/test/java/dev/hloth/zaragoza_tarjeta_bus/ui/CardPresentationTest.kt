@@ -6,7 +6,12 @@ import dev.hloth.zgztransport.Balance
 import dev.hloth.zgztransport.CardDateTime
 import dev.hloth.zgztransport.CardId
 import dev.hloth.zgztransport.CardType
+import dev.hloth.zgztransport.CardDate
 import dev.hloth.zgztransport.Direction
+import dev.hloth.zgztransport.JourneySummary
+import dev.hloth.zgztransport.Product
+import dev.hloth.zgztransport.Subscription
+import dev.hloth.zgztransport.SubscriptionMetadata
 import dev.hloth.zgztransport.Route
 import dev.hloth.zgztransport.Stop
 import dev.hloth.zgztransport.Transaction
@@ -15,6 +20,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.time.LocalDate
+import java.util.Optional
 
 private fun journey(
     route: Int,
@@ -44,22 +51,43 @@ private fun topUp(at: CardDateTime = CardDateTime.of(2026, 2, 12, 9, 10, 0)) = T
     .sequence(1)
     .build()
 
+private fun pass(sector: Int, validityDays: Int, starts: CardDate, ends: CardDate) = Product(
+    sector,
+    SubscriptionMetadata(6, 1, starts, 0, validityDays, 0),
+    Subscription(starts, ends, 0, 0, Optional.empty()),
+)
+
+private fun summary(free: Boolean, route: Int, previous: Int? = null) = JourneySummary(
+    Optional.ofNullable(previous?.let { JourneySummary.Leg(Route(it), Direction.ONE) }),
+    JourneySummary.LastPaid(CardDate(2026, 2, 14), 18, 45),
+    1,
+    CardType.AVANZA_TOP_UP,
+    free,
+    Route(route),
+    Direction.ONE,
+    0x63,
+)
+
 private fun card(
     cardType: CardType = CardType.AVANZA_TOP_UP,
     transactions: List<Transaction> = emptyList(),
     warnings: List<String> = emptyList(),
+    journeySummary: JourneySummary? = null,
+    products: List<Product> = emptyList(),
 ) = TransportCard(
     cardType = cardType,
     balance = Balance(4450),
     uid = null,
     id = CardId.parse("BE123456"),
     transactions = transactions,
-    journeySummary = null,
-    products = emptyList(),
+    journeySummary = journeySummary,
+    products = products,
     warnings = warnings,
 )
 
-private fun details(card: TransportCard) = card.screen() as CardScreen.Details
+private val TODAY: LocalDate = LocalDate.of(2026, 2, 14)
+
+private fun details(card: TransportCard) = card.screen(TODAY) as CardScreen.Details
 
 class CardPresentationTest {
 
@@ -169,17 +197,99 @@ class CardPresentationTest {
     }
 
     @Test
-    fun sendsACardThatTravelsOnASubscriptionToTheUnsupportedScreen() {
-        val screen = card(cardType = CardType.AVANZA_PERSONAL_UNLIMITED).screen()
+    fun keepsLazoCardsOnTheUnsupportedScreen() {
+        val screen = card(cardType = CardType.LAZO_TOP_UP).screen(TODAY)
 
-        assertEquals(CardScreen.Unsupported(Label(R.string.card_type_personal)), screen)
+        assertEquals(CardScreen.Unsupported(Label(R.string.card_type_lazo)), screen)
     }
 
     @Test
-    fun keepsLazoCardsOnTheUnsupportedScreen() {
-        val screen = card(cardType = CardType.LAZO_TOP_UP).screen()
+    fun headlinesAPersonalCardWithTheLatestDateItsPassesRunTo() {
+        val screen = details(
+            card(
+                cardType = CardType.AVANZA_PERSONAL_UNLIMITED,
+                products = listOf(
+                    pass(3, 2, CardDate(2025, 12, 3), CardDate(2025, 12, 5)),
+                    pass(4, 365, CardDate(2025, 12, 3), CardDate(2026, 12, 3)),
+                ),
+            ),
+        )
 
-        assertEquals(CardScreen.Unsupported(Label(R.string.card_type_lazo)), screen)
+        assertEquals(Label(R.string.pass_valid_until), screen.headline!!.label)
+        assertEquals("3 Dec 2026", screen.headline.value)
+    }
+
+    @Test
+    fun listsTheLongestRunningPassFirstAndCountsItsDaysLeft() {
+        val screen = details(
+            card(
+                cardType = CardType.AVANZA_PERSONAL_UNLIMITED,
+                products = listOf(
+                    pass(3, 2, CardDate(2025, 12, 3), CardDate(2025, 12, 5)),
+                    pass(4, 365, CardDate(2025, 12, 3), CardDate(2026, 12, 3)),
+                ),
+            ),
+        )
+
+        assertEquals(
+            listOf(Label(R.string.pass_days, listOf("365")), Label(R.string.pass_days, listOf("2"))),
+            screen.passes.map { it.kind },
+        )
+        assertEquals(Label(R.string.pass_days_left, listOf("292")), screen.passes[0].remaining)
+        assertEquals("3 Dec 2025 – 3 Dec 2026", screen.passes[0].window)
+    }
+
+    @Test
+    fun marksAPassThatHasRunOutAsExpired() {
+        val screen = details(
+            card(
+                cardType = CardType.AVANZA_PERSONAL_UNLIMITED,
+                products = listOf(pass(3, 2, CardDate(2025, 12, 3), CardDate(2025, 12, 5))),
+            ),
+        )
+
+        assertEquals(Label(R.string.pass_expired), screen.passes.single().remaining)
+    }
+
+    @Test
+    fun leavesEveryRideOfASubscriptionCardWithoutAFareLabelOrAnAmount() {
+        val row = details(
+            card(
+                cardType = CardType.AVANZA_PERSONAL_UNLIMITED,
+                transactions = listOf(
+                    journey(22, amount = 0, consecutivePayments = 0, cardType = CardType.AVANZA_PERSONAL_UNLIMITED),
+                ),
+            ),
+        ).activity.single()
+
+        assertNull(row.fare)
+        assertNull(row.amount)
+    }
+
+    @Test
+    fun readsTheLastPaidRideOffTheCurrentJourneyWhenItWasPaid() {
+        val screen = details(card(journeySummary = summary(free = false, route = 22)))
+
+        assertEquals("14 Feb 2026 · 18:45 · 22", screen.lastPaid)
+    }
+
+    @Test
+    fun readsTheLastPaidRideOffThePreviousLegWhenTheCurrentOneWasFree() {
+        val screen = details(card(journeySummary = summary(free = true, route = 210, previous = 31)))
+
+        assertEquals("14 Feb 2026 · 18:45 · 31", screen.lastPaid)
+    }
+
+    @Test
+    fun leavesTheLastPaidRideWithoutARouteWhenTheCardRemembersNoPreviousLeg() {
+        val screen = details(card(journeySummary = summary(free = true, route = 210)))
+
+        assertEquals("14 Feb 2026 · 18:45", screen.lastPaid)
+    }
+
+    @Test
+    fun showsNoLastPaidRideWhenTheCardHasNoSummary() {
+        assertNull(details(card()).lastPaid)
     }
 
     @Test
