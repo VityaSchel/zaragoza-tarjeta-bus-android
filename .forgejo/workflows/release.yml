@@ -146,38 +146,12 @@ jobs:
           [ "$distinct" -eq 1 ] \
             || { echo "FATAL: the builders did not produce the same APK"; exit 1; }
           mkdir -p verified
-          cp "${apks[0]}" "verified/zaragoza-tarjeta-bus-${RELEASE_TAG:-$FORGEJO_SHA}-unsigned.apk"
-          cd verified
-          for f in *.apk; do sha256sum "$f" | tee "$f.sha256"; done
+          cp "${apks[0]}" "verified/zaragoza-tarjeta-bus-android-${RELEASE_TAG:-$FORGEJO_SHA}-unsigned.apk"
           echo "reproducible across $BUILDERS builders"
+          sha256sum verified/*.apk
 
-      - name: Attach to the release
-        if: forgejo.event_name == 'release'
-        env:
-          RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          : "${RELEASE_TAG:?}" "${RELEASE_API_TOKEN:?}"
-          command -v jq >/dev/null 2>&1 || {
-            export DEBIAN_FRONTEND=noninteractive
-            apt-get update -y
-            apt-get install -y --no-install-recommends jq
-          }
-          cd verified
-          api="$FORGEJO_API_URL/repos/$FORGEJO_REPOSITORY"
-          auth="Authorization: token $RELEASE_API_TOKEN"
-
-          id=$(curl -fsS -H "$auth" "$api/releases/tags/$RELEASE_TAG" | jq -er '.id') || {
-            echo "FATAL: no release exists for tag $RELEASE_TAG" >&2
-            exit 1
-          }
-
-          for name in *.apk *.apk.sha256; do
-            curl -fsS -H "$auth" "$api/releases/$id/assets" \
-              | jq -r --arg n "$name" '.[] | select(.name == $n) | .id' \
-              | while read -r old; do
-                  echo "replacing $name (attachment $old)"
-                  curl -fsS -X DELETE -H "$auth" "$api/releases/$id/assets/$old"
-                done
-            curl -fsS -H "$auth" -F "attachment=@$name" "$api/releases/$id/assets?name=$name" >/dev/null
-            echo "attached $name"
-          done
+      - name: Upload the verified build
+        uses: https://code.forgejo.org/forgejo/upload-artifact@16871d9e8cfcf27ff31822cac382bbb5450f1e1e # v4
+        with:
+          name: tarjeta-bus-unsigned
+          path: verified/
