@@ -10,7 +10,7 @@ GRADLE_WRAPPER_SHA256="423cb469ccc0ecc31f0e4e1c309976198ccb734cdcbb7029d4bda0f18
 ANDROID_PLATFORM="platforms;android-37.1"
 ANDROID_BUILD_TOOLS="build-tools;37.0.0"
 
-: "${JAVA_HOME:?}" "${ANDROID_HOME:?}" "${GITHUB_PATH:?}"
+: "${JAVA_HOME:?}" "${ANDROID_HOME:?}"
 
 missing=()
 command -v curl >/dev/null 2>&1 || missing+=(curl ca-certificates)
@@ -43,5 +43,3 @@ printf 'y\n%.0s' $(seq 1 50) | "$sdkmanager" --licenses >/dev/null
 "$sdkmanager" --install "$ANDROID_PLATFORM" "$ANDROID_BUILD_TOOLS" >/dev/null
 
 echo "${GRADLE_WRAPPER_SHA256}  gradle/wrapper/gradle-wrapper.jar" | sha256sum -c -
-
-echo "$JAVA_HOME/bin" >> "$GITHUB_PATH"

@@ -4,7 +4,7 @@ Free Android app that reads your Zaragoza transport card and displays remaining 
 
 ![Banner](./contrib/banner.png)
 
-**Download the app from [Google Play](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) or [Forgejo Releases](https://git.hloth.dev/hloth/zgz-transport-card-android/releases).**
+**Download the app from [Google Play](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) or [Forgejo Releases](https://git.hloth.dev/hloth/zaragoza-tarjeta-bus-android/releases).**
 
 > [!IMPORTANT]
 > ⚠️ **Aviso legal:** Este repositorio es un proyecto de investigación de seguridad independiente.  \
@@ -13,6 +13,8 @@ Free Android app that reads your Zaragoza transport card and displays remaining 
 > Consulta [LEGAL.md](./LEGAL.md) para el descargo de responsabilidad completo.
 
 Based on reverse-engineered cards spec in [hloth/zgz-transport](https://git.hloth.dev/hloth/zgz-transport).
+
+All releases are [reproducible](./REPRODUCIBILITY.md).
 
 ## License
 
