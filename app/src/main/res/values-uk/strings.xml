@@ -1,0 +1,43 @@
+<resources>
+    <string name="loading_reading">Читання карти…</string>
+
+    <string name="scan_title">Скануйте картку</string>
+    <string name="scan_subtitle">Піднесіть картку Avanza або Lazo до задньої панелі телефона, щоб побачити баланс</string>
+
+    <string name="nfc_unavailable_title">NFC недоступний</string>
+    <string name="nfc_unavailable_subtitle">На цьому пристрої немає NFC, який потрібен для зчитування картки.</string>
+    <string name="nfc_disabled_title">Увімкніть NFC</string>
+    <string name="nfc_disabled_subtitle">Увімкніть NFC у налаштуваннях пристрою та піднесіть картку Avanza або Lazo до задньої панелі телефона.</string>
+
+    <string name="unsupported_card_title">Картка ще не підтримується</string>
+    <string name="unsupported_card_subtitle">Виявлено тип картки: %1$s.\nПідтримка цієї картки ще не готова.</string>
+
+    <string name="balance_label">Баланс</string>
+    <string name="card_id_label">ID картки</string>
+    <string name="recent_activity_label">Останні операції</string>
+    <string name="passes_label">Абонементи</string>
+    <string name="summary_last_paid">Остання платна поїздка</string>
+    <string name="pass_valid_until">Діє до</string>
+    <string name="pass_days">Абонемент на %1$s дн.</string>
+    <string name="pass_days_left">Залишилося %1$s дн.</string>
+    <string name="pass_expired">Термін дії минув</string>
+    <string name="card_partially_read">Деякі частини картки не вдалося зчитати</string>
+
+    <string name="card_type_top_up">Поповнювана картка</string>
+    <string name="card_type_personal">Персональний абонемент</string>
+    <string name="card_type_lazo">Поповнювана картка Lazo</string>
+
+    <string name="transaction_top_up">Поповнення</string>
+    <string name="transaction_bus_ride_line">Автобус · Лінія %1$s</string>
+    <string name="transaction_tram_ride_line">Трамвай · %1$s</string>
+    <string name="transaction_cercanias_ride">Cercanías</string>
+    <string name="transaction_journey_line">Поїздка · Лінія %1$s</string>
+    <string name="transaction_tram_stop">Зупинка %1$s</string>
+    <string name="transaction_transfer">Безкоштовна пересадка</string>
+    <string name="transaction_check_out">Вихід</string>
+    <string name="transaction_free">Безкоштовно</string>
+
+    <string name="error_card_moved">Тримайте картку нерухомо, доки триває зчитування</string>
+    <string name="error_invalid_card">Картка не підтримується або недійсна</string>
+    <string name="error_reading_card">Помилка зчитування картки</string>
+</resources>
