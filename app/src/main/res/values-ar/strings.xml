@@ -1,0 +1,43 @@
+<resources>
+    <string name="loading_reading">جارٍ قراءة بطاقتك…</string>
+
+    <string name="scan_title">امسح بطاقتك</string>
+    <string name="scan_subtitle">قرّب بطاقة Avanza أو Lazo من ظهر هاتفك لعرض رصيدها</string>
+
+    <string name="nfc_unavailable_title">تقنية NFC غير متوفّرة</string>
+    <string name="nfc_unavailable_subtitle">لا يدعم هذا الجهاز NFC، وهو ضروري لقراءة بطاقتك.</string>
+    <string name="nfc_disabled_title">فعّل NFC</string>
+    <string name="nfc_disabled_subtitle">فعّل NFC من إعدادات الجهاز، ثم قرّب بطاقة Avanza أو Lazo من ظهر هاتفك.</string>
+
+    <string name="unsupported_card_title">بطاقة غير مدعومة</string>
+    <string name="unsupported_card_subtitle">نوع البطاقة المكتشَف: %1$s.\nدعم هذه البطاقة غير جاهز بعد.</string>
+
+    <string name="balance_label">الرصيد</string>
+    <string name="card_id_label">رقم البطاقة</string>
+    <string name="recent_activity_label">النشاط الأخير</string>
+    <string name="passes_label">الاشتراكات</string>
+    <string name="summary_last_paid">آخر رحلة مدفوعة</string>
+    <string name="pass_valid_until">صالح حتى</string>
+    <string name="pass_days">اشتراك %1$s يومًا</string>
+    <string name="pass_days_left">الأيام المتبقية: %1$s</string>
+    <string name="pass_expired">منتهي الصلاحية</string>
+    <string name="card_partially_read">تعذّرت قراءة أجزاء من هذه البطاقة</string>
+
+    <string name="card_type_top_up">بطاقة شحن</string>
+    <string name="card_type_personal">اشتراك شخصي</string>
+    <string name="card_type_lazo">بطاقة شحن Lazo</string>
+
+    <string name="transaction_top_up">شحن</string>
+    <string name="transaction_bus_ride_line">رحلة بالحافلة · خط %1$s</string>
+    <string name="transaction_tram_ride_line">رحلة بالترام · %1$s</string>
+    <string name="transaction_cercanias_ride">رحلة Cercanías</string>
+    <string name="transaction_journey_line">رحلة · خط %1$s</string>
+    <string name="transaction_tram_stop">محطة %1$s</string>
+    <string name="transaction_transfer">انتقال مجاني</string>
+    <string name="transaction_check_out">خروج</string>
+    <string name="transaction_free">مجانًا</string>
+
+    <string name="error_card_moved">أبقِ البطاقة ثابتة حتى تنتهي القراءة</string>
+    <string name="error_invalid_card">بطاقة غير مدعومة أو غير صالحة</string>
+    <string name="error_reading_card">خطأ في قراءة البطاقة</string>
+</resources>
