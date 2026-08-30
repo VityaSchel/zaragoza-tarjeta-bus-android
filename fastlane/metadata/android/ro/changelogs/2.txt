@@ -1,0 +1,9 @@
+- Compatibilitate cu cardurile Lazo
+- Abonamentele personale arată acum zilele rămase
+- Călătoriile cu autobuzul, tramvaiul și Cercanías se disting
+- Liniile apar cu numele reale (L1, Ci1, N1)
+- Fiecare călătorie arată costul, iar transbordările apar ca gratuite
+- Călătoriile cu tramvaiul arată și numărul stației
+- Un card deteriorat arată tot ce s-a putut citi
+- Cardul se citește mai repede, ignorând sectoarele inutile
+- Cardul rămâne pe ecran la rotirea telefonului

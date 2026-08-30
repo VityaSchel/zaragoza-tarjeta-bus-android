@@ -1,0 +1,1 @@
+Aplicație Android gratuită care îți citește cardul de transport din Zaragoza și afișează soldul rămas în euro, călătoriile recente și reîncărcările.

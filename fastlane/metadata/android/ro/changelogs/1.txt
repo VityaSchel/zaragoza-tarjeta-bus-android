@@ -1,0 +1,7 @@
+Prima versiune
+
+- Soldul cardului
+- Istoricul călătoriilor
+- Istoricul reîncărcărilor
+- Ecran de eroare pentru NFC dezactivat
+- Ecran de eroare la citirea cardului

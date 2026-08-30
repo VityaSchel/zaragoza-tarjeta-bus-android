@@ -1,0 +1,43 @@
+<resources>
+    <string name="loading_reading">Se citește cardul…</string>
+
+    <string name="scan_title">Scanează cardul</string>
+    <string name="scan_subtitle">Apropie cardul Avanza sau Lazo de spatele telefonului pentru a vedea soldul</string>
+
+    <string name="nfc_unavailable_title">NFC indisponibil</string>
+    <string name="nfc_unavailable_subtitle">Acest dispozitiv nu are NFC, necesar pentru citirea cardului.</string>
+    <string name="nfc_disabled_title">Activează NFC</string>
+    <string name="nfc_disabled_subtitle">Activează NFC din setările dispozitivului, apoi apropie cardul Avanza sau Lazo de spatele telefonului.</string>
+
+    <string name="unsupported_card_title">Card incompatibil</string>
+    <string name="unsupported_card_subtitle">Tip de card detectat: %1$s.\nCompatibilitatea cu acest card nu este încă disponibilă.</string>
+
+    <string name="balance_label">Sold</string>
+    <string name="card_id_label">ID-ul cardului</string>
+    <string name="recent_activity_label">Activitate recentă</string>
+    <string name="passes_label">Abonamente</string>
+    <string name="summary_last_paid">Ultima călătorie plătită</string>
+    <string name="pass_valid_until">Valabil până la</string>
+    <string name="pass_days">Abonament %1$s zile</string>
+    <string name="pass_days_left">Zile rămase: %1$s</string>
+    <string name="pass_expired">Expirat</string>
+    <string name="card_partially_read">Unele părți ale cardului nu au putut fi citite</string>
+
+    <string name="card_type_top_up">Card de reîncărcare</string>
+    <string name="card_type_personal">Abonament personal</string>
+    <string name="card_type_lazo">Card Lazo de reîncărcare</string>
+
+    <string name="transaction_top_up">Reîncărcare</string>
+    <string name="transaction_bus_ride_line">Călătorie cu autobuzul · Linia %1$s</string>
+    <string name="transaction_tram_ride_line">Călătorie cu tramvaiul · %1$s</string>
+    <string name="transaction_cercanias_ride">Călătorie cu Cercanías</string>
+    <string name="transaction_journey_line">Călătorie · Linia %1$s</string>
+    <string name="transaction_tram_stop">Stația %1$s</string>
+    <string name="transaction_transfer">Transbordare gratuită</string>
+    <string name="transaction_check_out">Ieșire</string>
+    <string name="transaction_free">Gratuit</string>
+
+    <string name="error_card_moved">Ține cardul nemișcat până se termină citirea</string>
+    <string name="error_invalid_card">Card incompatibil sau nevalid</string>
+    <string name="error_reading_card">Eroare la citirea cardului</string>
+</resources>
