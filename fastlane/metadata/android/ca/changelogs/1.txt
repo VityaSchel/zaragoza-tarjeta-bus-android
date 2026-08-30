@@ -1,0 +1,7 @@
+Primera versió.
+
+- Saldo de la targeta
+- Historial de viatges
+- Historial de recàrregues
+- Vista d'error quan l'NFC està desactivat
+- Vista d'error de lectura de la targeta

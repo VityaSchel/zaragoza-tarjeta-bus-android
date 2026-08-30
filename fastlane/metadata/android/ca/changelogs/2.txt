@@ -1,0 +1,9 @@
+- Compatibilitat amb les targetes Lazo
+- Els abonaments personals mostren els dies restants
+- Es distingeixen els viatges en autobús, tramvia i Cercanías
+- Es mostren els noms reals de línia (L1, Ci1, N1)
+- Cada viatge mostra l'import i els transbords gratuïts
+- Els viatges en tramvia mostren el número de parada
+- Una targeta malmesa mostra tot el que s'ha pogut llegir
+- Lectura més ràpida: s'ometen sectors innecessaris
+- La targeta es manté en pantalla en girar el telèfon

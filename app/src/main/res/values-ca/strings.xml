@@ -1,0 +1,43 @@
+<resources>
+    <string name="loading_reading">S\'està llegint la targeta…</string>
+
+    <string name="scan_title">Escaneja la targeta</string>
+    <string name="scan_subtitle">Apropa la targeta Avanza o Lazo a la part posterior del telèfon per veure\'n el saldo</string>
+
+    <string name="nfc_unavailable_title">NFC no disponible</string>
+    <string name="nfc_unavailable_subtitle">Aquest dispositiu no té NFC, necessari per llegir la targeta.</string>
+    <string name="nfc_disabled_title">Activa l\'NFC</string>
+    <string name="nfc_disabled_subtitle">Activa l\'NFC a la configuració del dispositiu i apropa la targeta Avanza o Lazo a la part posterior del telèfon.</string>
+
+    <string name="unsupported_card_title">Targeta no compatible</string>
+    <string name="unsupported_card_subtitle">Tipus de targeta detectat: %1$s.\nEncara no hi ha compatibilitat amb aquesta targeta.</string>
+
+    <string name="balance_label">Saldo</string>
+    <string name="card_id_label">ID de la targeta</string>
+    <string name="recent_activity_label">Activitat recent</string>
+    <string name="passes_label">Abonaments</string>
+    <string name="summary_last_paid">Últim viatge pagat</string>
+    <string name="pass_valid_until">Vàlid fins al</string>
+    <string name="pass_days">Abonament de %1$s dies</string>
+    <string name="pass_days_left">Queden %1$s dies</string>
+    <string name="pass_expired">Caducat</string>
+    <string name="card_partially_read">No s\'han pogut llegir algunes parts de la targeta</string>
+
+    <string name="card_type_top_up">Targeta de recàrrega</string>
+    <string name="card_type_personal">Abonament personal</string>
+    <string name="card_type_lazo">Targeta Lazo de recàrrega</string>
+
+    <string name="transaction_top_up">Recàrrega</string>
+    <string name="transaction_bus_ride_line">Viatge en autobús · Línia %1$s</string>
+    <string name="transaction_tram_ride_line">Viatge en tramvia · %1$s</string>
+    <string name="transaction_cercanias_ride">Viatge en Cercanías</string>
+    <string name="transaction_journey_line">Viatge · Línia %1$s</string>
+    <string name="transaction_tram_stop">Parada %1$s</string>
+    <string name="transaction_transfer">Transbord gratuït</string>
+    <string name="transaction_check_out">Sortida</string>
+    <string name="transaction_free">Gratuït</string>
+
+    <string name="error_card_moved">No moguis la targeta fins que acabi la lectura</string>
+    <string name="error_invalid_card">Targeta no compatible o no vàlida</string>
+    <string name="error_reading_card">Error en llegir la targeta</string>
+</resources>
