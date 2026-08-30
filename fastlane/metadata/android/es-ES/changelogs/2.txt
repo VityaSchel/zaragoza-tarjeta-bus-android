@@ -1,8 +1,9 @@
-- Los abonos personales muestran su validez, los días restantes y el historial de viajes en lugar de «no compatible»
-- Se ha añadido compatibilidad con las tarjetas Lazo
-- Los viajes en autobús, tranvía y Cercanías se distinguen entre sí, cada uno con la línea como la nombra el operador (L1, Ci1, N1)
-- Cada viaje muestra su importe, y los transbordos gratuitos se marcan como gratuitos
-- Los viajes en tranvía muestran el número de parada
-- Una tarjeta dañada sigue mostrando todo lo que se ha podido leer
-- Lectura de la tarjeta más rápida al omitir los sectores innecesarios
-- La tarjeta permanece en pantalla al girar el teléfono
+- Compatibilidad con las tarjetas Lazo
+- Los pases personales muestran los días restantes
+- Se distinguen los viajes en autobús, tranvía y Cercanías
+- Las líneas aparecen con su nombre real (L1, Ci1, N1)
+- Cada viaje muestra su coste y los transbordos gratuitos
+- Los viajes en tranvía indican el número de parada
+- Una tarjeta dañada muestra todo lo que se pudo leer
+- Lectura más rápida al omitir los sectores innecesarios
+- La tarjeta sigue en pantalla al girar el teléfono
