@@ -1,0 +1,43 @@
+<resources>
+    <string name="loading_reading">Чытанне карты…</string>
+
+    <string name="scan_title">Прыкладзіце карту</string>
+    <string name="scan_subtitle">Трымайце карту Avanza або Lazo каля задняй панэлі тэлефона, каб убачыць баланс</string>
+
+    <string name="nfc_unavailable_title">NFC недаступны</string>
+    <string name="nfc_unavailable_subtitle">На гэтай прыладзе няма NFC, неабходнага для чытання карты.</string>
+    <string name="nfc_disabled_title">Уключыце NFC</string>
+    <string name="nfc_disabled_subtitle">Уключыце NFC у наладах прылады і прыкладзіце карту Avanza або Lazo да задняй панэлі тэлефона.</string>
+
+    <string name="unsupported_card_title">Карта пакуль не падтрымліваецца</string>
+    <string name="unsupported_card_subtitle">Вызначаны тып карты: %1$s.\nПадтрымка гэтай карты яшчэ не гатовая.</string>
+
+    <string name="balance_label">Баланс</string>
+    <string name="card_id_label">ID карты</string>
+    <string name="recent_activity_label">Апошнія аперацыі</string>
+    <string name="passes_label">Абанементы</string>
+    <string name="summary_last_paid">Апошняя платная паездка</string>
+    <string name="pass_valid_until">Дзейнічае да</string>
+    <string name="pass_days">Абанемент на %1$s дн.</string>
+    <string name="pass_days_left">Засталося %1$s дн.</string>
+    <string name="pass_expired">Скончыўся</string>
+    <string name="card_partially_read">Не ўдалося прачытаць некаторыя часткі карты</string>
+
+    <string name="card_type_top_up">Карта папаўнення</string>
+    <string name="card_type_personal">Персанальны абанемент</string>
+    <string name="card_type_lazo">Карта папаўнення Lazo</string>
+
+    <string name="transaction_top_up">Папаўненне</string>
+    <string name="transaction_bus_ride_line">Аўтобус · Лінія %1$s</string>
+    <string name="transaction_tram_ride_line">Трамвай · %1$s</string>
+    <string name="transaction_cercanias_ride">Cercanías</string>
+    <string name="transaction_journey_line">Паездка · Лінія %1$s</string>
+    <string name="transaction_tram_stop">Прыпынак %1$s</string>
+    <string name="transaction_transfer">Бясплатная перасадка</string>
+    <string name="transaction_check_out">Выхад</string>
+    <string name="transaction_free">Бясплатна</string>
+
+    <string name="error_card_moved">Трымайце карту нерухома да канца чытання</string>
+    <string name="error_invalid_card">Карта не падтрымліваецца або несапраўдная</string>
+    <string name="error_reading_card">Памылка чытання карты</string>
+</resources>
