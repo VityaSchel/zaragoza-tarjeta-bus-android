@@ -1,0 +1,7 @@
+Erste Version
+
+- Kartenguthaben
+- Fahrtenverlauf
+- Aufladeverlauf
+- Fehleransicht bei deaktiviertem NFC
+- Fehleransicht beim Lesen der Karte

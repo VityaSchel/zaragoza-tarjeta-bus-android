@@ -1,0 +1,43 @@
+<resources>
+    <string name="loading_reading">Karte wird gelesen…</string>
+
+    <string name="scan_title">Karte scannen</string>
+    <string name="scan_subtitle">Halte deine Avanza- oder Lazo-Karte an die Rückseite deines Telefons, um das Guthaben zu sehen</string>
+
+    <string name="nfc_unavailable_title">NFC nicht verfügbar</string>
+    <string name="nfc_unavailable_subtitle">Dieses Gerät hat kein NFC, das zum Lesen der Karte nötig ist.</string>
+    <string name="nfc_disabled_title">NFC aktivieren</string>
+    <string name="nfc_disabled_subtitle">Aktiviere NFC in den Geräteeinstellungen und halte dann deine Avanza- oder Lazo-Karte an die Rückseite deines Telefons.</string>
+
+    <string name="unsupported_card_title">Karte nicht unterstützt</string>
+    <string name="unsupported_card_subtitle">Erkannter Kartentyp: %1$s.\nDiese Karte wird noch nicht unterstützt.</string>
+
+    <string name="balance_label">Guthaben</string>
+    <string name="card_id_label">Karten-ID</string>
+    <string name="recent_activity_label">Letzte Aktivität</string>
+    <string name="passes_label">Zeitkarten</string>
+    <string name="summary_last_paid">Letzte bezahlte Fahrt</string>
+    <string name="pass_valid_until">Gültig bis</string>
+    <string name="pass_days">%1$s-Tage-Karte</string>
+    <string name="pass_days_left">Noch %1$s Tage</string>
+    <string name="pass_expired">Abgelaufen</string>
+    <string name="card_partially_read">Einige Teile der Karte konnten nicht gelesen werden</string>
+
+    <string name="card_type_top_up">Guthabenkarte</string>
+    <string name="card_type_personal">Persönliche Zeitkarte</string>
+    <string name="card_type_lazo">Lazo-Guthabenkarte</string>
+
+    <string name="transaction_top_up">Aufladung</string>
+    <string name="transaction_bus_ride_line">Busfahrt · Linie %1$s</string>
+    <string name="transaction_tram_ride_line">Straßenbahnfahrt · %1$s</string>
+    <string name="transaction_cercanias_ride">Cercanías-Fahrt</string>
+    <string name="transaction_journey_line">Fahrt · Linie %1$s</string>
+    <string name="transaction_tram_stop">Haltestelle %1$s</string>
+    <string name="transaction_transfer">Kostenloser Umstieg</string>
+    <string name="transaction_check_out">Check-out</string>
+    <string name="transaction_free">Kostenlos</string>
+
+    <string name="error_card_moved">Halte die Karte still, bis das Lesen abgeschlossen ist</string>
+    <string name="error_invalid_card">Karte nicht unterstützt oder ungültig</string>
+    <string name="error_reading_card">Fehler beim Lesen der Karte</string>
+</resources>

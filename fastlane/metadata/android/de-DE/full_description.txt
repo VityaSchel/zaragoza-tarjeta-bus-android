@@ -1,0 +1,1 @@
+Kostenlose Android-App, die deine Tarjeta Bus aus Zaragoza ausliest und das verbleibende Guthaben in Euro, die letzten Fahrten und die Aufladungen anzeigt.

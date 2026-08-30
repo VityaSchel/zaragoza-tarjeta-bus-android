@@ -1,0 +1,9 @@
+- Unterstützung für Lazo-Karten
+- Persönliche Zeitkarten zeigen die verbleibenden Tage
+- Fahrten mit Bus, Straßenbahn und Cercanías werden unterschieden
+- Echte Liniennamen wie L1, Ci1 oder N1
+- Fahrpreise und kostenlose Umstiege werden angezeigt
+- Straßenbahnfahrten zeigen die Haltestellennummer
+- Beschädigte Karten zeigen weiterhin alles Lesbare
+- Kürzere Lesezeit, da unnötige Sektoren übersprungen werden
+- Die Karte bleibt beim Drehen des Telefons sichtbar
