@@ -1,0 +1,9 @@
+- Prise en charge des cartes Lazo
+- Abonnements personnels : jours restants affichés
+- Distinction des trajets en bus, tramway et Cercanías
+- Affichage des vrais noms de lignes (L1, Ci1, N1)
+- Coût des trajets et correspondances gratuites affichés
+- Numéro d'arrêt affiché pour les trajets en tramway
+- Une carte endommagée affiche tout ce qui a pu être lu
+- Lecture accélérée : les secteurs inutiles sont ignorés
+- La carte reste affichée lors de la rotation du téléphone

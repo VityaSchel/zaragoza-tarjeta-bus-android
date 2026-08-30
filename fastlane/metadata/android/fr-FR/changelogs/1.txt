@@ -1,0 +1,7 @@
+Première version.
+
+- Solde de la carte
+- Historique des trajets
+- Historique des recharges
+- Écran d'erreur quand le NFC est désactivé
+- Écran d'erreur de lecture de la carte

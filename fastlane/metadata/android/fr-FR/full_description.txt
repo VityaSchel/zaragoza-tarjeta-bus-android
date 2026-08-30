@@ -1,0 +1,1 @@
+Application Android gratuite qui lit votre carte Tarjeta Bus de Zaragoza et affiche le solde restant en euros, les trajets récents et les recharges.

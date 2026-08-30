@@ -1,0 +1,43 @@
+<resources>
+    <string name="loading_reading">Lecture de votre carte…</string>
+
+    <string name="scan_title">Scannez votre carte</string>
+    <string name="scan_subtitle">Placez votre carte Avanza ou Lazo contre le dos du téléphone pour voir son solde</string>
+
+    <string name="nfc_unavailable_title">NFC non disponible</string>
+    <string name="nfc_unavailable_subtitle">Cet appareil ne dispose pas du NFC, nécessaire pour lire votre carte.</string>
+    <string name="nfc_disabled_title">Activez le NFC</string>
+    <string name="nfc_disabled_subtitle">Activez le NFC dans les paramètres de l\'appareil, puis placez votre carte Avanza ou Lazo contre le dos du téléphone.</string>
+
+    <string name="unsupported_card_title">Carte non compatible</string>
+    <string name="unsupported_card_subtitle">Type de carte détecté : %1$s.\nLa compatibilité avec cette carte n\'est pas encore prête.</string>
+
+    <string name="balance_label">Solde</string>
+    <string name="card_id_label">ID de la carte</string>
+    <string name="recent_activity_label">Activité récente</string>
+    <string name="passes_label">Abonnements</string>
+    <string name="summary_last_paid">Dernier trajet payé</string>
+    <string name="pass_valid_until">Valable jusqu\'au</string>
+    <string name="pass_days">Abonnement %1$s jours</string>
+    <string name="pass_days_left">%1$s jours restants</string>
+    <string name="pass_expired">Expiré</string>
+    <string name="card_partially_read">Certaines parties de cette carte n\'ont pas pu être lues</string>
+
+    <string name="card_type_top_up">Carte rechargeable</string>
+    <string name="card_type_personal">Abonnement personnel</string>
+    <string name="card_type_lazo">Carte Lazo rechargeable</string>
+
+    <string name="transaction_top_up">Recharge</string>
+    <string name="transaction_bus_ride_line">Trajet en bus · Ligne %1$s</string>
+    <string name="transaction_tram_ride_line">Trajet en tramway · %1$s</string>
+    <string name="transaction_cercanias_ride">Trajet en Cercanías</string>
+    <string name="transaction_journey_line">Trajet · Ligne %1$s</string>
+    <string name="transaction_tram_stop">Arrêt %1$s</string>
+    <string name="transaction_transfer">Correspondance gratuite</string>
+    <string name="transaction_check_out">Sortie</string>
+    <string name="transaction_free">Gratuit</string>
+
+    <string name="error_card_moved">Maintenez la carte immobile jusqu\'à la fin de la lecture</string>
+    <string name="error_invalid_card">Carte non compatible ou non valide</string>
+    <string name="error_reading_card">Erreur de lecture de la carte</string>
+</resources>
