@@ -29,6 +29,7 @@ KS_PASS="$(property storePassword)" KEY_PASS="$(property keyPassword)" \
 	--ks-key-alias "$(property keyAlias)" \
 	--ks-pass env:KS_PASS \
 	--key-pass env:KEY_PASS \
+	--alignment-preserved \
 	--out "$signed" \
 	"$unsigned"
 
@@ -36,17 +37,24 @@ KS_PASS="$(property storePassword)" KEY_PASS="$(property keyPassword)" \
 	| grep "certificate SHA-256 digest" \
 	|| { echo "FATAL: the signed APK reports no certificate" >&2; exit 1; }
 
-contents() {
-	unzip -Z1 "$1" \
-		| grep -vE '^META-INF/(MANIFEST\.MF|[^/]+\.(SF|RSA|EC|DSA))$' \
-		| sort \
-		| while IFS= read -r entry; do
-			printf '%s  %s\n' \
-				"$(unzip -p "$1" "$entry" | shasum -a 256 | cut -c1-64)" "$entry"
-		done
+
+run_apksigcopier() {
+	if type -P apksigcopier >/dev/null 2>&1; then
+		apksigcopier "$@"
+	elif command -v uv >/dev/null 2>&1; then
+		uv run --quiet --with apksigcopier apksigcopier "$@"
+	else
+		echo "FATAL: need apksigcopier (pip install apksigcopier) to verify the signature" >&2
+		exit 1
+	fi
 }
 
-diff <(contents "$unsigned") <(contents "$signed") >/dev/null \
-	|| { echo "FATAL: signing altered the contents, not just the signature" >&2; exit 1; }
+transplanted="$(mktemp -d)/$(basename "$signed")"
+trap 'rm -rf "$(dirname "$transplanted")"' EXIT
 
-echo "signed $signed; contents still reproduce from $(basename "$unsigned")"
+run_apksigcopier copy "$signed" "$unsigned" "$transplanted" \
+	|| { echo "FATAL: the signature cannot be transplanted onto an unsigned rebuild" >&2; exit 1; }
+cmp "$transplanted" "$signed" \
+	|| { echo "FATAL: transplanting the signature does not reproduce the signed APK" >&2; exit 1; }
+
+echo "signed $signed; its signature transplants back onto $(basename "$unsigned")"
