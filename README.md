@@ -2,7 +2,7 @@
 
 Free Android app that reads your Zaragoza transport card and displays remaining balance in euros, recent trips and top-ups.
 
-![Banner](./contrib/banner.png)
+![Banner](./fastlane/metadata/android/en-US/images/featureGraphic.png)
 
 **Download the app from [Google Play](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) or [Forgejo Releases](https://git.hloth.dev/hloth/zaragoza-tarjeta-bus-android/releases).**
 
