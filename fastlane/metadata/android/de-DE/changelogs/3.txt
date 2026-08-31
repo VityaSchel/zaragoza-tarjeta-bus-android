@@ -1,0 +1,2 @@
+- Spanische, katalanische, französische, deutsche, rumänische, russische, ukrainische, belarussische und englische Übersetzungen verbessert und überprüft
+- Verbessertes Layout für lange Bezeichnungen

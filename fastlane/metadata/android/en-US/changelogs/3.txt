@@ -1,0 +1,2 @@
+- Improved/reviewed Spanish, Catalan, French, German, Romanian, Russian, Ukrainian, Belarusian, English translations
+- Improved layout for long labels

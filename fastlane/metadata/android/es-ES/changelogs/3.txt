@@ -1,0 +1,2 @@
+- Traducciones al español, catalán, francés, alemán, rumano, ruso, ucraniano, bielorruso e inglés mejoradas y revisadas
+- Diseño mejorado para las etiquetas largas
