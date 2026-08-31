@@ -6,10 +6,19 @@ pkg=dev.hloth.zaragoza_tarjeta_bus
 remote="/sdcard/Android/media/$pkg/screenshots"
 adb="${ANDROID_HOME:?ANDROID_HOME is not set}/platform-tools/adb"
 
+# Pixel 2 class display: 16:9, inside Google Play's 2:1 aspect ratio limit on screenshots
+capture_size=1080x1920
+capture_density=420
+
 [ "$("$adb" devices | grep -c $'\tdevice$')" -eq 1 ] || {
 	echo "need exactly one running device; start one with:" >&2
 	echo "  \$ANDROID_HOME/emulator/emulator -avd <name> &" >&2
 	"$adb" devices >&2
+	exit 1
+}
+
+command -v magick >/dev/null || {
+	echo "need ImageMagick for the alpha flatten; brew install imagemagick" >&2
 	exit 1
 }
 
@@ -26,14 +35,25 @@ for scale in window_animation_scale transition_animation_scale animator_duration
 	"$adb" shell settings put global "$scale" 0 >/dev/null
 done
 
+staging="$(mktemp -d)"
+restore() {
+	rm -rf "$staging"
+	"$adb" shell wm density reset >/dev/null 2>&1 || true
+	"$adb" shell wm size reset >/dev/null 2>&1 || true
+}
+trap restore EXIT
+
+"$adb" shell wm size "$capture_size" >/dev/null
+"$adb" shell wm density "$capture_density" >/dev/null
+
+sleep 5
+
 "$adb" shell rm -rf "$remote"
 "$adb" shell am instrument -w \
 	-e class "$pkg.StoreScreenshots" \
 	-e additionalTestOutputDir "$remote" \
 	"$pkg.test/androidx.test.runner.AndroidJUnitRunner"
 
-staging="$(mktemp -d)"
-trap 'rm -rf "$staging"' EXIT
 "$adb" pull -a "$remote" "$staging" >/dev/null
 
 shopt -s nullglob
@@ -48,7 +68,7 @@ for png in "${captured[@]}"; do
 		echo "no fastlane locale for $locale" >&2; exit 1; }
 	target="$root/fastlane/metadata/android/$locale/images/phoneScreenshots"
 	mkdir -p "$target"
-	cp "$png" "$target/$index.png"
+	magick "$png" -background white -alpha remove -alpha off -strip "PNG24:$target/$index.png"
 done
 
 [ "${#captured[@]}" -eq 20 ] || {
