@@ -70,17 +70,25 @@ internal val sampleAvanzaTopUpCard: TransportCard
                 CardDateTime.of(2026, 2, 11, 8, 32, 0), 0,
             ),
             sampleTransaction(
+                TransactionKind.Journey(Direction.TWO), 169, 880,
+                CardDateTime.of(2026, 2, 11, 14, 5, 0), 1,
+            ),
+            sampleTransaction(
+                TransactionKind.Journey(Direction.ONE), 13, 880,
+                CardDateTime.of(2026, 2, 11, 17, 20, 0), 2,
+            ),
+            sampleTransaction(
                 TransactionKind.TopUp(), 0, 10000,
-                CardDateTime.of(2026, 2, 12, 9, 10, 0), 1,
+                CardDateTime.of(2026, 2, 12, 9, 10, 0), 3,
             ),
             sampleTransaction(
                 TransactionKind.Journey(Direction.TWO), 210, 880,
-                CardDateTime.of(2026, 2, 14, 18, 45, 0), 2,
+                CardDateTime.of(2026, 2, 14, 18, 45, 0), 4,
                 stop = Stop.Tram(1300),
             ),
             sampleTransaction(
                 TransactionKind.Journey(Direction.ONE), 31, 0,
-                CardDateTime.of(2026, 2, 14, 19, 12, 0), 3,
+                CardDateTime.of(2026, 2, 14, 19, 12, 0), 5,
             ),
         ),
         journeySummary = JourneySummary(

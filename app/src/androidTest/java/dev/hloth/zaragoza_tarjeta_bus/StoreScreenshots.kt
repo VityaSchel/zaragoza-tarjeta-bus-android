@@ -6,12 +6,18 @@ import android.graphics.Bitmap
 import android.os.LocaleList
 import android.text.TextUtils
 import android.view.View
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -87,7 +93,13 @@ class StoreScreenshots {
         compose.setContent {
             Localized(Locale.forLanguageTag(shot.locale)) {
                 ZaragozaTarjetaBusTheme(darkTheme = false, dynamicColor = false) {
-                    if (shot.filled) MainScreen(card = sampleAvanzaTopUpCard) else MainScreen()
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .consumeWindowInsets(WindowInsets.safeDrawing),
+                    ) {
+                        if (shot.filled) MainScreen(card = sampleAvanzaTopUpCard) else MainScreen()
+                    }
                 }
             }
         }
