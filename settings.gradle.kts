@@ -15,9 +15,6 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        maven("https://git.hloth.dev/api/packages/hloth/maven") {
-            content { includeModule("dev.hloth", "zgz-transport") }
-        }
         mavenCentral()
     }
 }
