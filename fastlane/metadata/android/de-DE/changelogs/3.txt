@@ -1,2 +1,14 @@
-- Spanische, katalanische, französische, deutsche, rumänische, russische, ukrainische, belarussische und englische Übersetzungen verbessert und überprüft
+v1.1:
+- Unterstützung für Lazo-Karten
+- Zeitkarten zeigen die verbleibenden Tage
+- Bus, Straßenbahn und Cercanías unterschieden
+- Echte Liniennamen wie L1, Ci1 oder N1
+- Fahrpreise und kostenlose Umstiege werden angezeigt
+- Straßenbahnfahrten zeigen die Haltestellennummer
+- Beschädigte Karten zeigen weiterhin alles Lesbare
+- Kürzere Lesezeit
+- Die Karte bleibt beim Drehen des Telefons sichtbar
+
+v1.2:
+- Übersetzungen verbessert und überprüft
 - Verbessertes Layout für lange Bezeichnungen

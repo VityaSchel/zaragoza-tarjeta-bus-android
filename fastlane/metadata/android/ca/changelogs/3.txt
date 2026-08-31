@@ -1,2 +1,14 @@
-- Traduccions a l'espanyol, català, francès, alemany, romanès, rus, ucraïnès, bielorús i anglès millorades i revisades
+v1.1:
+- Compatibilitat amb les targetes Lazo
+- Els abonaments personals mostren els dies restants
+- Es distingeixen autobús, tramvia i Cercanías
+- Es mostren els noms reals de línia (L1, Ci1, N1)
+- Import del viatge i transbords gratuïts
+- Els viatges en tramvia mostren el número de parada
+- Una targeta malmesa mostra el que s'ha llegit
+- Lectura més ràpida
+- La targeta es manté en girar el telèfon
+
+v1.2:
+- Traduccions millorades i revisades
 - Disseny millorat per a les etiquetes llargues

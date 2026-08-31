@@ -1,2 +1,14 @@
-- Traductions espagnole, catalane, française, allemande, roumaine, russe, ukrainienne, biélorusse et anglaise améliorées et révisées
+v1.1:
+- Prise en charge des cartes Lazo
+- Abonnements personnels : jours restants
+- Distinction des trajets en bus, tramway et Cercanías
+- Affichage des vrais noms de lignes (L1, Ci1, N1)
+- Coût des trajets et correspondances gratuites
+- Numéro d'arrêt affiché pour les trajets en tramway
+- Une carte endommagée affiche ce qui a pu être lu
+- Lecture accélérée
+- La carte reste affichée à la rotation
+
+v1.2:
+- Traductions améliorées et révisées
 - Mise en page améliorée pour les libellés longs

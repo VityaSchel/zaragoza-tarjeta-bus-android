@@ -1,2 +1,14 @@
-- Traducciones al español, catalán, francés, alemán, rumano, ruso, ucraniano, bielorruso e inglés mejoradas y revisadas
+v1.1:
+- Compatibilidad con las tarjetas Lazo
+- Los pases personales muestran los días restantes
+- Se distinguen autobús, tranvía y Cercanías
+- Nombres reales de línea (L1, Ci1, N1)
+- Coste del viaje y transbordos gratuitos
+- Los viajes en tranvía indican el número de parada
+- Una tarjeta dañada muestra todo lo que se pudo leer
+- Lectura más rápida
+- La tarjeta sigue en pantalla al girar el teléfono
+
+v1.2:
+- Traducciones mejoradas y revisadas
 - Diseño mejorado para las etiquetas largas

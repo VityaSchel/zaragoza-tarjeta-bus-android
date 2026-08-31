@@ -1,2 +1,14 @@
-- Traducerile în spaniolă, catalană, franceză, germană, română, rusă, ucraineană, belarusă și engleză au fost îmbunătățite și revizuite
+v1.1:
+- Compatibilitate cu cardurile Lazo
+- Abonamentele personale arată zilele rămase
+- Autobuzul, tramvaiul și Cercanías se disting
+- Liniile apar cu numele reale (L1, Ci1, N1)
+- Costul călătoriei și transbordările gratuite
+- Călătoriile cu tramvaiul arată și numărul stației
+- Un card deteriorat arată tot ce s-a putut citi
+- Cardul se citește mai repede
+- Cardul rămâne pe ecran la rotirea telefonului
+
+v1.2:
+- Traduceri îmbunătățite și revizuite
 - Aspect îmbunătățit pentru etichetele lungi
