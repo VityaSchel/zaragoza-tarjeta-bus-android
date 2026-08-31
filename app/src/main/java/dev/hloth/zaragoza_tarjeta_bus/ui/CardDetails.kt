@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -27,9 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.hloth.zaragoza_tarjeta_bus.R
 import androidx.compose.material3.Card as MaterialCard
+
+private val TRAILING_MAX_WIDTH = 108.dp
+private val BADGE_ICON_SIZE = 22.dp
 
 @Composable
 internal fun CardDetails(details: CardScreen.Details, modifier: Modifier = Modifier) {
@@ -110,7 +115,7 @@ private fun DetailRow(label: String, value: String) {
             .fillMaxWidth()
             .semantics(mergeDescendants = true) {}
             .padding(horizontal = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -229,7 +234,10 @@ private fun ActivityItem(row: ActivityRow) {
                 )
             }
         }
-        Column(horizontalAlignment = Alignment.End) {
+        Column(
+            modifier = Modifier.widthIn(max = TRAILING_MAX_WIDTH),
+            horizontalAlignment = Alignment.End,
+        ) {
             row.amount?.let { amount ->
                 Text(
                     text = amount,
@@ -242,6 +250,7 @@ private fun ActivityItem(row: ActivityRow) {
                 Text(
                     text = fare.text(),
                     style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.End,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
