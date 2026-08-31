@@ -40,6 +40,10 @@ private val STORE_LOCALES = listOf(
     "en-US", "es-ES", "fr-FR", "de-DE", "ar", "ru-RU", "uk", "be", "ca", "ro",
 )
 
+private const val PULSE_CAPTURE_MS = 1620L
+private const val FRAME_MS = 16L
+private const val SETTLE_FRAMES = 2
+
 private data class Shot(val locale: String, val index: Int, val filled: Boolean)
 
 @Composable
@@ -90,6 +94,7 @@ class StoreScreenshots {
         }
         var shot by mutableStateOf(shots.first())
 
+        compose.mainClock.autoAdvance = false
         compose.setContent {
             Localized(Locale.forLanguageTag(shot.locale)) {
                 ZaragozaTarjetaBusTheme(darkTheme = false, dynamicColor = false) {
@@ -108,7 +113,10 @@ class StoreScreenshots {
         shots.forEach { next ->
             Locale.setDefault(Locale.forLanguageTag(next.locale))
             shot = next
-            compose.waitForIdle()
+            repeat(SETTLE_FRAMES) { compose.mainClock.advanceTimeByFrame() }
+            if (!next.filled) {
+                compose.mainClock.advanceTimeBy(PULSE_CAPTURE_MS - SETTLE_FRAMES * FRAME_MS)
+            }
             val bitmap = compose.onRoot().captureRetrying().asAndroidBitmap()
             File(outputDir, "${next.locale}-${next.index}.png").outputStream().use {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
