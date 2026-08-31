@@ -57,6 +57,7 @@ sleep 5
 "$adb" pull -a "$remote" "$staging" >/dev/null
 
 shopt -s nullglob
+written=()
 captured=("$staging"/screenshots/*.png)
 [ "${#captured[@]}" -gt 0 ] || { echo "no screenshots pulled from $remote" >&2; exit 1; }
 
@@ -69,7 +70,10 @@ for png in "${captured[@]}"; do
 	target="$root/fastlane/metadata/android/$locale/images/phoneScreenshots"
 	mkdir -p "$target"
 	magick "$png" -background white -alpha remove -alpha off -strip "PNG24:$target/$index.png"
+	written+=("$target/$index.png")
 done
+
+"$root/ci/tag-srgb.sh" "${written[@]}"
 
 [ "${#captured[@]}" -eq 20 ] || {
 	echo "expected 20 screenshots, got ${#captured[@]}" >&2; exit 1; }
