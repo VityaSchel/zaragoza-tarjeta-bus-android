@@ -28,10 +28,10 @@
     <string name="card_type_lazo">Card Lazo de reîncărcare</string>
 
     <string name="transaction_top_up">Reîncărcare</string>
-    <string name="transaction_bus_ride_line">Călătorie cu autobuzul · Linia %1$s</string>
-    <string name="transaction_tram_ride_line">Călătorie cu tramvaiul · %1$s</string>
-    <string name="transaction_cercanias_ride">Călătorie cu Cercanías</string>
-    <string name="transaction_journey_line">Călătorie · Linia %1$s</string>
+    <string name="transaction_bus_ride_line">Autobuz · %1$s</string>
+    <string name="transaction_tram_ride_line">Tramvai · %1$s</string>
+    <string name="transaction_cercanias_ride">Cercanías</string>
+    <string name="transaction_journey_line">Călătorie · %1$s</string>
     <string name="transaction_tram_stop">Stația %1$s</string>
     <string name="transaction_transfer">Transbordare gratuită</string>
     <string name="transaction_check_out">Ieșire</string>

@@ -28,10 +28,10 @@
     <string name="card_type_lazo">Carte Lazo rechargeable</string>
 
     <string name="transaction_top_up">Recharge</string>
-    <string name="transaction_bus_ride_line">Trajet en bus · Ligne %1$s</string>
-    <string name="transaction_tram_ride_line">Trajet en tramway · %1$s</string>
-    <string name="transaction_cercanias_ride">Trajet en Cercanías</string>
-    <string name="transaction_journey_line">Trajet · Ligne %1$s</string>
+    <string name="transaction_bus_ride_line">Bus · %1$s</string>
+    <string name="transaction_tram_ride_line">Tramway · %1$s</string>
+    <string name="transaction_cercanias_ride">Cercanías</string>
+    <string name="transaction_journey_line">Trajet · %1$s</string>
     <string name="transaction_tram_stop">Arrêt %1$s</string>
     <string name="transaction_transfer">Correspondance gratuite</string>
     <string name="transaction_check_out">Sortie</string>

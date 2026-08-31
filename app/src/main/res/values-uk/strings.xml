@@ -16,7 +16,7 @@
     <string name="card_id_label">ID картки</string>
     <string name="recent_activity_label">Останні операції</string>
     <string name="passes_label">Абонементи</string>
-    <string name="summary_last_paid">Остання платна поїздка</string>
+    <string name="summary_last_paid">Остання оплата</string>
     <string name="pass_valid_until">Діє до</string>
     <string name="pass_days">Абонемент на %1$s дн.</string>
     <string name="pass_days_left">Залишилося %1$s дн.</string>
@@ -28,10 +28,10 @@
     <string name="card_type_lazo">Поповнювана картка Lazo</string>
 
     <string name="transaction_top_up">Поповнення</string>
-    <string name="transaction_bus_ride_line">Автобус · Лінія %1$s</string>
+    <string name="transaction_bus_ride_line">Автобус · %1$s</string>
     <string name="transaction_tram_ride_line">Трамвай · %1$s</string>
     <string name="transaction_cercanias_ride">Cercanías</string>
-    <string name="transaction_journey_line">Поїздка · Лінія %1$s</string>
+    <string name="transaction_journey_line">Поїздка · %1$s</string>
     <string name="transaction_tram_stop">Зупинка %1$s</string>
     <string name="transaction_transfer">Безкоштовна пересадка</string>
     <string name="transaction_check_out">Вихід</string>

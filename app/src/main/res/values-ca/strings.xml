@@ -28,10 +28,10 @@
     <string name="card_type_lazo">Targeta Lazo de recàrrega</string>
 
     <string name="transaction_top_up">Recàrrega</string>
-    <string name="transaction_bus_ride_line">Viatge en autobús · Línia %1$s</string>
-    <string name="transaction_tram_ride_line">Viatge en tramvia · %1$s</string>
-    <string name="transaction_cercanias_ride">Viatge en Cercanías</string>
-    <string name="transaction_journey_line">Viatge · Línia %1$s</string>
+    <string name="transaction_bus_ride_line">Autobús · %1$s</string>
+    <string name="transaction_tram_ride_line">Tramvia · %1$s</string>
+    <string name="transaction_cercanias_ride">Cercanías</string>
+    <string name="transaction_journey_line">Viatge · %1$s</string>
     <string name="transaction_tram_stop">Parada %1$s</string>
     <string name="transaction_transfer">Transbord gratuït</string>
     <string name="transaction_check_out">Sortida</string>
