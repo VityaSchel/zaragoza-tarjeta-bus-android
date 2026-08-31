@@ -96,7 +96,7 @@ class CardPresentationTest {
         val row = details(card(transactions = listOf(journey(210, Stop.Tram(1300))))).activity.single()
 
         assertEquals(Label(R.string.transaction_tram_ride_line, listOf("L1")), row.title)
-        assertEquals("L1", row.badge)
+        assertEquals(Badge.Route("L1"), row.badge)
     }
 
     @Test
@@ -164,7 +164,7 @@ class CardPresentationTest {
     fun showsAnOffBoardTopUpWithoutARouteOrAStop() {
         val row = details(card(transactions = listOf(topUp()))).activity.single()
 
-        assertEquals("+", row.badge)
+        assertEquals(Badge.TopUp, row.badge)
         assertEquals(Label(R.string.transaction_top_up), row.title)
         assertNull(row.place)
         assertNull(row.fare)
@@ -183,7 +183,10 @@ class CardPresentationTest {
             ),
         ).activity
 
-        assertEquals(listOf("35", "+", "22"), activity.map { it.badge })
+        assertEquals(
+            listOf(Badge.Route("35"), Badge.TopUp, Badge.Route("22")),
+            activity.map { it.badge },
+        )
     }
 
     @Test
@@ -193,7 +196,7 @@ class CardPresentationTest {
             card(transactions = listOf(journey(22, at = sameSecond), journey(35, at = sameSecond))),
         ).activity
 
-        assertEquals(listOf("22", "35"), activity.map { it.badge })
+        assertEquals(listOf(Badge.Route("22"), Badge.Route("35")), activity.map { it.badge })
     }
 
     @Test

@@ -25,8 +25,14 @@ data class Headline(val label: Label, val value: String)
 
 data class PassRow(val kind: Label, val window: String, val remaining: Label?)
 
+sealed interface Badge {
+    data class Route(val text: String) : Badge
+
+    data object TopUp : Badge
+}
+
 data class ActivityRow(
-    val badge: String,
+    val badge: Badge,
     val title: Label,
     val place: Label?,
     val fare: Label?,
@@ -106,7 +112,7 @@ private fun Transaction.row(): ActivityRow {
     val topUp = kind() is TransactionKind.TopUp
     val mode = route().mode()
     return ActivityRow(
-        badge = if (topUp) ADDED else route().toString(),
+        badge = if (topUp) Badge.TopUp else Badge.Route(route().toString()),
         title = if (topUp) Label(R.string.transaction_top_up) else journeyTitle(mode),
         place = place(),
         fare = if (topUp) null else fare(mode),
