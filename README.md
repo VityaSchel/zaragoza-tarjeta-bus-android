@@ -4,7 +4,7 @@ Free Android app that reads your Zaragoza transport card and displays remaining 
 
 ![Banner](./fastlane/metadata/android/en-US/images/featureGraphic.png)
 
-**Download the app from [Google Play](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) or [Forgejo Releases](https://git.hloth.dev/hloth/zaragoza-tarjeta-bus-android/releases).**
+[<img src="./docs/get-it-on-google-play.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) [<img src="./docs/get-it-on-f-droid.png" alt="Get it on F-Droid" height="60">](https://f-droid.org/en/packages/dev.hloth.zaragoza_tarjeta_bus/)
 
 > [!IMPORTANT]
 > ⚠️ **Aviso legal:** Este repositorio es un proyecto de investigación de seguridad independiente.  \
