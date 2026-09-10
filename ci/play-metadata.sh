@@ -6,8 +6,6 @@ source_dir="$root/fastlane/metadata/android"
 out_dir="$root/build/play-metadata/android"
 repo=https://git.hloth.dev/hloth/zaragoza-tarjeta-bus-android
 
-# Play-only footer: the fastlane metadata itself stays clean for F-Droid,
-# which already links the source repository on its own listing page.
 open_source_label() {
 	case "$1" in
 		ar) echo "مفتوح المصدر" ;;
