@@ -2,7 +2,6 @@ package dev.hloth.zaragoza_tarjeta_bus.card
 
 import dev.hloth.zgztransport.Balance
 import dev.hloth.zgztransport.CardDateTime
-import dev.hloth.zgztransport.CardFormatException
 import dev.hloth.zgztransport.CardId
 import dev.hloth.zgztransport.CardType
 import dev.hloth.zgztransport.Chip
@@ -132,9 +131,9 @@ class CardReaderTest {
         val blocks = FakeBlocks(avanzaTopUp(), CardType.AVANZA_TOP_UP)
         blocks.unauthenticatableSector = 7
 
-        val failure = assertThrows(CardFormatException::class.java) { readTransportCard(blocks) }
+        val failure = assertThrows(CardReadException.Locked::class.java) { readTransportCard(blocks) }
 
-        assertTrue(failure.message!!.contains("sector 7"))
+        assertEquals(7, failure.sector)
     }
 
     @Test
@@ -220,7 +219,7 @@ class CardReaderTest {
             .block(9, corrupt(Balance(4450).encode(), 4, 0x00))
             .build()
 
-        assertThrows(CardFormatException::class.java) {
+        assertThrows(CardReadException.Unreadable::class.java) {
             readTransportCard(FakeBlocks(dump, CardType.AVANZA_TOP_UP))
         }
     }
@@ -313,6 +312,16 @@ class CardReaderTest {
         assertThrows(CardReadException.Unreadable::class.java) {
             readTransportCard(FakeBlocks(dump, CardType.AVANZA_TOP_UP))
         }
+    }
+
+    @Test
+    fun reportsTheHeaderSectorWhenNoKnownKeyOpensTheCard() {
+        val blocks = FakeBlocks(avanzaTopUp(), CardType.AVANZA_TOP_UP)
+        blocks.unauthenticatableSector = 0
+
+        val failure = assertThrows(CardReadException.Locked::class.java) { readTransportCard(blocks) }
+
+        assertEquals(0, failure.sector)
     }
 
     @Test

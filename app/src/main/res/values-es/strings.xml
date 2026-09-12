@@ -38,6 +38,6 @@
     <string name="transaction_free">Gratis</string>
 
     <string name="error_card_moved">Mantén la tarjeta quieta hasta que termine la lectura</string>
-    <string name="error_invalid_card">Tarjeta no compatible o no válida</string>
-    <string name="error_reading_card">Error al leer la tarjeta</string>
+    <string name="error_not_transport_card">Este tipo de tarjeta no es compatible</string>
+    <string name="error_read_failed">No se pudo leer la tarjeta. Vuelve a acercarla.</string>
 </resources>

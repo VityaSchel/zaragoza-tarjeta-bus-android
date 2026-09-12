@@ -70,7 +70,7 @@ fun readTransportCard(blocks: BlockSource): TransportCard {
 
     return TransportCard(
         cardType = cardType,
-        balance = balance ?: balanceCopy ?: throw CardFormatException("neither balance block decodes"),
+        balance = balance ?: balanceCopy ?: throw CardReadException.Unreadable("neither balance block decodes"),
         uid = optional("uid") { Uid.decode(read.getValue(UID_BLOCK)) },
         id = optional("card id") { CardId.decode(read.getValue(CARD_ID_BLOCK)) },
         transactions = transactions,
@@ -116,7 +116,7 @@ private fun BlockSource.readAll(
 ): Map<Int, ByteArray> = buildMap {
     for ((sector, sectorBlocks) in blocks.sorted().groupBy { sectorOf(it) }) {
         if (keysFor(sector).none { authenticate(sector, it) }) {
-            throw CardFormatException("cannot authenticate sector $sector")
+            throw CardReadException.Locked(sector)
         }
         for (block in sectorBlocks) {
             put(block, read(block))

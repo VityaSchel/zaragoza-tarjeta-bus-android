@@ -2,7 +2,6 @@ package dev.hloth.zaragoza_tarjeta_bus
 
 import android.nfc.NfcAdapter
 import android.nfc.Tag
-import android.nfc.TagLostException
 import android.nfc.tech.MifareClassic
 import android.os.Bundle
 import android.util.Log
@@ -13,9 +12,9 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import dev.hloth.zaragoza_tarjeta_bus.card.CardReadException
-import dev.hloth.zaragoza_tarjeta_bus.card.MifareClassicBlocks
-import dev.hloth.zaragoza_tarjeta_bus.card.readTransportCard
+import dev.hloth.zaragoza_tarjeta_bus.card.CardScan
+import dev.hloth.zaragoza_tarjeta_bus.card.closeQuietly
+import dev.hloth.zaragoza_tarjeta_bus.card.scanCard
 import dev.hloth.zaragoza_tarjeta_bus.ui.MainScreen
 import dev.hloth.zaragoza_tarjeta_bus.ui.NfcState
 import dev.hloth.zaragoza_tarjeta_bus.ui.theme.ZaragozaTarjetaBusTheme
@@ -69,40 +68,58 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onTagDetected(tag: Tag) {
-        val mifare = MifareClassic.get(tag) ?: return
-        onMainThread {
-            viewModel.card = null
-            viewModel.unsupportedCardType = null
-            viewModel.loading = true
+        val mifare = mifareClassicOf(tag)
+        if (mifare == null) {
+            onMainThread { apply(CardScan.NotATransportCard) }
+            return
         }
 
-        try {
-            val read = readTransportCard(MifareClassicBlocks.connect(mifare))
-            if (read.warnings.isNotEmpty()) {
-                Log.w(LOG_TAG, "Card read with parts skipped: ${read.warnings.joinToString()}")
-            }
-            onMainThread {
+        onMainThread { viewModel.loading = true }
+        val scan = scanCard(mifare)
+        mifare.closeQuietly()
+        onMainThread { apply(scan) }
+    }
+
+    private fun mifareClassicOf(tag: Tag): MifareClassic? = try {
+        MifareClassic.get(tag).also {
+            if (it == null) Log.w(LOG_TAG, "This device cannot read the tapped tag as MIFARE Classic")
+        }
+    } catch (unsupported: RuntimeException) {
+        Log.w(LOG_TAG, "Tapped tag is not a MIFARE Classic card this device can read", unsupported)
+        null
+    }
+
+    private fun apply(scan: CardScan) {
+        viewModel.loading = false
+        viewModel.unsupportedCardType = null
+        if (scan !is CardScan.Read) {
+            viewModel.card = null
+        }
+        when (scan) {
+            is CardScan.Read -> {
+                if (scan.card.warnings.isNotEmpty()) {
+                    Log.w(LOG_TAG, "Card read with parts skipped: ${scan.card.warnings.joinToString()}")
+                }
                 viewModel.errorMessage = null
-                viewModel.card = read
+                viewModel.card = scan.card
             }
-        } catch (e: TagLostException) {
-            onMainThread { viewModel.errorMessage = getString(R.string.error_card_moved) }
-            Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
-        } catch (e: CardReadException.UnknownCardType) {
-            onMainThread { viewModel.unsupportedCardType = e.code }
-            Log.w(LOG_TAG, "Card type ${e.code} is not supported yet")
-        } catch (e: IllegalArgumentException) {
-            onMainThread { viewModel.errorMessage = getString(R.string.error_invalid_card) }
-            Log.e(LOG_TAG, "Card is invalid: ${e.message}")
-        } catch (e: Exception) {
-            onMainThread { viewModel.errorMessage = getString(R.string.error_reading_card) }
-            Log.e(LOG_TAG, "Error while reading MifareClassic: ${e.message}", e)
-        } finally {
-            onMainThread { viewModel.loading = false }
-            try {
-                mifare.close()
-            } catch (e: Exception) {
-                Log.w(LOG_TAG, "Error closing MifareClassic: ${e.message}")
+
+            is CardScan.Unsupported -> {
+                Log.w(LOG_TAG, "Card type ${scan.code} is not supported yet")
+                viewModel.unsupportedCardType = scan.code
+            }
+
+            is CardScan.Failed -> {
+                Log.e(LOG_TAG, "Card could not be read", scan.cause)
+                viewModel.errorMessage = getString(R.string.error_read_failed)
+            }
+
+            CardScan.NotATransportCard -> {
+                viewModel.errorMessage = getString(R.string.error_not_transport_card)
+            }
+
+            CardScan.Moved -> {
+                viewModel.errorMessage = getString(R.string.error_card_moved)
             }
         }
     }

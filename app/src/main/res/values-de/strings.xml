@@ -38,6 +38,6 @@
     <string name="transaction_free">Kostenlos</string>
 
     <string name="error_card_moved">Halte die Karte still, bis das Lesen abgeschlossen ist</string>
-    <string name="error_invalid_card">Karte nicht unterstützt oder ungültig</string>
-    <string name="error_reading_card">Fehler beim Lesen der Karte</string>
+    <string name="error_not_transport_card">Dieser Kartentyp wird nicht unterstützt</string>
+    <string name="error_read_failed">Karte konnte nicht gelesen werden. Halte sie erneut an das Telefon.</string>
 </resources>

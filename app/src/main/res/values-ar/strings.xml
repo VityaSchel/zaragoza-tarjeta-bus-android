@@ -38,6 +38,6 @@
     <string name="transaction_free">مجانًا</string>
 
     <string name="error_card_moved">أبقِ البطاقة ثابتة حتى تنتهي القراءة</string>
-    <string name="error_invalid_card">بطاقة غير مدعومة أو غير صالحة</string>
-    <string name="error_reading_card">خطأ في قراءة البطاقة</string>
+    <string name="error_not_transport_card">هذا النوع من البطاقات غير مدعوم</string>
+    <string name="error_read_failed">تعذرت قراءة البطاقة. قرّبها مرة أخرى.</string>
 </resources>

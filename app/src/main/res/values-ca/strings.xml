@@ -38,6 +38,6 @@
     <string name="transaction_free">Gratuït</string>
 
     <string name="error_card_moved">No moguis la targeta fins que acabi la lectura</string>
-    <string name="error_invalid_card">Targeta no compatible o no vàlida</string>
-    <string name="error_reading_card">Error en llegir la targeta</string>
+    <string name="error_not_transport_card">Aquest tipus de targeta no és compatible</string>
+    <string name="error_read_failed">No s\'ha pogut llegir la targeta. Torna a acostar-la.</string>
 </resources>

@@ -38,6 +38,6 @@
     <string name="transaction_free">Бясплатна</string>
 
     <string name="error_card_moved">Трымайце карту нерухома да канца чытання</string>
-    <string name="error_invalid_card">Карта не падтрымліваецца або несапраўдная</string>
-    <string name="error_reading_card">Памылка чытання карты</string>
+    <string name="error_not_transport_card">Гэты тып карты не падтрымліваецца</string>
+    <string name="error_read_failed">Не ўдалося прачытаць карту. Прыкладзіце яе зноў.</string>
 </resources>

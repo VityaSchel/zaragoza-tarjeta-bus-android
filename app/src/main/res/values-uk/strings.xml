@@ -38,6 +38,6 @@
     <string name="transaction_free">Безкоштовно</string>
 
     <string name="error_card_moved">Тримайте картку нерухомо, доки триває зчитування</string>
-    <string name="error_invalid_card">Картка не підтримується або недійсна</string>
-    <string name="error_reading_card">Помилка зчитування картки</string>
+    <string name="error_not_transport_card">Цей тип картки не підтримується</string>
+    <string name="error_read_failed">Не вдалося зчитати картку. Прикладіть її ще раз.</string>
 </resources>
