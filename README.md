@@ -4,7 +4,7 @@ Free Android app that reads your Zaragoza transport card and displays remaining 
 
 ![Banner](./fastlane/metadata/android/en-US/images/featureGraphic.png)
 
-[<img src="./docs/get-it-on-google-play.avif" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) [<img src="./docs/get-it-on-f-droid.avif" alt="Get it on F-Droid" height="60">](https://f-droid.org/en/packages/dev.hloth.zaragoza_tarjeta_bus/) [<img src="./docs/direct-apk-download.avif" alt="Direct APK download" height="60">](https://git.hloth.dev/hloth/zaragoza-tarjeta-bus-android/releases/download/v1.2/zaragoza-tarjeta-bus-android-v1.2.apk)
+[<img src="./docs/get-it-on-google-play.avif" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=dev.hloth.zaragoza_tarjeta_bus) [<img src="./docs/get-it-on-f-droid.avif" alt="Get it on F-Droid" height="60">](https://f-droid.org/en/packages/dev.hloth.zaragoza_tarjeta_bus/) [<img src="./docs/direct-apk-download.avif" alt="Direct APK download" height="60">](https://git.hloth.dev/hloth/zaragoza-tarjeta-bus-android/releases/download/v1.3/zaragoza-tarjeta-bus-android-v1.3.apk)
 
 > [!IMPORTANT]
 > ⚠️ **Aviso legal:** Este repositorio es un proyecto de investigación de seguridad independiente.  \
