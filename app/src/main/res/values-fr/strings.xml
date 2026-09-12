@@ -37,7 +37,7 @@
     <string name="transaction_check_out">Sortie</string>
     <string name="transaction_free">Gratuit</string>
 
-    <string name="error_card_moved">Maintenez la carte immobile jusqu\'à la fin de la lecture</string>
+    <string name="error_card_moved">Maintenez la carte immobile pendant la lecture</string>
     <string name="error_not_transport_card">Ce type de carte n\'est pas pris en charge</string>
     <string name="error_read_failed">Impossible de lire la carte. Approchez-la à nouveau.</string>
 </resources>

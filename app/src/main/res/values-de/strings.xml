@@ -37,7 +37,7 @@
     <string name="transaction_check_out">Check-out</string>
     <string name="transaction_free">Kostenlos</string>
 
-    <string name="error_card_moved">Halte die Karte still, bis das Lesen abgeschlossen ist</string>
+    <string name="error_card_moved">Halte die Karte beim Lesen still</string>
     <string name="error_not_transport_card">Dieser Kartentyp wird nicht unterstützt</string>
     <string name="error_read_failed">Karte konnte nicht gelesen werden. Halte sie erneut an das Telefon.</string>
 </resources>

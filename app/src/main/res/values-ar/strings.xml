@@ -37,7 +37,7 @@
     <string name="transaction_check_out">خروج</string>
     <string name="transaction_free">مجانًا</string>
 
-    <string name="error_card_moved">أبقِ البطاقة ثابتة حتى تنتهي القراءة</string>
+    <string name="error_card_moved">أبقِ البطاقة ثابتة أثناء القراءة</string>
     <string name="error_not_transport_card">هذا النوع من البطاقات غير مدعوم</string>
     <string name="error_read_failed">تعذرت قراءة البطاقة. قرّبها مرة أخرى.</string>
 </resources>

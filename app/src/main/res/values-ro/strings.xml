@@ -37,7 +37,7 @@
     <string name="transaction_check_out">Ieșire</string>
     <string name="transaction_free">Gratuit</string>
 
-    <string name="error_card_moved">Ține cardul nemișcat până se termină citirea</string>
+    <string name="error_card_moved">Ține cardul nemișcat în timpul citirii</string>
     <string name="error_not_transport_card">Acest tip de card nu este acceptat</string>
     <string name="error_read_failed">Cardul nu a putut fi citit. Apropie-l din nou.</string>
 </resources>

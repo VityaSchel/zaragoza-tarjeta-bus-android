@@ -37,7 +37,7 @@
     <string name="transaction_check_out">Вихід</string>
     <string name="transaction_free">Безкоштовно</string>
 
-    <string name="error_card_moved">Тримайте картку нерухомо, доки триває зчитування</string>
+    <string name="error_card_moved">Тримайте картку нерухомо під час зчитування</string>
     <string name="error_not_transport_card">Цей тип картки не підтримується</string>
     <string name="error_read_failed">Не вдалося зчитати картку. Прикладіть її ще раз.</string>
 </resources>
