@@ -1,0 +1,3 @@
+- Compatibilitat amb les targetes personals «Abono de transporte»
+- Es corregeixen els viatges que faltaven a l'historial d'algunes targetes personals
+- Es corregeix un tancament inesperat en apropar algunes targetes NFC

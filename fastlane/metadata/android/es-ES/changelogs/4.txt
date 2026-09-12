@@ -1,0 +1,3 @@
+- Compatibilidad con las tarjetas personales «Abono de transporte»
+- Se corrigen los viajes que faltaban en el historial de algunas tarjetas personales
+- Se corrige un cierre inesperado al acercar algunas tarjetas NFC

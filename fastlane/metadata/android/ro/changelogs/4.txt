@@ -1,0 +1,3 @@
+- Compatibilitate cu cardurile personale „Abono de transporte”
+- Călătoriile care lipseau din istoricul unor carduri personale apar acum
+- A fost remediată o închidere neașteptată la apropierea unor carduri NFC

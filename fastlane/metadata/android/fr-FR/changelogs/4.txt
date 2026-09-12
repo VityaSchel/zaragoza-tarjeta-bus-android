@@ -1,0 +1,3 @@
+- Prise en charge des cartes personnelles « Abono de transporte »
+- Correction des trajets absents de l'historique de certaines cartes personnelles
+- Correction d'un plantage en approchant certaines cartes NFC

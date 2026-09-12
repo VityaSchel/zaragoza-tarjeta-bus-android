@@ -1,0 +1,3 @@
+- Added support for "Abono de transporte" personal cards
+- Fixed trips missing from the history on some personal cards
+- Fixed a crash when tapping some NFC cards

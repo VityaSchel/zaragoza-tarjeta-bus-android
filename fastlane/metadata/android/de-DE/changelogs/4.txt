@@ -1,0 +1,3 @@
+- Unterstützung für persönliche „Abono de transporte“-Karten
+- Fehlende Fahrten im Verlauf einiger persönlicher Karten behoben
+- Absturz beim Scannen einiger NFC-Karten behoben
