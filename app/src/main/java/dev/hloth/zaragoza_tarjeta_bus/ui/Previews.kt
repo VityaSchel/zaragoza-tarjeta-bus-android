@@ -33,7 +33,7 @@ private fun MainScreenPersonalPassPreview() {
     ZaragozaTarjetaBusTheme {
         MainScreen(
             card = sampleCard(
-                CardType.AVANZA_PERSONAL_UNLIMITED, "BP987654", 0,
+                CardType.AVANZA_PERSONAL, "BP987654", 0,
                 transactions = listOf(
                     sampleTransaction(
                         TransactionKind.Journey(Direction.ONE), 22, 0,

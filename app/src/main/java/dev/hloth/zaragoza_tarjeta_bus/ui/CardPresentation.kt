@@ -60,7 +60,7 @@ fun TransportCard.screen(today: LocalDate = LocalDate.now()): CardScreen = when 
         passes = emptyList(),
     )
 
-    CardType.AVANZA_PERSONAL_UNLIMITED -> details(
+    CardType.AVANZA_PERSONAL, CardType.AVANZA_PERSONAL_ABONO -> details(
         headline = validUntil(),
         passes = products.sortedByDescending { it.subscription().endsAt() }.map { it.row(today) },
     )
@@ -74,7 +74,7 @@ private fun TransportCard.details(headline: Headline?, passes: List<PassRow>) =
         notice = if (warnings.isEmpty()) null else Label(R.string.card_partially_read),
         lastPaid = journeySummary?.lastPaid(),
         passes = passes,
-        activity = transactions.sortedByDescending { it.createdAt() }.map { it.row() },
+        activity = transactions.sortedByDescending { it.createdAt() }.map { it.row(cardType.isPersonal()) },
     )
 
 private fun TransportCard.validUntil(): Headline? = products
@@ -103,19 +103,19 @@ private fun JourneySummary.lastPaid(): String {
 private fun CardType.label(): Label = Label(
     when (this) {
         CardType.AVANZA_TOP_UP -> R.string.card_type_top_up
-        CardType.AVANZA_PERSONAL_UNLIMITED -> R.string.card_type_personal
+        CardType.AVANZA_PERSONAL, CardType.AVANZA_PERSONAL_ABONO -> R.string.card_type_personal
         CardType.LAZO_TOP_UP -> R.string.card_type_lazo
     }
 )
 
-private fun Transaction.row(): ActivityRow {
+private fun Transaction.row(personal: Boolean): ActivityRow {
     val topUp = kind() is TransactionKind.TopUp
     val mode = route().mode()
     return ActivityRow(
         badge = if (topUp) Badge.TopUp else Badge.Route(route().toString()),
         title = if (topUp) Label(R.string.transaction_top_up) else journeyTitle(mode),
         place = place(),
-        fare = if (topUp) null else fare(mode),
+        fare = if (topUp) null else fare(mode, personal),
         time = createdAt().formatted(),
         amount = amount().takeIf { it > 0 }
             ?.let { (if (topUp) ADDED else SPENT) + Balance(it.toLong()).formatted() },
@@ -135,9 +135,9 @@ private fun Transaction.journeyTitle(mode: TransportMode?): Label {
 private fun Transaction.place(): Label? = (stop() as? Stop.Tram)
     ?.let { Label(R.string.transaction_tram_stop, listOf(it.number().toString())) }
 
-private fun Transaction.fare(mode: TransportMode?): Label? = when {
+private fun Transaction.fare(mode: TransportMode?, personal: Boolean): Label? = when {
     !isFree() -> null
-    cardType().productSectors().isNotEmpty() -> null
+    personal -> null
     isTransfer() -> Label(R.string.transaction_transfer)
     mode == TransportMode.CERCANIAS && isCheckOut() -> Label(R.string.transaction_check_out)
     else -> Label(R.string.transaction_free)

@@ -28,9 +28,11 @@ private fun hex(text: String) = ByteArray(text.length / 2) {
     text.substring(it * 2, it * 2 + 2).toInt(16).toByte()
 }
 
+private fun CardType.productId() = value() shr 16
+
 private fun ride(route: Int, at: CardDateTime, sequence: Int, cardType: CardType) =
     Transaction.builder()
-        .cardType(cardType)
+        .productId(cardType.productId())
         .amount(880)
         .consecutivePayments(1)
         .stop(Stop.Urban(500))
@@ -56,7 +58,7 @@ private fun avanzaTopUp(): Dump = Dump.builder(Chip.CLASSIC_1K)
 
 private fun avanzaPersonal(): Dump = Dump.builder(Chip.CLASSIC_1K)
     .block(0, hex(AVANZA_BLOCK_0))
-    .block(1, CardType.AVANZA_PERSONAL_UNLIMITED)
+    .block(1, CardType.AVANZA_PERSONAL)
     .block(2, CardId.parse("BP987654"))
     .block(8, Balance(0))
     .block(9, Balance(0))
@@ -95,7 +97,7 @@ class CardReaderTest {
 
     @Test
     fun readsProductSectorsAndSkipsTheSummaryOnAPersonalCard() {
-        val blocks = FakeBlocks(avanzaPersonal(), CardType.AVANZA_PERSONAL_UNLIMITED)
+        val blocks = FakeBlocks(avanzaPersonal(), CardType.AVANZA_PERSONAL)
 
         readTransportCard(blocks)
 
@@ -260,5 +262,22 @@ class CardReaderTest {
         assertEquals(CardType.LAZO_TOP_UP, card.cardType)
         assertEquals(600L, card.balance.units())
         assertEquals(Chip.CLASSIC_4K, card.uid!!.chip())
+    }
+
+    @Test
+    fun readsAPersonalAbonoCard() {
+        val dump = Dump.builder(Chip.CLASSIC_1K)
+            .block(0, hex(AVANZA_BLOCK_0))
+            .block(1, CardType.AVANZA_PERSONAL_ABONO)
+            .block(2, CardId.parse("BP442714"))
+            .block(8, Balance(0))
+            .block(9, Balance(0))
+            .build()
+
+        val card = readTransportCard(FakeBlocks(dump, CardType.AVANZA_PERSONAL_ABONO))
+
+        assertEquals(CardType.AVANZA_PERSONAL_ABONO, card.cardType)
+        assertEquals("BP442714", card.id!!.toString())
+        assertTrue(card.warnings.isEmpty())
     }
 }

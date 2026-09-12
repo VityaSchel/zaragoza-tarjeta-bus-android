@@ -23,6 +23,8 @@ import org.junit.Test
 import java.time.LocalDate
 import java.util.Optional
 
+private fun CardType.productId() = value() shr 16
+
 private fun journey(
     route: Int,
     stop: Stop = Stop.Urban(500),
@@ -31,7 +33,7 @@ private fun journey(
     cardType: CardType = CardType.AVANZA_TOP_UP,
     at: CardDateTime = CardDateTime.of(2026, 2, 14, 18, 45, 0),
 ) = Transaction.builder()
-    .cardType(cardType)
+    .productId(cardType.productId())
     .amount(amount)
     .consecutivePayments(consecutivePayments)
     .stop(stop)
@@ -42,7 +44,7 @@ private fun journey(
     .build()
 
 private fun topUp(at: CardDateTime = CardDateTime.of(2026, 2, 12, 9, 10, 0)) = Transaction.builder()
-    .cardType(CardType.AVANZA_TOP_UP)
+    .productId(CardType.AVANZA_TOP_UP.productId())
     .amount(10000)
     .stop(Stop.Other(7980))
     .route(Route(0))
@@ -61,7 +63,7 @@ private fun summary(free: Boolean, route: Int, previous: Int? = null) = JourneyS
     Optional.ofNullable(previous?.let { JourneySummary.Leg(Route(it), Direction.ONE) }),
     JourneySummary.LastPaid(CardDate(2026, 2, 14), 18, 45),
     1,
-    CardType.AVANZA_TOP_UP,
+    CardType.AVANZA_TOP_UP.productId(),
     free,
     Route(route),
     Direction.ONE,
@@ -212,7 +214,7 @@ class CardPresentationTest {
     fun headlinesAPersonalCardWithTheLatestDateItsPassesRunTo() {
         val screen = details(
             card(
-                cardType = CardType.AVANZA_PERSONAL_UNLIMITED,
+                cardType = CardType.AVANZA_PERSONAL,
                 products = listOf(
                     pass(3, 2, CardDate(2025, 12, 3), CardDate(2025, 12, 5)),
                     pass(4, 365, CardDate(2025, 12, 3), CardDate(2026, 12, 3)),
@@ -228,7 +230,7 @@ class CardPresentationTest {
     fun listsTheLongestRunningPassFirstAndCountsItsDaysLeft() {
         val screen = details(
             card(
-                cardType = CardType.AVANZA_PERSONAL_UNLIMITED,
+                cardType = CardType.AVANZA_PERSONAL,
                 products = listOf(
                     pass(3, 2, CardDate(2025, 12, 3), CardDate(2025, 12, 5)),
                     pass(4, 365, CardDate(2025, 12, 3), CardDate(2026, 12, 3)),
@@ -248,7 +250,7 @@ class CardPresentationTest {
     fun marksAPassThatHasRunOutAsExpired() {
         val screen = details(
             card(
-                cardType = CardType.AVANZA_PERSONAL_UNLIMITED,
+                cardType = CardType.AVANZA_PERSONAL,
                 products = listOf(pass(3, 2, CardDate(2025, 12, 3), CardDate(2025, 12, 5))),
             ),
         )
@@ -260,9 +262,9 @@ class CardPresentationTest {
     fun leavesEveryRideOfASubscriptionCardWithoutAFareLabelOrAnAmount() {
         val row = details(
             card(
-                cardType = CardType.AVANZA_PERSONAL_UNLIMITED,
+                cardType = CardType.AVANZA_PERSONAL,
                 transactions = listOf(
-                    journey(22, amount = 0, consecutivePayments = 0, cardType = CardType.AVANZA_PERSONAL_UNLIMITED),
+                    journey(22, amount = 0, consecutivePayments = 0, cardType = CardType.AVANZA_PERSONAL),
                 ),
             ),
         ).activity.single()

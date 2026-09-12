@@ -42,6 +42,8 @@ internal fun sampleCard(
     warnings = emptyList(),
 )
 
+private fun CardType.productId() = value() shr 16
+
 internal fun sampleTransaction(
     kind: TransactionKind,
     route: Int,
@@ -51,7 +53,7 @@ internal fun sampleTransaction(
     stop: Stop = Stop.Urban(500),
     consecutivePayments: Int = 1,
 ) = Transaction.builder()
-    .cardType(CardType.AVANZA_TOP_UP)
+    .productId(CardType.AVANZA_TOP_UP.productId())
     .amount(amount)
     .consecutivePayments(consecutivePayments)
     .stop(stop)
@@ -95,7 +97,7 @@ internal val sampleAvanzaTopUpCard: TransportCard
             Optional.empty(),
             JourneySummary.LastPaid(CardDate(2026, 2, 14), 18, 45),
             1,
-            CardType.AVANZA_TOP_UP,
+            CardType.AVANZA_TOP_UP.productId(),
             false,
             Route(210),
             Direction.TWO,
