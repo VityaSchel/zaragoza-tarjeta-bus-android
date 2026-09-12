@@ -20,6 +20,7 @@ private const val BALANCE_BLOCK = 8
 private const val BALANCE_COPY_BLOCK = 9
 private const val JOURNEY_SUMMARY_BLOCK = 10
 private const val BLOCKS_PER_SECTOR = 4
+private const val BLOCK_SIZE = 16
 
 private val HEADER_BLOCKS = listOf(UID_BLOCK, CARD_TYPE_BLOCK, CARD_ID_BLOCK)
 private val HEADER_SECTOR_KEYS =
@@ -27,7 +28,7 @@ private val HEADER_SECTOR_KEYS =
 
 fun readTransportCard(blocks: BlockSource): TransportCard {
     val header = blocks.readAll(HEADER_BLOCKS) { HEADER_SECTOR_KEYS }
-    val cardType = CardType.decode(header.getValue(CARD_TYPE_BLOCK))
+    val cardType = decodeCardType(header.getValue(CARD_TYPE_BLOCK))
     val read = header + blocks.readAll(cardType.blocksToRead()) { sector ->
         listOfNotNull(cardType.keys(sector).orElse(null))
     }
@@ -78,6 +79,21 @@ fun readTransportCard(blocks: BlockSource): TransportCard {
         warnings = warnings.toList(),
     )
 }
+
+private fun decodeCardType(block: ByteArray): CardType = try {
+    CardType.decode(block)
+} catch (malformed: CardFormatException) {
+    val code = block.take(3).fold(0) { value, byte -> (value shl 8) or (byte.toInt() and 0xff) }
+    if (block.isIntactTypeBlock() && code != 0) {
+        throw CardReadException.UnknownCardType("%06X".format(code))
+    }
+    throw CardReadException.Unreadable("card type block is corrupt", malformed)
+}
+
+private fun ByteArray.isIntactTypeBlock(): Boolean =
+    size == BLOCK_SIZE &&
+        copyOfRange(3, BLOCK_SIZE - 1).isBlank() &&
+        take(BLOCK_SIZE - 1).fold(0) { sum, byte -> sum xor (byte.toInt() and 0xff) } == (last().toInt() and 0xff)
 
 private fun ByteArray.isBlank(): Boolean = all { it.toInt() == 0 }
 

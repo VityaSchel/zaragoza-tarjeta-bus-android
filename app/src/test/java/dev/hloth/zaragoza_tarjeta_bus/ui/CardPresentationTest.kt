@@ -89,7 +89,7 @@ private fun card(
 
 private val TODAY: LocalDate = LocalDate.of(2026, 2, 14)
 
-private fun details(card: TransportCard) = card.screen(TODAY) as CardScreen.Details
+private fun details(card: TransportCard) = card.screen(TODAY)
 
 class CardPresentationTest {
 

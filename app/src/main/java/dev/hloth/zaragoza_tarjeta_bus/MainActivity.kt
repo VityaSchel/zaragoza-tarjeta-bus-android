@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import dev.hloth.zaragoza_tarjeta_bus.card.CardReadException
 import dev.hloth.zaragoza_tarjeta_bus.card.MifareClassicBlocks
 import dev.hloth.zaragoza_tarjeta_bus.card.readTransportCard
 import dev.hloth.zaragoza_tarjeta_bus.ui.MainScreen
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
             ZaragozaTarjetaBusTheme {
                 MainScreen(
                     card = viewModel.card,
+                    unsupportedCardType = viewModel.unsupportedCardType,
                     loading = viewModel.loading,
                     nfcState = nfcState,
                     errorMessage = viewModel.errorMessage,
@@ -70,6 +72,7 @@ class MainActivity : ComponentActivity() {
         val mifare = MifareClassic.get(tag) ?: return
         onMainThread {
             viewModel.card = null
+            viewModel.unsupportedCardType = null
             viewModel.loading = true
         }
 
@@ -85,6 +88,9 @@ class MainActivity : ComponentActivity() {
         } catch (e: TagLostException) {
             onMainThread { viewModel.errorMessage = getString(R.string.error_card_moved) }
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
+        } catch (e: CardReadException.UnknownCardType) {
+            onMainThread { viewModel.unsupportedCardType = e.code }
+            Log.w(LOG_TAG, "Card type ${e.code} is not supported yet")
         } catch (e: IllegalArgumentException) {
             onMainThread { viewModel.errorMessage = getString(R.string.error_invalid_card) }
             Log.e(LOG_TAG, "Card is invalid: ${e.message}")

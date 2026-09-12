@@ -265,6 +265,57 @@ class CardReaderTest {
     }
 
     @Test
+    fun reportsAnUnknownCardTypeWithItsCode() {
+        val dump = Dump.builder(Chip.CLASSIC_1K)
+            .block(0, hex(AVANZA_BLOCK_0))
+            .block(1, hex("ABCDEF00000000000000000000000089"))
+            .build()
+
+        val failure = assertThrows(CardReadException.UnknownCardType::class.java) {
+            readTransportCard(FakeBlocks(dump, CardType.AVANZA_TOP_UP))
+        }
+
+        assertEquals("ABCDEF", failure.code)
+    }
+
+    @Test
+    fun treatsACorruptCardTypeBlockAsUnreadableRatherThanUnknown() {
+        val dump = Dump.builder(Chip.CLASSIC_1K)
+            .block(0, hex(AVANZA_BLOCK_0))
+            .block(1, corrupt(CardType.AVANZA_TOP_UP.encode(), 15, 0x00))
+            .build()
+
+        assertThrows(CardReadException.Unreadable::class.java) {
+            readTransportCard(FakeBlocks(dump, CardType.AVANZA_TOP_UP))
+        }
+    }
+
+    @Test
+    fun treatsABitFlipInTheCardTypeCodeAsUnreadableRatherThanUnknown() {
+        val flipped = CardType.AVANZA_TOP_UP.encode().also { it[0] = (it[0].toInt() xor 0x01).toByte() }
+        val dump = Dump.builder(Chip.CLASSIC_1K)
+            .block(0, hex(AVANZA_BLOCK_0))
+            .block(1, flipped)
+            .build()
+
+        assertThrows(CardReadException.Unreadable::class.java) {
+            readTransportCard(FakeBlocks(dump, CardType.AVANZA_TOP_UP))
+        }
+    }
+
+    @Test
+    fun treatsABlankCardTypeBlockAsUnreadable() {
+        val dump = Dump.builder(Chip.CLASSIC_1K)
+            .block(0, hex(AVANZA_BLOCK_0))
+            .block(1, ByteArray(16))
+            .build()
+
+        assertThrows(CardReadException.Unreadable::class.java) {
+            readTransportCard(FakeBlocks(dump, CardType.AVANZA_TOP_UP))
+        }
+    }
+
+    @Test
     fun readsAPersonalAbonoCard() {
         val dump = Dump.builder(Chip.CLASSIC_1K)
             .block(0, hex(AVANZA_BLOCK_0))

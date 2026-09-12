@@ -40,19 +40,15 @@ data class ActivityRow(
     val amount: String?,
 )
 
-sealed interface CardScreen {
-    data class Details(
-        val cardType: Label,
-        val headline: Headline?,
-        val cardId: String?,
-        val notice: Label?,
-        val lastPaid: String?,
-        val passes: List<PassRow>,
-        val activity: List<ActivityRow>,
-    ) : CardScreen
-
-    data class Unsupported(val cardType: Label) : CardScreen
-}
+data class CardScreen(
+    val cardType: Label,
+    val headline: Headline?,
+    val cardId: String?,
+    val notice: Label?,
+    val lastPaid: String?,
+    val passes: List<PassRow>,
+    val activity: List<ActivityRow>,
+)
 
 fun TransportCard.screen(today: LocalDate = LocalDate.now()): CardScreen = when (cardType) {
     CardType.AVANZA_TOP_UP, CardType.LAZO_TOP_UP -> details(
@@ -67,7 +63,7 @@ fun TransportCard.screen(today: LocalDate = LocalDate.now()): CardScreen = when 
 }
 
 private fun TransportCard.details(headline: Headline?, passes: List<PassRow>) =
-    CardScreen.Details(
+    CardScreen(
         cardType = cardType.label(),
         headline = headline,
         cardId = id?.toString(),

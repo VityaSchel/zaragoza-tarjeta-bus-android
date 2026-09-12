@@ -21,6 +21,7 @@ enum class NfcState { READY, DISABLED, UNAVAILABLE }
 @Composable
 fun MainScreen(
     card: TransportCard? = null,
+    unsupportedCardType: String? = null,
     loading: Boolean = false,
     nfcState: NfcState = NfcState.READY,
     errorMessage: String? = null,
@@ -55,13 +56,10 @@ fun MainScreen(
         ) {
             when {
                 loading -> LoadingScreen()
-                screen is CardScreen.Details -> CardDetails(screen)
-                screen is CardScreen.Unsupported -> InfoScreen(
+                screen != null -> CardDetails(screen)
+                unsupportedCardType != null -> InfoScreen(
                     title = stringResource(R.string.unsupported_card_title),
-                    subtitle = stringResource(
-                        R.string.unsupported_card_subtitle,
-                        screen.cardType.text(),
-                    ),
+                    subtitle = stringResource(R.string.unsupported_card_subtitle, unsupportedCardType),
                 )
                 nfcState == NfcState.UNAVAILABLE -> InfoScreen(
                     title = stringResource(R.string.nfc_unavailable_title),

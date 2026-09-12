@@ -39,7 +39,7 @@ private val TRAILING_MAX_WIDTH = 108.dp
 private val BADGE_ICON_SIZE = 22.dp
 
 @Composable
-internal fun CardDetails(details: CardScreen.Details, modifier: Modifier = Modifier) {
+internal fun CardDetails(details: CardScreen, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(24.dp),
@@ -65,7 +65,7 @@ internal fun CardDetails(details: CardScreen.Details, modifier: Modifier = Modif
 }
 
 @Composable
-private fun HeaderCard(details: CardScreen.Details) {
+private fun HeaderCard(details: CardScreen) {
     MaterialCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
