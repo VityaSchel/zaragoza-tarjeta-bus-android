@@ -68,26 +68,31 @@ class MainActivity : ComponentActivity() {
 
     private fun onTagDetected(tag: Tag) {
         val mifare = MifareClassic.get(tag) ?: return
-        viewModel.card = null
-        viewModel.loading = true
+        onMainThread {
+            viewModel.card = null
+            viewModel.loading = true
+        }
 
         try {
             val read = readTransportCard(MifareClassicBlocks.connect(mifare))
             if (read.warnings.isNotEmpty()) {
                 Log.w(LOG_TAG, "Card read with parts skipped: ${read.warnings.joinToString()}")
             }
-            viewModel.card = read
+            onMainThread {
+                viewModel.errorMessage = null
+                viewModel.card = read
+            }
         } catch (e: TagLostException) {
-            viewModel.errorMessage = getString(R.string.error_card_moved)
+            onMainThread { viewModel.errorMessage = getString(R.string.error_card_moved) }
             Log.i(LOG_TAG, "Tag was removed before reading could complete: ${e.message}")
         } catch (e: IllegalArgumentException) {
-            viewModel.errorMessage = getString(R.string.error_invalid_card)
+            onMainThread { viewModel.errorMessage = getString(R.string.error_invalid_card) }
             Log.e(LOG_TAG, "Card is invalid: ${e.message}")
         } catch (e: Exception) {
-            viewModel.errorMessage = getString(R.string.error_reading_card)
+            onMainThread { viewModel.errorMessage = getString(R.string.error_reading_card) }
             Log.e(LOG_TAG, "Error while reading MifareClassic: ${e.message}", e)
         } finally {
-            viewModel.loading = false
+            onMainThread { viewModel.loading = false }
             try {
                 mifare.close()
             } catch (e: Exception) {
@@ -95,4 +100,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    private fun onMainThread(update: () -> Unit) = runOnUiThread(update)
 }
