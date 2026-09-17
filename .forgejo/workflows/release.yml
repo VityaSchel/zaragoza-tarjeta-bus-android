@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         provider: [hetzner, vultr]
-    runs-on: ["build", "${{ matrix.provider }}"]
+    runs-on: ["debian", "4c8g", "${{ matrix.provider }}"]
     timeout-minutes: 45
     defaults:
       run:
@@ -94,7 +94,7 @@ jobs:
   verify:
     needs: [build]
     if: '!cancelled() && needs.build.result != ''failure'''
-    runs-on: ["release-x86", "hetzner"]
+    runs-on: ["debian", "8c16g", "hetzner"]
     timeout-minutes: 15
     defaults:
       run:
