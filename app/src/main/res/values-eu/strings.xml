@@ -2,7 +2,7 @@
     <string name="loading_reading">Zure txartela irakurtzen…</string>
 
     <string name="scan_title">Hurbildu zure txartela</string>
-    <string name="scan_subtitle">Zure Avanza edo Lazo txartela hurbildu telefonora saldoa irakutzeko</string>
+    <string name="scan_subtitle">Hurbildu zure Avanza edo Lazo txartela telefonora saldoa irakurtzeko</string>
 
     <string name="nfc_unavailable_title">NFC ez dago eskuragarri</string>
     <string name="nfc_unavailable_subtitle">Gailu honek ez du txartela irakurtzeko beharrezkoa den NFC.</string>
