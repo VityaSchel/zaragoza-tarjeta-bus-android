@@ -84,6 +84,16 @@ android {
         language {
             enableSplit = false
         }
+        if (keystoreProperties.containsKey("transparencyStoreFile")) {
+            codeTransparency {
+                signing {
+                    storeFile = file(keystoreProperties["transparencyStoreFile"] as String)
+                    storePassword = keystoreProperties["transparencyStorePassword"] as String
+                    keyAlias = keystoreProperties["transparencyKeyAlias"] as String
+                    keyPassword = keystoreProperties["transparencyKeyPassword"] as String
+                }
+            }
+        }
     }
 }
 
