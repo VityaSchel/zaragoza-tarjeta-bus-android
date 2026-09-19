@@ -76,6 +76,9 @@ android {
     androidResources {
         generateLocaleConfig = true
     }
+    lint {
+        error += "StringFormatCount"
+    }
 
     bundle {
         language {
