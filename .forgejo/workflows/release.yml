@@ -79,10 +79,11 @@ jobs:
         run: |
           cd "$WORKSPACE"
           [ ! -f keystore.properties ] || { echo "FATAL: a keystore would make this build uncomparable"; exit 1; }
-          ./gradlew assembleRelease testDebugUnitTest lintRelease
+          ./gradlew assembleRelease bundleRelease testDebugUnitTest lintRelease
           mkdir -p out
           cp app/build/outputs/apk/release/app-release-unsigned.apk out/
-          sha256sum out/app-release-unsigned.apk
+          cp app/build/outputs/bundle/release/app-release.aab out/app-release-unsigned.aab
+          sha256sum out/*
 
       - name: Upload
         uses: https://code.forgejo.org/forgejo/upload-artifact@16871d9e8cfcf27ff31822cac382bbb5450f1e1e # v4
@@ -138,17 +139,19 @@ jobs:
 
       - name: Compare
         run: |
-          apks=(dl/tarjeta-bus-unsigned-*/app-release-unsigned.apk)
-          [ "${#apks[@]}" -eq "$BUILDERS" ] \
-            || { echo "FATAL: expected $BUILDERS builds, got ${#apks[@]}"; exit 1; }
-          sha256sum "${apks[@]}"
-          distinct=$(sha256sum "${apks[@]}" | awk '{print $1}' | sort -u | wc -l)
-          [ "$distinct" -eq 1 ] \
-            || { echo "FATAL: the builders did not produce the same APK"; exit 1; }
           mkdir -p verified
-          cp "${apks[0]}" "verified/zaragoza-tarjeta-bus-android-${RELEASE_TAG:-$FORGEJO_SHA}-unsigned.apk"
+          for artifact in app-release-unsigned.apk app-release-unsigned.aab; do
+            builds=(dl/tarjeta-bus-unsigned-*/"$artifact")
+            [ "${#builds[@]}" -eq "$BUILDERS" ] \
+              || { echo "FATAL: expected $BUILDERS builds of $artifact, got ${#builds[@]}"; exit 1; }
+            sha256sum "${builds[@]}"
+            distinct=$(sha256sum "${builds[@]}" | awk '{print $1}' | sort -u | wc -l)
+            [ "$distinct" -eq 1 ] \
+              || { echo "FATAL: the builders did not produce the same $artifact"; exit 1; }
+            cp "${builds[0]}" "verified/zaragoza-tarjeta-bus-android-${RELEASE_TAG:-$FORGEJO_SHA}-unsigned.${artifact##*.}"
+          done
           echo "reproducible across $BUILDERS builders"
-          sha256sum verified/*.apk
+          sha256sum verified/*
 
       - name: Upload the verified build
         uses: https://code.forgejo.org/forgejo/upload-artifact@16871d9e8cfcf27ff31822cac382bbb5450f1e1e # v4

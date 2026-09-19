@@ -68,3 +68,41 @@ else
   exit 1
 fi
 ```
+## Verify a Google Play install
+
+| Key                       | Certificate SHA-256                                                |
+| ------------------------- | ------------------------------------------------------------------ |
+| Code transparency         | `2feda27ed537834437dfce3824f7e08d61fc70680be928b31823df4ca1377d16` |
+| Google Play app signing   | `eaecb4dea2e39fe8fa58dbbdc22a4411653cfb74be9189d9edc37761563edd00` |
+
+Needs `adb`, a device with the app installed from Google Play, and `LOCAL` reproduced as above.
+
+```bash
+curl -fsSLo bundletool.jar \
+  https://github.com/google/bundletool/releases/download/1.18.3/bundletool-all-1.18.3.jar
+echo "a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29  bundletool.jar" | shasum -a 256 -c
+
+# 1. Pull the installed APKs
+mkdir play
+for apk in $(adb shell pm path dev.hloth.zaragoza_tarjeta_bus | tr -d '\r' | sed 's/^package://'); do
+  adb pull "$apk" play/
+done
+(cd play && zip -q ../play.zip *.apk)
+
+# 2. Check them against the code transparency key
+java -jar bundletool.jar check-transparency --mode=apk --apk-zip=play.zip \
+  --transparency-key-certificate=docs/code-transparency.pem | tee transparency.txt
+
+# 3. Verify the result; bundletool exits 0 even when verification fails
+PLAY_KEY="EA EC B4 DE A2 E3 9F E8 FA 58 DB BD C2 2A 44 11 65 3C FB 74 BE 91 89 D9 ED C3 77 61 56 3E DD 00"
+if grep -q "APK signature is valid.*$PLAY_KEY" transparency.txt \
+  && grep -qx "Code transparency signature verified for the provided code transparency key certificate." transparency.txt \
+  && grep -qx "Code transparency verified: code related file contents match the code transparency file." transparency.txt \
+  && ! grep -qi "fail" transparency.txt \
+  && [ "$(unzip -p play/base.apk classes.dex | shasum -a 256)" = "$(unzip -p "$LOCAL" classes.dex | shasum -a 256)" ]; then
+  echo "✓ the Play install runs the reproduced code, signed by the developer"
+else
+  echo "✗ the Play install does not match the developer's code" >&2
+  exit 1
+fi
+```
