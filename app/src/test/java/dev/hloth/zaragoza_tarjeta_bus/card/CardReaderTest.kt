@@ -19,9 +19,11 @@ import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-private const val AVANZA_BLOCK_0 = "1D68C3A9BF880400C8000020000000AB"
+private const val AVANZA_BLOCK_0 = "1D68C3A91F880400C8000020000000AB"
 private const val LAZO_BLOCK_0 = "0468C3A9BF12341802008100000023AA"
+private const val LAZO_SHORT_UID_BLOCK_0 = "0468C3A906180200800000000000AA23"
 private const val JOURNEY_SUMMARY = "1F013518160B010D01D2020000620091"
+private const val JOURNEY_SUMMARY_UNKNOWN_DIRECTION = "1F013518160B010D01D23D00006200AE"
 
 private fun hex(text: String) = ByteArray(text.length / 2) {
     text.substring(it * 2, it * 2 + 2).toInt(16).toByte()
@@ -66,7 +68,7 @@ private fun avanzaPersonal(): Dump = Dump.builder(Chip.CLASSIC_1K)
 
 private fun lazoTopUp(): Dump = Dump.builder(Chip.CLASSIC_4K)
     .block(0, hex(LAZO_BLOCK_0))
-    .block(1, CardType.LAZO_TOP_UP)
+    .block(1, CardType.LAZO_TOP_UP_371F)
     .block(2, CardId.parse("CT123456"))
     .block(8, Balance(600))
     .block(9, Balance(600))
@@ -107,14 +109,14 @@ class CardReaderTest {
 
     @Test
     fun triesTheAvanzaSectorZeroKeyBeforeTheLazoOne() {
-        val blocks = FakeBlocks(lazoTopUp(), CardType.LAZO_TOP_UP)
+        val blocks = FakeBlocks(lazoTopUp(), CardType.LAZO_TOP_UP_371F)
 
         readTransportCard(blocks)
 
         val sectorZeroAttempts = blocks.authenticated.filter { it.first == 0 }.map { it.second }
         assertEquals(2, sectorZeroAttempts.size)
         assertEquals(CardType.AVANZA_TOP_UP.keys(0).get(), sectorZeroAttempts[0])
-        assertEquals(CardType.LAZO_TOP_UP.keys(0).get(), sectorZeroAttempts[1])
+        assertEquals(CardType.LAZO_TOP_UP_371F.keys(0).get(), sectorZeroAttempts[1])
     }
 
     @Test
@@ -256,11 +258,32 @@ class CardReaderTest {
 
     @Test
     fun readsALazoCardOffItsOwnKeyTable() {
-        val card = readTransportCard(FakeBlocks(lazoTopUp(), CardType.LAZO_TOP_UP))
+        val card = readTransportCard(FakeBlocks(lazoTopUp(), CardType.LAZO_TOP_UP_371F))
 
-        assertEquals(CardType.LAZO_TOP_UP, card.cardType)
+        assertEquals(CardType.LAZO_TOP_UP_371F, card.cardType)
         assertEquals(600L, card.balance.units())
         assertEquals(Chip.CLASSIC_4K, card.uid!!.chip())
+    }
+
+    @Test
+    fun readsALazoCardWithAFourByteUid() {
+        val dump = Dump.builder(Chip.CLASSIC_4K)
+            .block(0, hex(LAZO_SHORT_UID_BLOCK_0))
+            .block(1, CardType.LAZO_TOP_UP_375F)
+            .block(2, CardId.parse("CT123456"))
+            .block(8, Balance(600))
+            .block(9, Balance(600))
+            .block(10, hex(JOURNEY_SUMMARY_UNKNOWN_DIRECTION))
+            .build()
+
+        val card = readTransportCard(FakeBlocks(dump, CardType.LAZO_TOP_UP_375F))
+
+        assertEquals(CardType.LAZO_TOP_UP_375F, card.cardType)
+        assertEquals("0468C3A9", card.uid.toString())
+        assertEquals(Chip.CLASSIC_4K, card.uid!!.chip())
+        assertEquals(600L, card.balance.units())
+        assertNull(card.journeySummary)
+        assertEquals(listOf("journey summary"), card.warnings)
     }
 
     @Test

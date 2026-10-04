@@ -34,7 +34,7 @@ internal fun sampleCard(
 ) = TransportCard(
     cardType = cardType,
     balance = Balance(balance),
-    uid = Uid.of(byteArrayOf(0x1D, 0x68, 0xC3.toByte(), 0xA9.toByte())),
+    uid = Uid.of(byteArrayOf(0x1D, 0x68, 0xC3.toByte(), 0xA9.toByte()), cardType.chip()),
     id = CardId.parse(id),
     transactions = transactions,
     journeySummary = journeySummary,

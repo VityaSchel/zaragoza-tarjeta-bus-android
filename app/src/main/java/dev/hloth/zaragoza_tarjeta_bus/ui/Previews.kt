@@ -53,7 +53,7 @@ private fun MainScreenPersonalPassPreview() {
 @Composable
 private fun MainScreenLazoCardPreview() {
     ZaragozaTarjetaBusTheme {
-        MainScreen(card = sampleCard(CardType.LAZO_TOP_UP, "CT123456", 600))
+        MainScreen(card = sampleCard(CardType.LAZO_TOP_UP_371F, "CT123456", 600))
     }
 }
 

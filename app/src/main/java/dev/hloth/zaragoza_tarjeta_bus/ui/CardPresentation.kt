@@ -51,7 +51,7 @@ data class CardScreen(
 )
 
 fun TransportCard.screen(today: LocalDate = LocalDate.now()): CardScreen = when (cardType) {
-    CardType.AVANZA_TOP_UP, CardType.LAZO_TOP_UP -> details(
+    CardType.AVANZA_TOP_UP, CardType.LAZO_TOP_UP_371F, CardType.LAZO_TOP_UP_375F -> details(
         headline = Headline(Label(R.string.balance_label), balance.formatted()),
         passes = emptyList(),
     )
@@ -100,7 +100,7 @@ private fun CardType.label(): Label = Label(
     when (this) {
         CardType.AVANZA_TOP_UP -> R.string.card_type_top_up
         CardType.AVANZA_PERSONAL, CardType.AVANZA_PERSONAL_ABONO -> R.string.card_type_personal
-        CardType.LAZO_TOP_UP -> R.string.card_type_lazo
+        CardType.LAZO_TOP_UP_371F, CardType.LAZO_TOP_UP_375F -> R.string.card_type_lazo
     }
 )
 

@@ -203,11 +203,13 @@ class CardPresentationTest {
 
     @Test
     fun showsALazoCardLikeAnyOtherBalanceCard() {
-        val screen = details(card(cardType = CardType.LAZO_TOP_UP))
+        for (cardType in listOf(CardType.LAZO_TOP_UP_371F, CardType.LAZO_TOP_UP_375F)) {
+            val screen = details(card(cardType = cardType))
 
-        assertEquals(Label(R.string.card_type_lazo), screen.cardType)
-        assertEquals(Label(R.string.balance_label), screen.headline!!.label)
-        assertEquals(emptyList<PassRow>(), screen.passes)
+            assertEquals(Label(R.string.card_type_lazo), screen.cardType)
+            assertEquals(Label(R.string.balance_label), screen.headline!!.label)
+            assertEquals(emptyList<PassRow>(), screen.passes)
+        }
     }
 
     @Test
