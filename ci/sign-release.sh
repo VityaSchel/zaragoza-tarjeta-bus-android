@@ -39,12 +39,12 @@ KS_PASS="$(property storePassword)" KEY_PASS="$(property keyPassword)" \
 
 
 run_apksigcopier() {
-	if type -P apksigcopier >/dev/null 2>&1; then
+	if command -v uv >/dev/null 2>&1; then
+		uv run --quiet --python 3.13 --with apksigcopier==1.1.1 apksigcopier "$@"
+	elif type -P apksigcopier >/dev/null 2>&1; then
 		apksigcopier "$@"
-	elif command -v uv >/dev/null 2>&1; then
-		uv run --quiet --with apksigcopier apksigcopier "$@"
 	else
-		echo "FATAL: need apksigcopier (pip install apksigcopier) to verify the signature" >&2
+		echo "FATAL: need uv, or apksigcopier on Python 3.13 or older, to verify the signature" >&2
 		exit 1
 	fi
 }

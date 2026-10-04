@@ -32,7 +32,7 @@ grep distributionSha256Sum gradle/wrapper/gradle-wrapper.properties
 
 ## Verify a release
 
-Needs a JDK 17 or newer, `apksigcopier`, and the Android SDK below.
+Needs a JDK 17 or newer, `apksigcopier` on Python 3.13 or older, and the Android SDK below. On Python 3.14 `apksigcopier` 1.1.1 drops the UTF-8 flag `apksigner` sets on the signature entries, so the check below fails even for a matching build. With `uv`, run it as `uv run --python 3.13 --with apksigcopier==1.1.1 apksigcopier`.
 
 ```bash
 export ANDROID_HOME="$HOME/android-sdk"
