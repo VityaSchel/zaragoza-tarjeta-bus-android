@@ -1,0 +1,14 @@
+v1.1:
+- Lazo txartelekiko bateragarritasuna
+- Txartel pertsonalek gelditzen diren egunak erakusten dituzte
+- Autobus, tranbia eta Aldiriak bereizten dira
+- Lerroen benetako izenak (L1, Ci1, N1)
+- Bidaiaren prezioa eta doako transbordoak
+- Tranbia-bidaiek geltoki-zenbakia erakusten dute
+- Txartel hondatuak irakurritakoa erakusten du
+- Irakurketa azkarragoa
+- Txartela pantailan mantentzen da telefonoa biratzean
+
+v1.2:
+- Itzulpenak hobetu eta berrikusi dira
+- Diseinu hobea etiketa luzeetarako

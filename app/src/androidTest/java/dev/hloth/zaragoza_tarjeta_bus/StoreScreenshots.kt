@@ -37,7 +37,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 private val STORE_LOCALES = listOf(
-    "en-US", "es-ES", "fr-FR", "de-DE", "ar", "ru-RU", "uk", "be", "ca", "ro",
+    "en-US", "es-ES", "fr-FR", "de-DE", "ar", "ru-RU", "uk", "be", "ca", "ro", "eu",
 )
 
 private const val PULSE_CAPTURE_MS = 1620L

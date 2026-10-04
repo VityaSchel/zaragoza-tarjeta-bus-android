@@ -1,0 +1,7 @@
+Lehen bertsioa.
+
+- Txartelaren saldoa
+- Bidaien historia
+- Birkargen historia
+- NFC desaktibatuta dagoenerako errore-ikuspegia
+- Txartela irakurtzeko errore-ikuspegia

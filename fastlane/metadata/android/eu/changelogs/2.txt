@@ -1,0 +1,9 @@
+- Lazo txartelekiko bateragarritasuna
+- Txartel pertsonalek gelditzen diren egunak erakusten dituzte
+- Autobus, tranbia eta Aldirietako bidaiak bereizten dira
+- Lerroen benetako izenak erakusten dira (L1, Ci1, N1)
+- Bidaiaren prezioa eta doako transbordoak
+- Tranbia-bidaiek geltoki-zenbakia erakusten dute
+- Txartel hondatu batek irakur zitekeen guztia erakusten du
+- Irakurketa azkarragoa: alferrikako sektoreak saltatzen dira
+- Txartela pantailan mantentzen da telefonoa biratzean

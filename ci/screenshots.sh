@@ -75,7 +75,7 @@ done
 
 "$root/ci/tag-srgb.sh" "${written[@]}"
 
-[ "${#captured[@]}" -eq 20 ] || {
-	echo "expected 20 screenshots, got ${#captured[@]}" >&2; exit 1; }
+[ "${#captured[@]}" -eq 22 ] || {
+	echo "expected 22 screenshots, got ${#captured[@]}" >&2; exit 1; }
 
 echo "wrote ${#captured[@]} screenshots across $(( ${#captured[@]} / 2 )) locales"
