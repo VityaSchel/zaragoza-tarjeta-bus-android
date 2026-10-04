@@ -1,8 +1,6 @@
 name: Release
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       tag:
@@ -11,7 +9,7 @@ on:
         required: false
 
 concurrency:
-  group: tarjeta-bus-release-${{ forgejo.event.inputs.tag || forgejo.event.release.tag_name || forgejo.ref }}
+  group: tarjeta-bus-release-${{ forgejo.event.inputs.tag || forgejo.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -32,7 +30,7 @@ jobs:
           -u ACTIONS_CACHE_URL -u ACTIONS_RUNTIME_URL -u ACTIONS_RESULTS_URL
           bash --noprofile --norc -e -o pipefail {0}
     env:
-      RELEASE_TAG: ${{ forgejo.event.inputs.tag || forgejo.event.release.tag_name }}
+      RELEASE_TAG: ${{ forgejo.event.inputs.tag }}
       WORKSPACE: /opt/tarjeta-bus-build
       JAVA_HOME: /opt/jdk
       ANDROID_HOME: /opt/android-sdk
@@ -107,7 +105,7 @@ jobs:
           -u ACTIONS_CACHE_URL -u ACTIONS_RUNTIME_URL -u ACTIONS_RESULTS_URL
           bash --noprofile --norc -e -o pipefail {0}
     env:
-      RELEASE_TAG: ${{ forgejo.event.inputs.tag || forgejo.event.release.tag_name }}
+      RELEASE_TAG: ${{ forgejo.event.inputs.tag }}
       CHECKOUT: /opt/tarjeta-bus-verify
       BUILDERS: 2
     steps:
