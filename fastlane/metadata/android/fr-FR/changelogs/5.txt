@@ -1,0 +1,2 @@
+- Correction de la lecture de certaines cartes Lazo
+- Ajout de la traduction en basque

@@ -1,0 +1,2 @@
+- Fixed reading of some Lazo cards
+- Added Basque translation

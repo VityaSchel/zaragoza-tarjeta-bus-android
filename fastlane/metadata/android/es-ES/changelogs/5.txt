@@ -1,0 +1,2 @@
+- Se corrige la lectura de algunas tarjetas Lazo
+- Nueva traducción al euskera

@@ -1,0 +1,2 @@
+- A fost remediată o problemă la citirea unor carduri Lazo
+- A fost adăugată traducerea în limba bască

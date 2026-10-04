@@ -1,0 +1,2 @@
+- Lesefehler bei einigen Lazo-Karten behoben
+- Baskische Übersetzung hinzugefügt
