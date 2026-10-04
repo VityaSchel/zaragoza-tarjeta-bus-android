@@ -14,7 +14,7 @@ open_source_label() {
 		de-DE) echo "Open Source" ;;
 		en-US) echo "Open source" ;;
 		es-ES) echo "Código abierto" ;;
-		eu) echo "Kode irekia" ;;
+		eu-ES) echo "Kode irekia" ;;
 		fr-FR) echo "Code source ouvert" ;;
 		ro) echo "Sursă deschisă" ;;
 		ru-RU) echo "Открытый исходный код" ;;
@@ -26,6 +26,8 @@ open_source_label() {
 rm -rf "$out_dir"
 mkdir -p "$(dirname "$out_dir")"
 cp -R "$source_dir" "$out_dir"
+# Google Play has no plain "eu" locale, only "eu-ES"
+mv "$out_dir/eu" "$out_dir/eu-ES"
 
 for dir in "$out_dir"/*/; do
 	locale="$(basename "$dir")"
