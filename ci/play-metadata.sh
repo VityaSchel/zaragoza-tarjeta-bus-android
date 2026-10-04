@@ -14,6 +14,7 @@ open_source_label() {
 		de-DE) echo "Open Source" ;;
 		en-US) echo "Open source" ;;
 		es-ES) echo "Código abierto" ;;
+		eu) echo "Kode irekia" ;;
 		fr-FR) echo "Code source ouvert" ;;
 		ro) echo "Sursă deschisă" ;;
 		ru-RU) echo "Открытый исходный код" ;;
