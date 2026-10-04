@@ -2,38 +2,38 @@
     <string name="loading_reading">Zure txartela irakurtzen…</string>
 
     <string name="scan_title">Hurbildu zure txartela</string>
-    <string name="scan_subtitle">Hurbildu zure Avanza edo Lazo txartela telefonora saldoa irakurtzeko</string>
+    <string name="scan_subtitle">Hurbildu zure Avanza edo Lazo txartela telefonoaren atzealdera saldoa ikusteko</string>
 
     <string name="nfc_unavailable_title">NFC ez dago eskuragarri</string>
-    <string name="nfc_unavailable_subtitle">Gailu honek ez du txartela irakurtzeko beharrezkoa den NFC.</string>
-    <string name="nfc_disabled_title">NFC aktiba ezazu</string>
-    <string name="nfc_disabled_subtitle">NFC aktibatu zure gailuaren ezarpenetan eta hurbildu Avanza edo Lazo txartela gailuaren atzera.</string>
+    <string name="nfc_unavailable_subtitle">Gailu honek ez du txartela irakurtzeko beharrezkoa den NFCrik.</string>
+    <string name="nfc_disabled_title">Aktibatu NFCa</string>
+    <string name="nfc_disabled_subtitle">Aktibatu NFCa zure gailuaren ezarpenetan eta hurbildu Avanza edo Lazo txartela gailuaren atzealdera.</string>
 
     <string name="unsupported_card_title">Txartel bateragaitza</string>
     <string name="unsupported_card_subtitle">Aurkitutako txartel mota: %1$s.\nTxartel mota honekiko bateragarritasuna oraindik ez dago prest.</string>
 
     <string name="balance_label">Saldoa</string>
-    <string name="card_id_label">Txartelaren ID</string>
+    <string name="card_id_label">Txartelaren IDa</string>
     <string name="recent_activity_label">Azken mugimenduak</string>
     <string name="passes_label">Garraio-tituluak</string>
     <string name="summary_last_paid">Ordaindutako azken bidaia</string>
-    <string name="pass_valid_until">%1$s arte balioduna</string>
+    <string name="pass_valid_until">Iraungitze-data</string>
     <string name="pass_days">%1$s eguneko abonamendua</string>
     <string name="pass_days_left">%1$s egun gelditzen dira</string>
-    <string name="pass_expired">Iraunduta</string>
+    <string name="pass_expired">Iraungita</string>
     <string name="card_partially_read">Txartelaren parte batzuk ezin izan dira irakurri</string>
 
     <string name="card_type_top_up">Txanpon-txartela</string>
     <string name="card_type_personal">Garraio-titulu pertsonala</string>
     <string name="card_type_lazo">Lazo txanpon-txartela</string>
 
-    <string name="transaction_top_up">Birkargatu</string>
+    <string name="transaction_top_up">Birkarga</string>
     <string name="transaction_bus_ride_line">Autobusa · %1$s</string>
     <string name="transaction_tram_ride_line">Tranbia · %1$s</string>
-    <string name="transaction_cercanias_ride">Aldirikoak</string>
+    <string name="transaction_cercanias_ride">Aldiriak</string>
     <string name="transaction_journey_line">Bidaia · %1$s</string>
     <string name="transaction_tram_stop">Geltokia %1$s</string>
-    <string name="transaction_transfer">Dohainiko aldaketa</string>
+    <string name="transaction_transfer">Doako transbordoa</string>
     <string name="transaction_check_out">Irteera</string>
     <string name="transaction_free">Doan</string>
 
